@@ -1,0 +1,328 @@
+header {
+	// =====================
+	// HEADER STYLES - TRADESHOW.PK DESIGN
+	// =====================
+
+	// --- Top Welcome Bar ---
+	.top-welcome-bar {
+		background: #fff;
+		padding: 8px 0;
+		font-size: 13px;
+		color: #6c757d;
+		border-bottom: 1px solid #e9ecef;
+		text-align: center;
+
+		.container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 20px;
+
+			.welcome-text {
+				font-weight: 600;
+				color: #dc3545;
+			}
+
+			.top-links {
+				display: flex;
+				gap: 20px;
+
+				a {
+					text-decoration: none;
+					color: #333;
+					font-weight: 500;
+					transition: color 0.2s;
+
+					&:hover {
+						color: #007cba;
+					}
+				}
+			}
+		}
+	}
+
+	// --- Main Header Row ---
+	.header-main {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 15px 20px;
+		background: #fff;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+		.site-branding {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+
+			img {
+				max-height: 50px;
+				width: auto;
+			}
+
+			.mobile-menu-toggle {
+				background: none;
+				border: none;
+				font-size: 1.5rem;
+				cursor: pointer;
+				color: #333;
+				margin-left: 10px;
+			}
+		}
+
+		.header-search {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			flex-grow: 1;
+			max-width: 500px;
+
+			.search-category {
+				padding: 8px 12px;
+				border: 1px solid #ddd;
+				border-right: none;
+				border-radius: 4px 0 0 4px;
+				background: #f8f9fa;
+				font-size: 14px;
+				color: #333;
+			}
+
+			.search-input {
+				flex-grow: 1;
+				padding: 8px 12px;
+				border: 1px solid #ddd;
+				border-left: none;
+				border-right: none;
+				font-size: 14px;
+				color: #333;
+			}
+
+			.search-button {
+				padding: 8px 16px;
+				background: #007cba;
+				color: white;
+				border: none;
+				border-radius: 0 4px 4px 0;
+				cursor: pointer;
+				font-size: 14px;
+				transition: background 0.2s;
+
+				&:hover {
+					background: #005a87;
+				}
+			}
+		}
+
+		.header-actions {
+			display: flex;
+			align-items: center;
+			gap: 20px;
+
+			.help-section {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+				color: #007cba;
+				font-weight: 500;
+				font-size: 14px;
+
+				.phone-icon {
+					font-size: 1.2rem;
+				}
+
+				a {
+					color: #007cba;
+					text-decoration: none;
+				}
+			}
+
+			.user-actions {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+
+				.icon {
+					font-size: 1.2rem;
+					color: #6c757d;
+				}
+
+				.login-btn,
+				.logout-btn {
+					padding: 6px 12px;
+					border: 1px solid #007cba;
+					border-radius: 4px;
+					text-decoration: none;
+					color: #007cba;
+					font-size: 14px;
+					transition: all 0.2s;
+
+					&:hover {
+						background: #f0f8ff;
+					}
+				}
+
+				.join-btn {
+					background: #007cba;
+					color: white;
+					padding: 6px 12px;
+					border-radius: 4px;
+					text-decoration: none;
+					font-weight: 500;
+					transition: background 0.2s;
+
+					&:hover {
+						background: #005a87;
+					}
+				}
+			}
+		}
+	}
+
+	// --- Category Navigation ---
+	.category-nav {
+		background: #fff;
+		border-top: 1px solid #dee2e6;
+		padding: 10px 0;
+		font-size: 0.9rem;
+
+		.category-menu {
+			display: flex;
+			justify-content: center;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			flex-wrap: wrap;
+			gap: 20px;
+
+			li {
+				position: relative;
+
+				> a {
+					text-decoration: none;
+					color: #333;
+					padding: 5px 10px;
+					border-radius: 4px;
+					transition: background 0.2s;
+
+					&:hover {
+						background: #f0f0f0;
+					}
+				}
+
+				&.has-submenu {
+					&:after {
+						content: "▼";
+						font-size: 0.8rem;
+						margin-left: 5px;
+					}
+
+					.sub-menu {
+						display: none;
+						position: absolute;
+						top: 100%;
+						left: 0;
+						background: #fff;
+						list-style: none;
+						margin: 0;
+						padding: 8px 0;
+						min-width: 180px;
+						border: 1px solid #ddd;
+						z-index: 1000;
+
+						li a {
+							display: block;
+							padding: 8px 12px;
+							color: #333;
+							text-decoration: none;
+							font-size: 14px;
+
+							&:hover {
+								background: #f0f0f0;
+							}
+						}
+					}
+
+					&:hover .sub-menu {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+
+	// =====================
+	// RESPONSIVE DESIGN
+	// =====================
+
+	@media (max-width: 768px) {
+		.top-welcome-bar {
+			.container {
+				flex-direction: column;
+				text-align: center;
+
+				.welcome-text {
+					margin-bottom: 5px;
+				}
+
+				.top-links {
+					justify-content: center;
+					gap: 15px;
+				}
+			}
+		}
+
+		.header-main {
+			flex-direction: column;
+			gap: 15px;
+
+			.header-search {
+				width: 100%;
+
+				.search-category,
+				.search-input,
+				.search-button {
+					width: 100%;
+					border-radius: 4px !important;
+					border-left: 1px solid #ddd !important;
+					border-right: 1px solid #ddd !important;
+				}
+			}
+
+			.header-actions {
+				width: 100%;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+		}
+
+		.category-nav {
+			.category-menu {
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+
+				li {
+					width: 100%;
+					text-align: center;
+
+					> a {
+						width: 100%;
+						text-align: center;
+					}
+
+					.sub-menu {
+						position: static;
+						width: 100%;
+						border-top: 1px solid #ddd;
+						border-left: none;
+						border-right: none;
+
+						li a {
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
+	}
+}
