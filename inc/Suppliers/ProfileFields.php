@@ -5,11 +5,14 @@ class ProfileFields {
     public function register() {
         add_action('show_user_profile', [$this, 'fields']);
         add_action('edit_user_profile', [$this, 'fields']);
+        add_action('user_new_form', [$this, 'new_user_fields']);
+
         add_action('personal_options_update', [$this, 'save']);
         add_action('edit_user_profile_update', [$this, 'save']);
+        add_action('user_register', [$this, 'save_new_user']);
 
         add_action('admin_enqueue_scripts', function ($hook) {
-            if ($hook === 'profile.php' || $hook === 'user-edit.php') {
+            if ($hook === 'profile.php' || $hook === 'user-edit.php' || $hook === 'user-new.php') {
                 wp_enqueue_media();
                 wp_enqueue_script('jquery-ui-autocomplete');
 
@@ -45,42 +48,63 @@ class ProfileFields {
         });
     }
 
+    /**
+     * Edit User / Your Profile screens — only for users who already have the supplier role.
+     */
     public function fields($user) {
         if (!in_array('supplier', (array) $user->roles)) return;
+        $this->render($user->ID);
+    }
 
+    /**
+     * Add New User screen — user doesn't exist yet, so there's no role to check yet.
+     * $type is 'add-new-user' on single site (or 'add-existing-user' on multisite, which we skip).
+     */
+    public function new_user_fields($type) {
+        if ($type !== 'add-new-user') return;
+        $this->render(0);
+    }
+
+    /**
+     * Shared renderer for both screens. $user_id is 0 when the user doesn't exist yet.
+     */
+    private function render($user_id) {
         // Helper to normalize arrays
-        function normalize_meta_array($user_id, $key) {
-            $val = get_user_meta($user_id, $key, true);
+        $normalize_meta_array = function ($uid, $key) {
+            if (!$uid) return [];
+            $val = get_user_meta($uid, $key, true);
             if (is_array($val)) {
                 return array_values(array_filter(array_map('trim', $val)));
             } elseif (is_string($val)) {
                 return array_values(array_filter(array_map('trim', explode(',', $val))));
             }
             return [];
-        }
+        };
 
-        // --- Load existing data ---
-        $logo           = get_user_meta($user->ID, 'company_logo', true);
-        $banner         = get_user_meta($user->ID, 'banner_image', true);
-        $company_status = get_user_meta($user->ID, 'company_status', true) ?: 'enabled';
-        $verified       = get_user_meta($user->ID, 'verified_supplier', true);
+        // --- Load existing data (all empty defaults when $user_id is 0) ---
+        $logo           = $user_id ? get_user_meta($user_id, 'company_logo', true) : '';
+        $banner         = $user_id ? get_user_meta($user_id, 'banner_image', true) : '';
+        $company_status = ($user_id ? get_user_meta($user_id, 'company_status', true) : '') ?: 'enabled';
+        $verified       = $user_id ? get_user_meta($user_id, 'verified_supplier', true) : '';
 
-        $state          = get_user_meta($user->ID, 'state', true);
-        $city           = get_user_meta($user->ID, 'city', true);
-        $capacity       = get_user_meta($user->ID, 'annual_capacity', true);
-        $lead_time      = get_user_meta($user->ID, 'lead_time', true);
-        $contact_person = get_user_meta($user->ID, 'contact_person', true);
-        $designation    = get_user_meta($user->ID, 'designation', true);
-        $whatsapp       = get_user_meta($user->ID, 'whatsapp', true);
-        $skype          = get_user_meta($user->ID, 'skype', true);
-        $working_hours  = get_user_meta($user->ID, 'working_hours', true) ?: '9AM–6PM PKT (GMT+5)';
+        $state          = $user_id ? get_user_meta($user_id, 'state', true) : '';
+        $city           = $user_id ? get_user_meta($user_id, 'city', true) : '';
+        $capacity       = $user_id ? get_user_meta($user_id, 'annual_capacity', true) : '';
+        $lead_time      = $user_id ? get_user_meta($user_id, 'lead_time', true) : '';
+        $contact_person = $user_id ? get_user_meta($user_id, 'contact_person', true) : '';
+        $designation    = $user_id ? get_user_meta($user_id, 'designation', true) : '';
+        $whatsapp       = $user_id ? get_user_meta($user_id, 'whatsapp', true) : '';
+        $skype          = $user_id ? get_user_meta($user_id, 'skype', true) : '';
+        $working_hours  = ($user_id ? get_user_meta($user_id, 'working_hours', true) : '') ?: '9AM–6PM PKT (GMT+5)';
 
-        $user_exports_to = normalize_meta_array($user->ID, 'exports_to');
-        $user_languages  = normalize_meta_array($user->ID, 'languages');
-        $user_certs      = normalize_meta_array($user->ID, 'certifications');
-        $payment_terms   = normalize_meta_array($user->ID, 'payment_terms');
-        $fob_ports       = normalize_meta_array($user->ID, 'fob_ports');
-        $packaging       = normalize_meta_array($user->ID, 'packaging');
+        $user_exports_to = $normalize_meta_array($user_id, 'exports_to');
+        $user_languages  = $normalize_meta_array($user_id, 'languages');
+        $user_certs      = $normalize_meta_array($user_id, 'certifications');
+        $payment_terms   = $normalize_meta_array($user_id, 'payment_terms');
+        $fob_ports       = $normalize_meta_array($user_id, 'fob_ports');
+        $packaging       = $normalize_meta_array($user_id, 'packaging');
+
+        $user = (object) ['ID' => $user_id];
 
         $cert_posts = get_posts([
             'post_type'      => 'certification',
@@ -317,8 +341,21 @@ class ProfileFields {
         <?php
     }
 
+    /**
+     * Fires right after a new user is created via Add New User.
+     * WordPress creates the account before this hook, so $user_id is valid here.
+     */
+    public function save_new_user($user_id) {
+        // Only run for admin-created accounts on our Add New User screen submission,
+        // not front-end self-registration or other user_register callers.
+        if (!is_admin() || !current_user_can('create_users')) return;
+        if (!isset($_POST['company_status']) && !isset($_POST['company_name'])) return;
+
+        $this->save($user_id);
+    }
+
     public function save($user_id) {
-        if (!current_user_can('edit_user', $user_id)) return;
+        if (!current_user_can('edit_user', $user_id) && !current_user_can('create_users')) return;
 
         $fields = [
             'company_logo', 'banner_image', 'company_name', 'address', 'state', 'city', 'phone',
