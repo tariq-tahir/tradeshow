@@ -7,64 +7,44 @@
  * @package awps
  */
 
-get_header(); ?>
+get_header();
 
-<div class="container">
+// Search header callback (title + results count)
+$search_header = function() {
+    global $wp_query;
+    $query = get_search_query();
+    $count = $wp_query->found_posts;
+    ?>
+    <header class="page-header">
+        <h1 class="page-title">
+            <?php
+            printf(
+                /* translators: %s: Search term */
+                esc_html__( 'Search Results for: %s', 'awps' ),
+                '<span>' . esc_html( $query ) . '</span>'
+            );
+            ?>
+        </h1>
+        <?php if ( $count > 0 ) : ?>
+            <p class="search-results-count">
+                <?php
+                printf(
+                    /* translators: %d: Number of results */
+                    esc_html( _n( '%d result found', '%d results found', $count, 'awps' ) ),
+                    absint( $count )
+                );
+                ?>
+            </p>
+        <?php endif; ?>
+    </header>
+    <?php
+};
 
-	<div class="row">
+// Load reusable loop with search-specific config
+get_template_part( 'views/partials/main-loop', null, array(
+    'content_template' => 'search',        // Uses views/content-search.php
+    'show_pagination'  => true,            // Enable pagination for results
+    'before_loop'      => $search_header,  // Inject search header before loop
+) );
 
-		<div class="col-sm-8">
-
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main" role="main">
-
-				<?php
-				if ( have_posts() ) :
-				?>
-
-					<header>
-						<h1 class="page-title">
-						<?php
-						printf(
-							/* translators: %s: Search Term. */
-							esc_html__( 'Search Results for: %s', 'awps' ),
-							'<span>' . get_search_query() . '</span>'
-						);
-						?>
-						</h1>
-					</header><!-- .page-header -->
-
-					<?php
-					/* Start the Loop */
-					while ( have_posts() ) :
-
-						the_post();
-
-						get_template_part( 'views/content', 'search' );
-
-					endwhile;
-
-					the_posts_navigation();
-
-				else :
-
-					get_template_part( 'views/content', 'none' );
-
-				endif;
-				?>
-
-				</main><!-- #main -->
-			</div><!-- #primary -->
-
-		</div><!-- .col- -->
-
-		<div class="col-sm-4">
-			<?php get_sidebar(); ?>
-		</div><!-- .col- -->
-
-	</div><!-- .row -->
-
-</div><!-- .container -->
-
-<?php
 get_footer();

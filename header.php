@@ -1,90 +1,107 @@
 <?php
 /**
- * The header for AWPS Theme - Bootstrap 5 version
+ * The header for our theme
+ *
+ * This is the template that displays all of the <head> section and everything up until <div id="content">
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
+ *
+ * @package awps
  */
-?>
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-    <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-</head>
 
-<body <?php body_class(); ?>>
-<?php wp_body_open(); ?>
+ ?><!DOCTYPE html>
+ <html <?php language_attributes(); ?>>
+ <head>
+	 
+	 <meta charset="<?php bloginfo( 'charset' ); ?>">
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="profile" href="http://gmpg.org/xfn/11">
+	 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+	 <?php wp_head(); ?>
 
-<header id="masthead" class="site-header">
+ </head>
+ 
+ 
+ <body <?php body_class(); ?>>
+	<?php wp_body_open(); ?>
 
-    <!-- 🔹 Top Bar -->
-    <div class="bg-light border-bottom py-2">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <nav class="navbar navbar-expand">
-                <?php
-                wp_nav_menu([
-                    'theme_location' => 'topmenu',
-                    'menu_class'     => 'navbar-nav me-auto mb-2 mb-lg-0',
-                    'container'      => false,
-                    'fallback_cb'    => false,
-                ]);
-                ?>
-            </nav>
-            <div class="text-end small">
-                <a href="tel:+923001211566" class="text-decoration-none text-dark">
-                    📞 +92-300-121-1566
-                </a>
-            </div>
-        </div>
-    </div>
+<div id="page" class="site">
 
-    <!-- 🔹 Main Header -->
-    <div class="container-fluid py-3">
-        <div class="row align-items-center">
-            <div class="col-md-3 col-6">
-                <div class="site-branding">
-                    <?php the_custom_logo(); ?>
-                </div>
-            </div>
+	<header id="masthead" class="site-header">
 
-            <div class="col-md-6 d-none d-md-block">
-                <?php get_product_search_form(); ?>
-            </div>
+		<?php
+		// Top Bar - Desktop Only
+		if ( ! wp_is_mobile() ) :
+		?>
+		<div class="top-bar desktop-only">
+			
+			<div class="container">
+				<div class="welcome-text">
+					<?php dynamic_sidebar( "header-top-bar-left" ); ?>
+				</div>
+				<div class="top-links">
+					<?php dynamic_sidebar( "header-top-bar-right" ); ?>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
 
-            <div class="col-md-3 col-6 text-end">
-                <div class="d-flex justify-content-end align-items-center gap-2">
-                    <?php if ( is_user_logged_in() ) : ?>
-                        <a href="<?php echo esc_url( wp_logout_url() ); ?>" class="btn btn-outline-secondary btn-sm">Logout</a>
-                    <?php else : ?>
-                        <a href="<?php echo esc_url( wp_login_url() ); ?>" class="btn btn-primary btn-sm">Login</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="main-header">
+			<div class="container">
+				<div class="site-branding">
+					<?php
+					if ( has_custom_logo() ) :
+						the_custom_logo();
+					else :
+						?>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo">
+							<img src="<?php echo get_theme_file_uri( '/assets/dist/images/logo.png' ); ?>"
+								alt="<?php bloginfo( 'name' ); ?>"
+								width="211"
+								height="32">
+						</a>
+						<?php
+					endif;
+					?>
+				</div><!-- .site-branding -->
 
-    <!-- 🔹 Primary Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNavbar" aria-controls="primaryNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+				<div class="header-search">
+					<?php get_search_form(); ?>
+				</div><!-- .header-search -->
 
-            <?php
-            if ( has_nav_menu( 'primary' ) ) :
-                wp_nav_menu([
-                    'theme_location' => 'primary',
-                    'menu_id'        => 'primary-menu',
-                    'container'      => 'div',
-                    'container_class'=> 'collapse navbar-collapse',
-                    'container_id'   => 'primaryNavbar',
-                    'menu_class'     => 'navbar-nav me-auto mb-2 mb-lg-0',
-                    'fallback_cb'    => false,
-                ]);
-            endif;
-            ?>
-        </div>
-    </nav>
+				<div class="header-login">
+					<?php 
+					if (function_exists('do_shortcode')) {
+						echo do_shortcode('[awps_login_dropdown]');
+					}
+					?>
+				</div><!-- .header-login -->
+			</div><!-- .container -->
+		</div><!-- .main-header -->
 
-</header>
+		<!-- ✅ NAVIGATION IS NOW A DIRECT SIBLING OF main-header -->
+		<nav id="site-navigation" class="main-navigation">
+			<div class="container">
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'primary',
+						'menu_id'        => 'primary-menu',
+						'container'      => false,
+						'menu_class'     => 'main-menu',
+						'walker'         => new \Awps\Core\WalkerNav(),
+					)
+				);
+				?>
 
-<main id="content" class="site-content">
+				<button class="mobile-menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+					<span class="mobile-toggle-line"></span>
+					<span class="mobile-toggle-line"></span>
+					<span class="mobile-toggle-line"></span>
+				</button>
+			</div><!-- .container -->
+		</nav><!-- #site-navigation -->
+ 
+	</header> 
+ 
+	<main id="content" class="site-content">

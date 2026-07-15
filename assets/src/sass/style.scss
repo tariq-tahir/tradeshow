@@ -3,39 +3,58 @@
 --------------------------------------------------------------*/
 @import '~normalize-scss/sass/normalize/import-now';
 //@import "~bootstrap/scss/bootstrap";
-
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
 
 /*--------------------------------------------------------------
 # Base
 --------------------------------------------------------------*/
 @import 'base/variables';
-@import 'base/mixins';
-@import 'base/animations';
+// @import 'base/mixins';
+// @import 'base/animations';
 @import 'base/body';
-@import 'base/containers';
-@import 'base/grid';
-@import 'base/spacing';
+// @import 'base/containers';
+// @import 'base/grid';
+// @import 'base/spacing';
 @import 'base/wordpress';
-@import 'base/forms';
+// @import 'base/forms';
 
+@import 'blocks/cta';
 /*--------------------------------------------------------------
 # Partials
 --------------------------------------------------------------*/
-@import 'partials/typography';
-@import 'partials/buttons';
-@import 'partials/links';
-@import 'partials/colours';
-@import 'partials/helpers';
-@import 'partials/media';
+// @import 'partials/typography';
+// @import 'partials/buttons';
+// @import 'partials/links';
+// @import 'partials/colours';
+// @import 'partials/helpers';
+// @import 'partials/media';
+// @import 'partials/elementor';
+@import 'partials/pagenotfound';
+@import 'partials/searchresults';
+@import 'partials/breadcrumbs';
 
 /*--------------------------------------------------------------
 # Components
 --------------------------------------------------------------*/
 @import 'components/header';
-@import 'components/sidebar';
+// @import 'components/sidebar';
 @import 'components/footer';
+// @import 'components/exporters-directory';
 
 /*--------------------------------------------------------------
 # Pages
 --------------------------------------------------------------*/
+@import 'pages/pages';
 @import 'pages/home';
+@import 'pages/contact';
+@import 'pages/blog';
+@import 'pages/frontend-admin';
+@import 'pages/suppliers';
+@import 'pages/exporter-profile';
+@import 'pages/product';
+@import 'pages/product-category';
+@import 'pages/single-product';
+@import 'partials/account';
+@import 'partials/contact-form';
+@import 'partials/account-forms';
+@import 'partials/gutenberg';

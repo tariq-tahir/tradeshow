@@ -1,0 +1,386 @@
+// Registration Form Specific Styles
+.awps-register-form {
+  
+  // ─────────────────────────────────────────────────────────────
+  // Form Groups & Spacing
+  // ─────────────────────────────────────────────────────────────
+  .form-group {
+    margin-bottom: 1.25rem; // Consistent vertical rhythm
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: $dark-grey;
+
+      .required {
+        color: $error;
+        margin-left: 2px;
+      }
+    }
+
+    // Unified Input & Select Styling
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    select.regular-text,
+    textarea {
+      width: 100%;
+      padding: 0.75rem 0.875rem;
+      border: 1px solid $border;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: $dark-grey;
+      background-color: $white;
+      box-sizing: border-box; // Critical: padding doesn't break width
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &::placeholder {
+        color: $light-grey;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary; // Theme accent
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      }
+    }
+
+    // Fix Dropdown Appearance & Arrow
+    select.regular-text {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25em;
+      padding-right: 2.5rem; // Room for arrow
+    }
+
+    // Hint Text Spacing
+    .form-hint {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: $medium-grey;
+      line-height: 1.4;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Two-Column Layout
+  // ─────────────────────────────────────────────────────────────
+  .form-row-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Payment Plans
+  // ─────────────────────────────────────────────────────────────
+  .payment-plans-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .payment-plan-card {
+    border: 2px solid $border;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    background: $white;
+
+    &:hover,
+    &.selected {
+      border-color: $primary;
+      background: $bg-color;
+    }
+
+    input[type="radio"] {
+        // Hide default radio styling
+        appearance: none;
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid $border;
+        border-radius: 50%;
+        background: $white;
+        margin: 0 0 0.25rem 0;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+
+        // Checked state: blue border + blue dot
+        &:checked {
+            border-color: $primary;
+            background: $primary;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 8px;
+                height: 8px;
+                background: $white;
+                border-radius: 50%;
+            }
+        }
+
+        // When card is selected (via JS click), also style the radio
+        .selected & {
+            border-color: $primary;
+        }
+    }
+
+    .plan-price {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: $dark-grey;
+      display: block;
+    }
+
+    .plan-name {
+      font-size: 0.875rem;
+      color: $medium-grey;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Checkbox & Terms (Left Checkbox, Right Text)
+  // ─────────────────────────────────────────────────────────────
+  .form-group-checkbox {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start; // Keeps checkbox aligned to first line
+      gap: 0.75rem;
+      cursor: pointer;
+      line-height: 1.5;
+      color: $medium-grey;
+      font-size: 0.95rem;
+
+      input[type="checkbox"] {
+        margin-top: 0.2rem; // Visual alignment with text baseline
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0; // Prevents squishing on small screens
+        cursor: pointer;
+        accent-color: $primary;
+      }
+
+      a {
+        color: $primary;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Submit Button
+  // ─────────────────────────────────────────────────────────────
+  .form-actions {
+    margin-top: 1.5rem;
+
+    .button-full {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      background: $primary; // Theme accent
+      color: $white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+
+      &:hover:not(:disabled) {
+        background: $primary;
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Login Link
+  // ─────────────────────────────────────────────────────────────
+  .form-links {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+
+    a {
+      color: $medium-grey;
+      text-decoration: none;
+
+      &:hover {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+
+// Login Form Specific Styles
+.awps-login-card {
+    // Inherits base .awps-account-card styles
+    max-width: 420px;
+    margin: 2rem auto;
+}
+
+// Form Groups
+.awps-login-form {
+    .form-group {
+        margin-bottom: 1.25rem;
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: $dark-grey;
+
+            .required {
+                color: $error;
+                margin-left: 2px;
+            }
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 0.875rem;
+            border: 1px solid $border;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: $dark-grey;
+            background-color: $white;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+            &::placeholder {
+                color: $light-grey;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: $primary;
+                box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+            }
+        }
+    }
+
+    // Submit Button
+    .form-actions {
+        margin-top: 1.5rem;
+
+        .button-full {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: $primary;
+            color: $white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background: $primary;
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    // Links
+    .form-links {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: $medium-grey;
+
+        a {
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .separator {
+            margin: 0 0.5rem;
+            color: $border;
+        }
+    }
+}
+
+// Messages (shared with other account forms)
+.awps-error,
+.awps-success {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+
+    &.awps-error {
+        background: $error-background;
+        color: $error;
+        border: 1px solid $error;
+    }
+
+    &.awps-success {
+        background: $bg-color;
+        color: $success;
+        border: 1px solid $border;
+    }
+}
+
+
+

@@ -1,3 +1,9 @@
 body {
-	background-color: $white;
+	background-color: $bg-color;
+	font-family: 'Work Sans', Arial, sans-serif;
+
+	a{
+		color: $primary;
+		text-decoration: none;
+	}
 }

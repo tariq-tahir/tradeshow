@@ -2,29 +2,32 @@
 /**
  * Template part for displaying page content in page.php
  *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  * @package awps
  */
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-	</header><!-- .entry-header -->
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content-wrapper' ); ?>>
 
-	<div class="entry-content">
-		<?php
-			the_content();
+    <?php
+    // Replaced inline shortcode with action hook for cleaner architecture
+    do_action( 'awps_page_breadcrumb' );
+    ?>
 
-			wp_link_pages(
-				array(
-					'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'awps' ),
-					'after'  => '</div>',
-				)
-			);
-		?>
-	</div><!-- .entry-content -->
+    <div class="entry-content">
+        <?php
+        the_content();
 
-</article><!-- #post-## -->
+        wp_link_pages(
+            array(
+                'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'awps' ),
+                'after'  => '</div>',
+                'link_before' => '<span class="page-number">',
+                'link_after'  => '</span>',
+            )
+        );
+        ?>
+    </div><!-- .entry-content -->
+
+</article><!-- #post-<?php the_ID(); ?> -->

@@ -1,7 +1,2 @@
-/******/ (() => { // webpackBootstrap
-/*!************************************************!*\
-  !*** ./assets/src/scripts/exporter-profile.js ***!
-  \************************************************/
-
-/******/ })()
-;
+(()=>{var t={428:t=>{"use strict";t.exports=window.jQuery}},e={};var o=function o(n){var r=e[n];if(void 0!==r)return r.exports;var a=e[n]={exports:{}};return t[n](a,a.exports,o),a.exports}(428);o(document).ready(function(t){function e(e,o,n){t(e).on("click",function(e){e.preventDefault();t(this);var r=wp.media({title:"Select Image",button:{text:"Use this image"},multiple:!1}).on("select",function(){var e=r.state().get("selection").first().toJSON();t(o).val(e.url),n&&t(n).attr("src",e.url).show()}).open()})}e("#upload_logo_button","#company_logo","#logo_preview"),e("#upload_banner_button","#company_banner","#banner_preview")})})();
+//# sourceMappingURL=exporter-profile.js.map

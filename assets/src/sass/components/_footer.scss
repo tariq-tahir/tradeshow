@@ -1,3 +1,165 @@
-footer {
-	position: relative;
+// Footer Styles
+.site-footer {
+    margin: 0 auto;
+    padding: 80px 20px 20px 20px;
+    color: $medium-grey;
+    background-color: $white;
+    border-top: 1px solid $border;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+        
+        .footer-column {
+            h3 {
+                margin: 25px 0px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $medium-grey;
+            }
+            
+            p {
+                margin: 0 0 12px;
+                line-height: 1.5;
+                
+                a {
+                    color: $medium-grey;
+                    text-decoration: none;
+                    transition: color 0.3s;
+                    
+                    &:hover {
+                       color: $primary;
+                    }
+                }
+            }
+        }
+    }
+    
+    .social-icons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        
+        a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            background: $border;
+            color: $dark-grey;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            
+            &:hover {
+                background: $primary;
+                color: $white;
+                transform: translateY(-3px);
+            }
+        }
+    }
+    
+    .newsletter-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        
+        input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid $border;
+            font-size: 1rem;
+            
+            &:focus {
+                outline: none;
+                border-color: $primary;
+                box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+            }
+        }
+        
+        button {
+            background: $primary;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+            
+            &:hover {
+                background: $primary;
+            }
+            
+            &:active {
+                transform: translateY(1px);
+            }
+        }
+    }
+    
+    .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid $border;
+        margin-top: 20px;
+        
+        .copyright {
+            a {
+                color: $primary;
+                text-decoration: none;
+                
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        
+        .back-to-top {
+            background: $primary;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            
+            &:hover {
+                background: $primary;
+                transform: translateY(-3px);
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 30px 15px;
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            gap: 15px;
+            
+            .back-to-top {
+                align-self: flex-end;
+            }
+        }
+    }
 }

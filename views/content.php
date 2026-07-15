@@ -1,62 +1,68 @@
 <?php
 /**
- * Template part for displaying content
+ * Template part for displaying posts in archives and loops
  *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  * @package awps
  */
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('archive-card'); ?>>
+	
 	<header class="entry-header">
-		<?php
-			if ( is_single() ) :
-				the_title( '<h1 class="entry-title">', '</h1>' );
-			else :
-				the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-			endif;
-
-			if ( 'post' === get_post_type() ) :
-		?>
-				<div class="entry-meta">
-					<?php
-					Awps\Core\Tags::posted_on();
-					?>
-				</div><!-- .entry-meta -->
-		<?php
-			endif;
-		?>
+		<div class="entry-format format-image">
+			<a class="entry-image" href="<?php echo esc_url( get_permalink() ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Read more about %s', 'awps' ), get_the_title() ) ); ?>">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<div class="post-header-thumb">
+						<?php the_post_thumbnail( 'large', array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+					</div>
+				<?php else : ?>
+					<div class="post-header-thumb post-header-thumb-placeholder">
+						<img src="<?php echo esc_url( get_theme_file_uri( '/assets/dist/images/image-placeholder.png' ) ); ?>" 
+							 alt="<?php esc_attr_e( 'Placeholder image', 'awps' ); ?>"
+							 width="800" height="400"
+							 loading="lazy">
+					</div>
+				<?php endif; ?>
+			</a>
+		</div>
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<?php
-			the_content(
-				sprintf(
-					wp_kses(
-						/* translators: %s: Name of current post. */
-						__( 'Continue reading %s <span class="meta-nav">&rarr;</span>', 'awps' ),
-						array(
-							'span' => array(
-								'class' => array(),
-							),
-						)
-					),
-					the_title( '<span class="screen-reader-text">"', '"</span>', false )
-				)
-			);
+		<div class="entry-content-top">
+			
+			<h2 class="entry-title">
+				<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark">
+					<?php the_title(); ?>
+				</a>
+			</h2>
 
+			<div class="entry-desc">
+				<?php
+				the_excerpt();
+				?>
+			</div>
+
+			<a href="<?php echo esc_url( get_permalink() ); ?>" class="read-more" aria-label="<?php echo esc_attr( sprintf( __( 'Continue reading %s', 'awps' ), get_the_title() ) ); ?>">
+				<?php esc_html_e( 'Read More', 'awps' ); ?> <span aria-hidden="true">&rarr;</span>
+			</a>
+
+			<?php
 			wp_link_pages(
 				array(
 					'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'awps' ),
 					'after'  => '</div>',
+					'link_before' => '<span class="page-number">',
+					'link_after'  => '</span>',
 				)
 			);
-		?>
+			?>
+		</div>
+
+		<div class="entry-content-bottom">
+			<?php Awps\Core\Tags::posted_on(); ?>
+		</div>
 	</div><!-- .entry-content -->
 
-	<footer class="entry-footer">
-		<?php Awps\Core\Tags::entry_footer(); ?>
-	</footer><!-- .entry-footer -->
-</article><!-- #post-## -->
+</article><!-- #post-<?php the_ID(); ?> -->

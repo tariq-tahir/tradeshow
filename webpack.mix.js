@@ -16,7 +16,6 @@ mix.autoload({
 
 mix.setPublicPath( './assets/dist' );
 
-mix.copyDirectory('./assets/src/fonts', './assets/dist/fonts');
 mix.setResourceRoot('../');
 
 

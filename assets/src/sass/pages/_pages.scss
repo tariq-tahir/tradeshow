@@ -1,0 +1,90 @@
+.page #content{
+    background-color: $white;
+    padding: 0% 10%;
+    color: $medium-grey;
+
+    @media (max-width: 480px) {
+        padding: 0% 5% !important;
+    }
+
+    .custom-breadcrumb{
+        background-color: #F5F5F5;
+        position: absolute;
+        width: 90%;
+        margin-left: -10%;
+        padding-left: 10%;
+    }
+
+    h1,h2,h3,h4,h5,h6,p,ol,ul{
+        line-height: 1.7em;
+    }
+
+    hr{
+        border: none;
+        border-top: 1px solid $border;
+        height: 1px;
+    }
+
+
+    .about-icons{
+        text-align: center;
+
+        i{
+            font-size: 4em;
+            color: $primary;
+        }
+        h3{
+            font-size: 2em;
+            margin-bottom: 0px;
+        }
+        p{
+            margin-top: 0px;
+        }
+
+        @media (max-width: 480px) {
+            .wp-block-column{
+                flex: 0 0 46% !important;
+                max-width: 46% !important;
+                width: 46% !important;
+                padding: 0 !important;
+                margin-bottom: 1rem !important;
+            }
+        }
+        
+        
+    }
+
+    .faq-header{
+        position: absolute;
+        width: 100%;
+        margin-left: -10%;
+
+        @media (max-width: 480px) {
+            
+            margin-left: -5% !important;
+
+            h1{
+                font-size: 30px !important;
+            }
+            
+            p{
+                line-height: 1.7em !important;
+            }
+        }
+    }
+
+    .join-footer-spacer{
+        @media (max-width: 480px) {
+            height: 1390px !important;
+        }
+    }
+
+
+    .e-n-accordion .e-child{
+        background-color: $white;
+        line-height: 1.7em;
+    }
+
+    
+}
+

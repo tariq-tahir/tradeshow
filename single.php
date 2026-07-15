@@ -7,48 +7,28 @@
  * @package awps
  */
 
-get_header(); ?>
+get_header();
 
-<div class="container">
 
-	<div class="row">
 
-		<div class="col-sm-8">
+// Load reusable loop with single-post config
+get_template_part( 'views/partials/main-loop', null, array(
+    'content_template' => 'single-post',  // Uses views/content-single-post.php
+    'show_pagination'  => false,          // Single posts don't paginate themselves
+    //'before_loop'      => $single_header, // Inject header before content
+) );
 
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main" role="main">
+// Related posts section (extracted to template part for reusability)
+get_template_part( 'views/partials/related-posts', null, array(
+    'post_id'      => get_the_ID(),
+    'post_type'    => get_post_type(),
+    'limit'        => 3,
+    'title'        => __( 'Related Posts', 'awps' ),
+) );
 
-					<?php
+// Comments for single posts
+if ( comments_open() || get_comments_number() ) :
+    comments_template();
+endif;
 
-					/* Start the Loop */
-					while ( have_posts() ) :
-						the_post();
-
-						get_template_part( 'views/content', get_post_format() );
-
-						the_post_navigation();
-
-						// If comments are open or we have at least one comment, load up the comment template.
-						if ( comments_open() || get_comments_number() ) :
-							comments_template();
-						endif;
-
-					endwhile;
-
-					?>
-
-				</main><!-- #main -->
-			</div><!-- #primary -->
-
-		</div><!-- .col- -->
-
-		<div class="col-sm-4">
-			<?php get_sidebar(); ?>
-		</div><!-- .col- -->
-
-	</div><!-- .row -->
-
-</div><!-- .container -->
-
-<?php
 get_footer();

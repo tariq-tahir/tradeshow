@@ -1,5 +1,10 @@
+import HeaderMenu from './header-menu.js';
+
 class App {
 	constructor() {
+
+		new HeaderMenu();
+		
 		this.el = document.querySelector( '.el' );
 
 		this.listeners();
@@ -28,3 +33,38 @@ class App {
 }
 
 export default App;
+
+
+// import HeaderMenu from './header-menu.js';
+
+// class App {
+// 	constructor() {
+// 		this.el = document.querySelector('.el');
+// 		this.headerMenu = new HeaderMenu();
+
+// 		this.listeners();
+// 		this.init();
+// 	}
+
+// 	init() {
+// 		// eslint-disable-next-line no-console
+// 		console.info('App Initialized');
+// 	}
+
+// 	listeners() {
+// 		if (this.el) {
+// 			this.el.addEventListener('click', this.elClick);
+// 		}
+// 	}
+
+// 	elClick(e) {
+// 		e.target.classList.add('text-light-grey');
+// 		e.target.addEventListener('transitionend', (event) => {
+// 			if (event.propertyName === 'color') {
+// 				event.target.classList.remove('text-light-grey');
+// 			}
+// 		});
+// 	}
+// }
+
+// export default App;

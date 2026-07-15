@@ -1,0 +1,388 @@
+.home #content{
+  padding: 30px;
+  background-color: $bg-color;
+
+  @media (max-width: 480px) {
+      padding: 5% !important;
+  }
+
+  .top-banner{
+    .wp-block-cover{
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .side-column{
+      h2{
+        font-weight: initial;
+        display: block;
+        padding-right: 80px;
+        line-height: 1.3em;
+      }
+    }
+  }
+
+  .categories{
+    padding: 20px;
+
+    .wp-block-column figure:hover + h3 a {
+      color: $primary;
+    }
+
+    h3{
+      a{
+        font-size: 18px;
+        font-weight: normal;
+        color: $black;
+
+        &:hover{
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  .himalayan-banner{
+    p{
+      line-height: 1.7em;
+    }
+  }
+
+  .latest-products{
+    padding: 20px;
+
+    .latest-products-wrapper{
+      margin: 0px !important;
+      min-width: 100%;
+
+      ul.products-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+          gap: 20px;
+          list-style: none;
+          padding: 0;
+          margin: 20px 0;
+      }
+
+
+      .product-card {
+          overflow: hidden;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          background: $white;
+          height: 100%; /* Ensure cards match height */
+          display: flex;
+          flex-direction: column;
+          border: 1px solid $border;
+
+          &:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+          }
+      }
+
+
+      .product-image {
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          height: 150px; /* ← FIXED HEIGHT - Adjust as needed */
+
+            img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* ← Crops image to fill without distortion */
+            object-position: center;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+      }
+
+      .product-card:hover .product-image img {
+          transform: scale(1.05);
+      }
+
+
+      /* Info */
+      .product-info {
+          padding: 15px;
+          text-align: center;
+          flex-grow: 1; /* Pushes content to fill card */
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+      }
+
+      .product-title {
+          font-size: 16px;
+          margin: 0 0 10px;
+          font-weight: normal;
+          min-height: 44px; /* Ensures title area is consistent */
+
+          a {
+            text-decoration: none;
+            color: $dark-grey;
+            width: 100%;
+            display: block;
+        }
+      }
+
+      /* Column Helpers */
+      .latest-products-wrapper.columns-2 ul.products-grid { grid-template-columns: repeat(2, 1fr); }
+      .latest-products-wrapper.columns-3 ul.products-grid { grid-template-columns: repeat(3, 1fr); }
+      .latest-products-wrapper.columns-4 ul.products-grid { grid-template-columns: repeat(4, 1fr); }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+          .latest-products-wrapper ul.products-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .latest-products-wrapper .product-image { height: 200px; } /* Smaller height on tablet */
+      }
+      @media (max-width: 480px) {
+        ul.products-grid {
+            grid-template-columns: repeat(2, 1fr) !important; // ✅ Still 2 columns
+            gap: 8px !important; // Even tighter gap
+        }
+
+        .product-image {
+            height: 120px !important; // Smaller images on tiny screens
+        }
+
+        .product-title {
+            font-size: 13px !important;
+            min-height: 36px !important;
+        }
+
+        .product-info {
+            padding: 8px !important;
+        }
+    }
+
+
+    }
+  } //.latest Products
+
+  .featured-vendors{
+    padding: 20px;
+
+    h3{
+      font-weight: normal;
+      font-size: 18px;
+      a{
+        color: $black;
+
+        &:hover{
+          color: $primary;
+        }
+      }
+    }
+  }//.featured-vendors
+
+  .home-blog{
+    padding: 20px;
+  }
+
+  .latest-posts-wrapper{
+  min-width: 100%;
+
+  ul.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .post-card {
+    border: 1px solid $border;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: $light-grey;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .post-image {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 250px; /* Same height as products */
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .post-card:hover .post-image img {
+    transform: scale(1.05);
+  }
+
+  .post-category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: $primary;
+    color: $bg-color;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .post-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-meta {
+    margin-bottom: 10px;
+  }
+
+  .post-date {
+    font-size: 13px;
+    color: $text;
+  }
+
+  .post-title {
+    font-size: 18px;
+    margin: 0 0 10px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    a {
+      text-decoration: none;
+      color: $dark-grey;
+      transition: color 0.3s ease;
+
+      &:hover{
+        color: $primary;
+      }
+    }
+  }
+
+  .post-excerpt {
+    font-size: 14px;
+    color: $text;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+
+  /* Column Helpers */
+  .latest-posts-wrapper.columns-2 ul.posts-grid { grid-template-columns: repeat(2, 1fr); }
+  .latest-posts-wrapper.columns-3 ul.posts-grid { grid-template-columns: repeat(3, 1fr); }
+  .latest-posts-wrapper.columns-4 ul.posts-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+      .latest-posts-wrapper ul.posts-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .latest-posts-wrapper .post-image { height: 200px; }
+  }
+  @media (max-width: 480px) {
+      .latest-posts-wrapper ul.posts-grid { grid-template-columns: 1fr !important; }
+      .latest-posts-wrapper .post-image { height: 180px; }
+  }
+
+  } //.latest-posts-wrapper
+  
+
+  .home-bottom{
+    p{
+      line-height: 1.7em;
+    }
+  }
+
+}
+
+// ─────────────────────────────────────────────────────────────
+// Responsive Columns: 2 Columns on Mobile
+// ─────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+
+  .wp-block-columns {
+    gap: 0.5em;
+
+    .wp-block-heading{
+      margin: 0px;
+    }
+  }
+    
+    .home-responsive-columns {
+        // Ensure columns wrap
+        flex-wrap: wrap !important;
+        gap: 1rem !important; // Adjust spacing between columns
+        
+        // Target direct column children
+        > .wp-block-column {
+            flex: 0 0 50% !important; // 2 columns = 50% width each
+            max-width: 50% !important;
+            width: 50% !important;
+            
+            // Optional: Add padding for spacing
+            padding: 0 0.5rem !important;
+            box-sizing: border-box !important;
+            
+            // Ensure content inside doesn't overflow
+            .wp-block-group,
+            .wp-block-image,
+            .wp-block-heading,
+            p {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex-direction: column;
+            }
+            
+            // Center align content in each column
+            .wp-block-group {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+            
+            // Make images scale nicely
+            .wp-block-image img {
+                height: auto !important;
+                max-width: 100% !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+            
+            // Adjust heading size for mobile
+            .wp-block-heading {
+                font-size: 1rem !important;
+                margin: 0.5rem 0 !important;
+            }
+            
+            // Adjust paragraph size
+            p {
+                font-size: 0.85rem !important;
+                margin: 0 !important;
+                text-align: center !important;
+            }
+        }
+    }
+    
+    // Very small screens: Stack to 1 column if needed
+    @media (max-width: 480px) {
+        .home-responsive-columns > .wp-block-column {
+            flex: 0 0 46% !important;
+            max-width: 46% !important;
+            width: 46% !important;
+            padding: 0 !important;
+            margin-bottom: 1rem !important;
+
+        }
+    }
+}

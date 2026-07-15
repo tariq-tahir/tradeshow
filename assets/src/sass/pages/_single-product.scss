@@ -1,0 +1,1036 @@
+// Single Product Page Styles
+// Handles supplier card, inquiry form, product details, gallery, lightbox, and more
+
+// ─────────────────────────────────────────────────────────────
+// Page Layout
+// ─────────────────────────────────────────────────────────────
+.awps-product-container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.awps-product-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.awps-breadcrumbs{
+    background-color: #f5f5f5;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Exporter Card (Supplier Info)
+// ─────────────────────────────────────────────────────────────
+.awps-exporter-card {
+    background: $white;
+    border: 1px solid $border;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    img {
+        max-width: 120px;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .awps-exporter-logo-placeholder {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1rem;
+        background: $bg-color;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $medium-grey;
+        font-size: 2rem;
+    }
+
+    .awps-exporter-info {
+        h4 {
+            margin: 0 0 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+
+            a {
+                color: $dark-grey;
+                text-decoration: none;
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+
+        .exporter-location,
+        .exporter-whatsapp {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+            color: $medium-grey;
+
+            i {
+                margin-right: 0.25rem;
+                color: $medium-grey;
+            }
+
+            a {
+                color: #25d366;
+                text-decoration: none;
+                font-weight: 500;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .badge.verified {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        background: #dcfce7;
+        color: #166534;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+
+        i {
+            color: #22c55e;
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Inquiry Form
+// ─────────────────────────────────────────────────────────────
+.awps-inquiry-card {
+    background: $white;
+    border: 1px solid $border;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    h3 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark-grey;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+            color: $primary;
+        }
+    }
+
+.form-row {
+        display: block; // Override flex
+        margin-bottom: 1rem;
+        width: 100%;
+
+        @media (max-width: 480px) {
+            // No change needed - already block
+        }
+    }
+
+    // Each form group takes full width
+    .form-group {
+        width: 100% !important;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: $dark-grey;
+
+            .required {
+                color: #d00 !important;
+                margin-left: 2px;
+            }
+
+            .optional {
+                color: #888 !important;
+                font-weight: 400;
+                margin-left: 2px;
+            }
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100% !important;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            box-sizing: border-box; // Ensure padding doesn't break 100% width
+            transition: border-color 0.2s ease;
+
+            &:focus {
+                outline: none;
+                border-color: $primary;
+                box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
+            }
+        }
+
+        // Quantity input group: value + unit on same row (optional)
+        // If you want these stacked too, remove this block
+        .quantity-input-group {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+
+            .qty-value {
+                flex: 2;
+                min-width: 0;
+            }
+
+            .qty-unit {
+                flex: 1;
+                min-width: 0;
+            }
+
+            @media (max-width: 480px) {
+                flex-direction: column;
+
+                .qty-value,
+                .qty-unit {
+                    flex: none;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    // Submit button full width
+    .button-primary.button-full {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 16px !important;
+        background: $primary;
+        color: $white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: background 0.2s ease;
+
+        &:hover:not(:disabled) {
+            background: $primary-dark
+        }
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    }
+
+    // Response message styling
+    .response-message {
+        margin-top: 1rem !important;
+        display: none;
+
+        &.notice {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+
+            &.success {
+                background: $bg-color;
+                color: $success;
+            }
+
+            &.error {
+                background: $error-background;
+                color: $error;
+            }
+        }
+    }
+
+
+    #inquiry-response {
+        margin-top: 1rem !important;
+        display: none;
+
+        &.notice {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+
+            &.success {
+                background: $bg-color;
+                color: $success;
+            }
+
+            &.error {
+                background: $error-background;
+                color: $error;
+            }
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Product Header (Title, Origin Badge, Categories)
+// ─────────────────────────────────────────────────────────────
+.awps-header-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.awps-product-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    h1 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: $dark-grey;
+        line-height: 1.3;
+    }
+}
+
+.awps-origin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    .flag {
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.6rem !important;
+        top: -16px !important;
+
+        .flag{
+            font-size: 20px !important;
+        }
+    }
+}
+
+.product-meta {
+    .category {
+        font-size: 0.9rem;
+        color: $medium-grey;
+
+        a {
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Featured Image + Gallery
+// ─────────────────────────────────────────────────────────────
+.awps-featured-image {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 15px !important;
+    padding: 20px 0 !important;
+    margin-bottom: 2rem;
+
+    // Main image wrapper
+    > div:first-child {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    .main-product-image {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        object-fit: contain !important;
+
+    }
+
+    .placeholder-image {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        min-height: 300px !important;
+        background: $bg-color !important;
+        color: $medium-grey !important;
+        font-size: 1rem;
+    }
+}
+
+// Gallery thumbnails
+.awps-gallery-thumbnails {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+}
+
+.gallery-thumb {
+    display: block;
+
+    img {
+        width: 60px !important;
+        height: 60px !important;
+        object-fit: cover !important;
+        border: 2px solid $border !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        transition: border-color 0.2s !important;
+
+        &:hover,
+        &.active {
+            border-color: $primary !important;
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Three-Column Sections (Benefits, Quality, Samples)
+// ─────────────────────────────────────────────────────────────
+.awps-three-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Generic Section Styles
+// ─────────────────────────────────────────────────────────────
+.awps-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: $white;
+    border: 1px solid $border;
+
+    h3 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark-grey;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+            color: $primary;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 1.25rem;
+        list-style: disc;
+
+        li {
+            margin-bottom: 0.5rem;
+            color: $medium-grey;
+            line-height: 1.6;
+        }
+    }
+
+    p {
+        margin: 0;
+        color: $medium-grey;
+        line-height: 1.6;
+    }
+}
+
+.awps-section-description {
+    .entry-content,
+    > div {
+        color: $medium-grey;
+        line-height: 1.7;
+
+        a {
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    table{
+        width: 100%;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Technical Specs Grid
+// ─────────────────────────────────────────────────────────────
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background: $medium-grey;
+    border-radius: 4px;
+}
+
+.spec-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $medium-grey;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.spec-value {
+    font-size: 1rem;
+    color: $dark-grey;
+    font-weight: 500;
+
+    .awps-tooltip {
+        position: relative;
+        display: inline-block;
+        margin-left: 0.25rem;
+        cursor: help;
+
+        i {
+            color: $medium-grey;
+            font-size: 0.9rem;
+        }
+
+        .tooltiptext {
+            visibility: hidden;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: $white;
+            padding: 0.5re$border;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            width: max-content;
+            max-width: 250px;
+        }
+
+        &:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Factory Video
+// ─────────────────────────────────────────────────────────────
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; // 16:9 aspect ratio
+    height: 0;
+    overflow: hidden;
+    background: $black;
+
+    iframe,
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Share Buttons
+// ─────────────────────────────────────────────────────────────
+.share-product {
+    .share-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .share-whatsapp,
+    .share-linkedin,
+    .share-email,
+    .share-copy {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 10px 16px;
+        background: $bg-color;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-1px);
+        }
+
+        i {
+            font-size: 1rem;
+        }
+    }
+
+    .share-whatsapp {
+        background: #dcfce7;
+        color: $whatsapp;
+    }
+
+    .share-linkedin {
+        background: #eff6ff;
+        color: $linkedin;
+    }
+
+    .share-copy {
+        background: $copy;
+    }
+
+    // ✅ MOBILE ONLY: 100% width, stacked, no overflow
+    @media (max-width: 768px) {
+        .share-buttons {
+            flex-direction: column; // Stack buttons vertically
+            width: 100%;            // Constrain to parent width
+            max-width: 100%;        // Block horizontal overflow
+            box-sizing: border-box; // Include padding/borders in width
+        }
+
+        .share-whatsapp,
+        .share-linkedin,
+        .share-email,
+        .share-copy {
+            width: 100%;            // Full width on mobile
+            justify-content: center; // Center icon + text
+            box-sizing: border-box; // Prevents padding from causing overflow
+            margin: 0;              // Clear any inherited margins
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// More Products from Supplier
+// ─────────────────────────────────────────────────────────────
+.more-products {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid $border;
+
+    h3 {
+        margin: 0 0 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark-grey;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+            color: $primary;
+        }
+    }
+}
+
+.supplier-products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    gap: 20px !important;
+    margin-top: 20px !important;
+}
+
+
+.supplier-product-card {
+    border: 1px solid $border !important;
+    overflow: hidden !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: $white;
+    height: 100%; // En$bordert
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    > a {
+        text-decoration: none !important;
+        color: inherit !important;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    // Image Wrapper (FIXED HEIGHT)
+    .product-image-wrapper {
+        width: 100% !important;
+        height: 180px !important; // Uniform height for all images
+        overflow: hidden;
+        background: $bg-color;
+
+        img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover; // Crops image to fill box without stretching
+            display: block;
+        }
+    }
+
+    // Placeholder for missing images
+    .product-image-placeholder {
+        width: 100% !important;
+        height: 180px !important;
+        background: $bg-color !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #94a3b8 !important;
+        font-size: 2rem !important;
+    }
+
+    // Content Area
+    .product-card-content {
+        padding: 1rem !important;
+        flex-grow: 1; // Pushes content to fill remaining space
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        h4 {
+            margin: 0 0 0.5rem 0 !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            line-height: 1.4 !important;
+            color: $dark-grey !important;
+            
+            // Prevent long titles from breaking layout
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        p {
+            margin: 0 !important;
+            font-size: 0.85rem !important;
+            color: $medium-grey !important;
+        }
+    }
+}
+
+.more-products > p {
+    text-align: center !important;
+    margin-top: 20px !important;
+
+    a {
+        color: $primary !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Lightbox Modal - FINAL FIX
+// ─────────────────────────────────────────────────────────────
+#awps-lightbox {
+    // FORCE FULL SCREEN
+    position: fixed !important;
+    inset: 0 !important; // Covers top, right, bottom, left
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 999999 !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+    overflow: hidden !important;
+    
+    // FLEXBOX CENTERING
+    display: none; // Default hidden
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    
+    // When JS makes it visible (inline style usually overrides, but we force it)
+    &[style*="display: block"],
+    &[style*="display: flex"] {
+        display: flex !important;
+    }
+}
+
+// INNER CONTENT (Image Wrapper)
+#awps-lightbox > div {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    width: auto !important;
+    height: auto !important;
+    z-index: 10 !important;
+    
+    // Reset any inline styles script might add
+    margin: 0 auto !important;
+}
+
+// IMAGE
+#lightbox-image {
+    display: block !important;
+    max-width: 100% !important;
+    max-height: 85vh !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border: 4px solid $white !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+// CONTROLS (Shared Styles)
+#lightbox-close,
+#lightbox-prev,
+#lightbox-next {
+    position: absolute !important;
+    z-index: 20 !important; // Sit above image
+    width: 44px !important;
+    height: 44px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    color: #333 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3) !important;
+    transition: transform 0.2s ease, background 0.2s ease !important;
+    
+}
+
+// CLOSE BUTTON (Top Right)
+#lightbox-close {
+    top: 20px !important;
+    right: 20px !important;
+    font-size: 24px !important;
+}
+
+// PREV/NEXT BUTTONS (Vertically Centered)
+#lightbox-prev,
+#lightbox-next {
+    top: 50% !important;
+    transform: translateY(-50%) !important; // Perfect vertical center
+}
+
+#lightbox-prev {
+    left: 20px !important;
+    right: auto !important;
+}
+
+#lightbox-next {
+    right: 20px !important;
+    left: auto !important;
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Lightbox Modal - MOBILE FIXED (Stays at current scroll position)
+// ─────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+
+    #awps-lightbox {
+        // 🔥 CRITICAL: Use fixed (not absolute) to anchor to viewport
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        
+        width: 100% !important;
+        height: 100% !important;
+        height: -webkit-fill-available !important; // iOS Safari fix
+        
+        margin: 0 !important;
+        padding: 0 !important;
+        
+        background: rgba(0, 0, 0, 0.95) !important;
+        z-index: 999999 !important;
+        
+        // Flexbox centering
+        display: none; // Hidden by default
+        align-items: center !important;
+        justify-content: center !important;
+        
+        // Show when active
+        &[style*="display: block"],
+        &[style*="display: flex"],
+        &.active {
+            display: flex !important;
+        }
+    }
+
+    #awps-lightbox > div {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        position: relative !important;
+    }
+
+    #lightbox-image {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #lightbox-close {
+        position: fixed !important;
+        top: 12px !important;
+        right: 12px !important;
+        z-index: 1000000 !important;
+    }
+
+    #lightbox-prev,
+    #lightbox-next {
+        position: fixed !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 1000000 !important;
+    }
+
+    #lightbox-prev {
+        left: 20px !important;
+        right: auto !important;
+    }
+
+    #lightbox-next {
+        right: 20px !important;
+        left: auto !important;
+    }
+    
+    // Lock body scroll when lightbox is open
+    body.awps-lightbox-open {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+        touch-action: none !important;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// WhatsApp Floating Button
+// ─────────────────────────────────────────────────────────────
+.whatsapp-button {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background: #25d366;
+    color: $white;
+    border-radius:$border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 1000;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+    }
+
+    i {
+        color: $white;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Responsive Adjustments
+// ─────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+    .awps-product-container {
+        gap: 1.5rem;
+    }
+
+    .awps-exporter-card,
+    .awps-inquiry-card,
+    .awps-section {
+        padding: 1.25rem;
+    }
+
+    .awps-product-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .share-buttons {
+        flex-direction: column;
+    }
+
+    .share-buttons > * {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    
+}

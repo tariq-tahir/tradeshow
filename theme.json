@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "settings": {
+    "layout": {
+      "contentSize": "800px",
+      "wideSize": "1200px"
+    },
+    "typography": {
+      "fontSizes": [
+        {"name": "Small", "size": "14px", "slug": "small"},
+        {"name": "Normal", "size": "18px", "slug": "normal"},
+        {"name": "Large", "size": "32px", "slug": "large"}
+      ]
+    }
+  }
+}

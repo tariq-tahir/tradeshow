@@ -12,78 +12,74 @@
 
 /*
  * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
+ * the visitor has not yet entered the password,
  * return early without loading the comments.
  */
-if ( post_password_required() ) :
+if ( post_password_required() ) {
 	return;
-endif;
+}
 ?>
 
 <div id="comments" class="comments-area">
 
-	<?php
-	// You can start editing here -- including this comment!
-	if ( have_comments() ) :
-	?>
+	<?php if ( have_comments() ) : ?>
+
 		<h2 class="comments-title">
 			<?php
-				printf(
-					/* translators: 1: Comments count. */
-					esc_html( _n( '%d Comment.', '%d Comments.', get_comments_number(), 'awps' ) ),
-					absint( get_comments_number() )
-					);
+			$comment_count = get_comments_number();
+			printf(
+				/* translators: %d: Number of comments */
+				esc_html( _n( '%d Comment', '%d Comments', $comment_count, 'awps' ) ),
+				absint( $comment_count )
+			);
 			?>
 		</h2><!-- .comments-title -->
 
-		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
-		<nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
-			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'awps' ); ?></h2>
-			<div class="nav-links">
-
-				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'awps' ) ); ?></div>
-				<div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'awps' ) ); ?></div>
-
-			</div><!-- .nav-links -->
-		</nav><!-- #comment-nav-above -->
-		<?php endif; // Check for comment navigation. ?>
+		<?php awps_comment_navigation( 'above' ); ?>
 
 		<ol class="comment-list">
 			<?php
-				wp_list_comments(
-					array(
-						'style'      => 'ol',
-						'short_ping' => true,
-					)
-				);
+			wp_list_comments(
+				array(
+					'style'      => 'ol',
+					'short_ping' => true,
+					'avatar_size' => 60,
+					'reply_text'  => esc_html__( 'Reply', 'awps' ),
+				)
+			);
 			?>
 		</ol><!-- .comment-list -->
 
-		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
-		<nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
-			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'awps' ); ?></h2>
-			<div class="nav-links">
+		<?php awps_comment_navigation( 'below' ); ?>
 
-				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'awps' ) ); ?></div>
-				<div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'awps' ) ); ?></div>
+	<?php endif; // End have_comments(). ?>
 
-			</div><!-- .nav-links -->
-		</nav><!-- #comment-nav-below -->
-		<?php
-		endif; // Check for comment navigation.
-
-	endif; // Check for have_comments().
-
-
-	// If comments are closed and there are comments, let's leave a little note, shall we?
+	<?php
+	// If comments are closed and there are existing comments, display a notice.
 	if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
 	?>
+		<p class="no-comments">
+			<?php esc_html_e( 'Comments are closed.', 'awps' ); ?>
+		</p>
+	<?php endif; ?>
 
-		<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'awps' ); ?></p>
 	<?php
-	endif;
-
-	comment_form();
+	// Comment form with accessibility improvements
+	comment_form(
+		array(
+			'title_reply'          => esc_html__( 'Leave a Reply', 'awps' ),
+			'title_reply_to'       => esc_html__( 'Leave a Reply to %s', 'awps' ),
+			'cancel_reply_link'    => esc_html__( 'Cancel reply', 'awps' ),
+			'label_submit'         => esc_html__( 'Post Comment', 'awps' ),
+			'comment_field'        => '<p class="comment-form-comment"><label for="comment">' . esc_html_x( 'Comment', 'noun', 'awps' ) . '</label><textarea id="comment" name="comment" rows="5" aria-required="true" required></textarea></p>',
+			'comment_notes_before' => '<p class="comment-notes"><span id="email-notes">' . esc_html__( 'Your email address will not be published.', 'awps' ) . '</span>' . ( $req ? ' <span class="required-field-message">' . esc_html__( 'Required fields are marked *', 'awps' ) . '</span>' : '' ) . '</p>',
+			'fields'               => array(
+				'author' => '<p class="comment-form-author"><label for="author">' . esc_html__( 'Name', 'awps' ) . '</label> <input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . ( $req ? ' aria-required="true" required' : '' ) . ' /></p>',
+				'email'  => '<p class="comment-form-email"><label for="email">' . esc_html__( 'Email', 'awps' ) . '</label> <input id="email" name="email" type="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30"' . ( $req ? ' aria-required="true" required' : '' ) . ' /></p>',
+				'url'    => '<p class="comment-form-url"><label for="url">' . esc_html__( 'Website', 'awps' ) . '</label> <input id="url" name="url" type="url" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p>',
+			),
+		)
+	);
 	?>
 
 </div><!-- #comments -->

@@ -31,13 +31,7 @@ class Setup
 
         add_theme_support( 'custom-logo' );
         
-        /**
-        * Add woocommerce support and woocommerce override
-        */
-        add_theme_support('woocommerce');
-        add_theme_support('wc-product-gallery-zoom');
-        add_theme_support('wc-product-gallery-lightbox');
-        add_theme_support('wc-product-gallery-slider');
+        
 
         add_theme_support( 'html5', array(
             'search-form',
@@ -51,6 +45,24 @@ class Setup
             'default-color' => 'ffffff',
             'default-image' => '',
         ) ) );
+
+
+        /** GUTENBERG SUPPORT */
+        
+        // Enable wide and full width blocks
+        add_theme_support('align-wide');
+
+        // Enable block editor styles
+        add_theme_support('editor-styles');
+
+        // Load editor stylesheet
+        add_editor_style('editor-style.css');
+
+        // Responsive embeds
+        add_theme_support('responsive-embeds');
+
+        // Block styles
+        add_theme_support('wp-block-styles');
 
         /*
          * Activate Post formats if you need

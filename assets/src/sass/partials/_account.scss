@@ -1,0 +1,261 @@
+// ============================================
+// AWPS Account Styles - SCSS Version
+// ============================================
+
+// Variables
+$awps-account: (
+  // Colors
+  'bg-white': #fff,
+  'border-light': #e0e0e0,
+  'border-error': #feb2b2,
+  'border-success': #9ae6b4,
+  'text-dark': #333,
+  'text-medium': #666,
+  'text-error': #c53030,
+  'text-success': #22543d,
+  'text-muted': #ccc,
+  'primary': #007cba,
+  'primary-rgba': rgba(0, 124, 186, 0.1),
+  'shadow': rgba(0, 0, 0, 0.05),
+  'bg-error': #fff5f5,
+  'bg-success': #f0fff4,
+  
+  // Spacing
+  'spacing-xs': 0.25rem,
+  'spacing-sm': 0.5rem,
+  'spacing-md': 0.75rem,
+  'spacing-lg': 1rem,
+  'spacing-xl': 1.25rem,
+  'spacing-2xl': 1.5rem,
+  'spacing-3xl': 2rem,
+  'spacing-4xl': 3rem,
+  
+  // Sizes
+  'max-width': 500px,
+  'border-radius-sm': 4px,
+  'border-radius-md': 8px,
+  'font-size-sm': 0.85rem,
+  'font-size-md': 0.9rem,
+  'font-size-lg': 0.95rem,
+  'font-size-xl': 1rem,
+  
+  // Shadows
+  'shadow-sm': 0 2px 10px,
+);
+
+// Mixins
+@mixin form-input-base {
+  width: 100%;
+  max-width: 100%; // ✅ Prevent overflow
+  padding: map-get($awps-account, 'spacing-md');
+  border: 1px solid map-get($awps-account, 'border-light');
+  border-radius: map-get($awps-account, 'border-radius-sm');
+  font-size: map-get($awps-account, 'font-size-xl');
+  box-sizing: border-box; // ✅ Critical: include padding in width calculation
+  
+  &:focus {
+    outline: none;
+    border-color: map-get($awps-account, 'primary');
+    box-shadow: 0 0 0 3px map-get($awps-account, 'primary-rgba');
+  }
+}
+
+@mixin form-label-base {
+  display: block;
+  margin-bottom: map-get($awps-account, 'spacing-sm');
+  font-weight: 500;
+  color: map-get($awps-account, 'text-dark');
+}
+
+@mixin form-paragraph-base {
+  margin-bottom: map-get($awps-account, 'spacing-xl');
+}
+
+@mixin alert-base {
+  padding: map-get($awps-account, 'spacing-lg');
+  margin-bottom: map-get($awps-account, 'spacing-2xl');
+  border-radius: map-get($awps-account, 'border-radius-sm');
+  font-size: map-get($awps-account, 'font-size-lg');
+}
+
+// ============================================
+// Main Styles
+// ============================================
+
+#page{
+  background-color: #fff;
+}
+
+.awps-account-wrapper {
+  max-width: map-get($awps-account, 'max-width');
+  margin: map-get($awps-account, 'spacing-4xl') auto;
+  padding: 0 map-get($awps-account, 'spacing-lg');
+  
+  // ✅ Global box-sizing for all children
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+.awps-account-card {
+  background: map-get($awps-account, 'bg-white');
+  border: 1px solid map-get($awps-account, 'border-light');
+  border-radius: map-get($awps-account, 'border-radius-md');
+  padding: map-get($awps-account, 'spacing-3xl');
+  box-shadow: map-get($awps-account, 'shadow-sm') map-get($awps-account, 'shadow');
+  
+  h2 {
+    margin: 0 0 map-get($awps-account, 'spacing-2xl');
+    text-align: center;
+    color: map-get($awps-account, 'text-dark');
+  }
+}
+
+// Alert Messages
+.awps-error,
+.awps-success {
+  @include alert-base;
+}
+
+.awps-error {
+  background: map-get($awps-account, 'bg-error');
+  border: 1px solid map-get($awps-account, 'border-error');
+  color: map-get($awps-account, 'text-error');
+}
+
+.awps-success {
+  background: map-get($awps-account, 'bg-success');
+  border: 1px solid map-get($awps-account, 'border-success');
+  color: map-get($awps-account, 'text-success');
+}
+
+// Form Elements - Shared Base Styles
+%form-paragraph {
+  @include form-paragraph-base;
+}
+
+%form-label {
+  @include form-label-base;
+}
+
+%form-input {
+  @include form-input-base;
+}
+
+// Apply to all form types
+.awps-login-form,
+.awps-register-form,
+.awps-reset-form {
+  
+  p {
+    @extend %form-paragraph;
+  }
+  
+  label {
+    @extend %form-label;
+  }
+  
+  input {
+    @extend %form-input;
+  }
+}
+
+// Form Actions
+.awps-form-actions {
+  margin-top: map-get($awps-account, 'spacing-2xl');
+  
+  .button {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: map-get($awps-account, 'font-size-xl');
+
+    &:hover {
+        cursor: pointer;
+    }
+  }
+}
+
+// Form Links (Login/Register/Forgot Password)
+.awps-form-links {
+  margin-top: map-get($awps-account, 'spacing-2xl');
+  text-align: center;
+  font-size: map-get($awps-account, 'font-size-md');
+  color: map-get($awps-account, 'text-medium');
+  
+  a {
+    color: map-get($awps-account, 'primary');
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  span {
+    margin: 0 map-get($awps-account, 'spacing-sm');
+    color: map-get($awps-account, 'text-muted');
+  }
+}
+
+// Helper Text (small tags below inputs)
+small {
+  display: block;
+  margin-top: map-get($awps-account, 'spacing-xs');
+  color: map-get($awps-account, 'text-medium');
+  font-size: map-get($awps-account, 'font-size-sm');
+  line-height: 1.4;
+  word-wrap: break-word; // ✅ Prevent long text from overflowing
+}
+
+// ============================================
+// Responsive Styles
+// ============================================
+
+@media (max-width: 600px) {
+  .awps-account-wrapper {
+    margin: map-get($awps-account, 'spacing-3xl') auto;
+    padding: 0 map-get($awps-account, 'spacing-sm');
+  }
+  
+  .awps-account-card {
+    padding: map-get($awps-account, 'spacing-2xl');
+  }
+  
+  // Ensure inputs stay within container on small screens
+  .awps-login-form,
+  .awps-register-form,
+  .awps-reset-form {
+    input {
+      font-size: map-get($awps-account, 'font-size-lg'); // Prevent iOS zoom
+    }
+  }
+}
+
+// ============================================
+// Utility Classes (Optional but Recommended)
+// ============================================
+
+// Prevent any element from overflowing its container
+.awps-account-wrapper {
+  overflow-x: hidden;
+  
+  // Force images/media to respect container width
+  img,
+  video,
+  iframe,
+  embed,
+  object {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Ensure buttons don't overflow
+.button {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

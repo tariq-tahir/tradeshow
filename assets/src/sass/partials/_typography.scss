@@ -1,3 +1,11 @@
+/*------------------------------------
+  TYPOGRAPHY
+  For TradeShow.pk Theme
+-------------------------------------*/
+
+/*-------------------------
+*  Font Faces
+*--------------------------*/
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -14,93 +22,150 @@
   src: url('../fonts/roboto/roboto-v49-latin-700.woff2') format('woff2');
 }
 
+/* Optional heading font */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/poppins/poppins-v20-latin-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../fonts/poppins/poppins-v20-latin-700.woff2') format('woff2');
+}
+
+/*-------------------------
+*  Base Typography
+*--------------------------*/
 body {
-	font-family: $base-font;
-	font-weight: 400;
+  font-family: $base-font;
+  font-weight: 400;
+  background-color: $white;
 
-	@include font-size($base-fs, $base-fs * 1.5, 0.5px);
+  @include font-size($base-fs, $base-fs * 1.5, 0.5px);
 
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-// Headings
-h1,
-.h1 {
-	@include font-size(40px);
-font-weight: 700;
-	@media (max-width: #{$sm}) {
-		@include font-size(26px);
-	}
-}
-
-h2,
-.h2 {
-	@include font-size(26px, 32px, 0.36px);
-
-	@media (max-width: #{$sm}) {
-		@include font-size(20px, 24px, 0.36px);
-	}
-}
-
-h3,
-.h3 {
-	@include font-size(22px, 27px, 0.3px);
-
-	@media (max-width: #{$sm}) {
-		@include font-size(18px, 22px, 0.3px);
-	}
-}
-
-h4,
-.h4 {
-	@include font-size(20px, 26px);
-
-	@media (max-width: #{$sm}) {
-		@include font-size(15px, 20px);
-	}
-}
-
-h5,
-.h5 {
-	@include font-size(18px);
-
-	@media (max-width: #{$sm}) {
-		@include font-size(15px);
-	}
+p {
+  line-height: 1.6;
+  margin-bottom: 1em;
 }
 
 small,
 .small {
-	@include font-size(15px, 20px, 0.28px);
+  @include font-size(13px, 18px, 0.28px);
+  color: $text-light;
 }
 
-// alignments
-.text-center {
-	text-align: center;
+ul, ol {
+  margin: 0 0 1em 1.5em;
+  color: $text;
 }
 
-.text-right {
-	text-align: right;
+/*-------------------------
+*  Headings
+*--------------------------*/
+h1, h2, h3, h4, h5, h6 {
+  font-family: $heading-font;
+  color: $text;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
 }
 
-.text-left {
-	text-align: left;
+h1, .h1 {
+  @include font-size(36px);
+  font-weight: 700;
+
+  @media (max-width: #{$sm}) {
+    @include font-size(26px);
+  }
 }
 
-// Modifiers
-.text-bold {
-	font-weight: 700;
+h2, .h2 {
+  @include font-size(28px, 34px, 0.36px);
+  font-weight: 600;
+
+  @media (max-width: #{$sm}) {
+    @include font-size(22px, 28px, 0.36px);
+  }
 }
 
-.text-semibold {
-	font-weight: 600;
+h3, .h3 {
+  @include font-size(22px, 28px, 0.3px);
+  font-weight: 600;
+
+  @media (max-width: #{$sm}) {
+    @include font-size(18px, 24px, 0.3px);
+  }
 }
 
-.text-uppercase {
-	text-transform: uppercase;
+h4, .h4 {
+  @include font-size(18px, 24px);
+  font-weight: 500;
+
+  @media (max-width: #{$sm}) {
+    @include font-size(16px, 22px);
+  }
 }
 
-.no-line-height {
-	line-height: 1em !important;
+h5, .h5 {
+  @include font-size(16px);
+  font-weight: 500;
+
+  @media (max-width: #{$sm}) {
+    @include font-size(14px);
+  }
+}
+
+/*-------------------------
+*  Links
+*--------------------------*/
+a {
+  color: $link;
+  text-decoration: none;
+  transition: $transition-default;
+
+  &:hover {
+    color: $link-hover;
+    text-decoration: underline;
+  }
+}
+
+/*-------------------------
+*  Text Alignment Utilities
+*--------------------------*/
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left  { text-align: left; }
+
+/*-------------------------
+*  Text Modifiers
+*--------------------------*/
+.text-bold      { font-weight: 700; }
+.text-semibold  { font-weight: 600; }
+.text-light     { font-weight: 300; }
+.text-uppercase { text-transform: uppercase; }
+.no-line-height { line-height: 1em !important; }
+
+/*-------------------------
+*  Misc
+*--------------------------*/
+blockquote {
+  border-left: 4px solid $primary;
+  padding-left: 1em;
+  font-style: italic;
+  color: $text-light;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid $border;
+  margin: 2em 0;
 }

@@ -1,0 +1,213 @@
+.page-id-4810{
+  #content{
+    padding: 0% !important;
+  }
+}
+
+// ── Exporters Directory ─────────────────────────────────────────────
+.suppliers-directory {
+  padding: 60px 0;
+  background: $white;
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+
+    @media (max-width: 768px) {
+      width: auto;
+      max-width: unset;
+    }
+  }
+
+  
+
+  // ── Exporter Grid ─────────────────────────────────────────────────
+  .supplier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Exporter Card ─────────────────────────────────────────────────
+  .exporter-card {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      height: 100%;
+    }
+
+    .card-bg {
+      width: 100%;
+      height: 220px;
+      background: #eee center/cover no-repeat;
+      position: relative;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      z-index: 2;
+      color: $white;
+      margin-right: 70px;
+
+      h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        line-height: 1.4;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        word-break: break-word;
+        line-height: 1.3em !important;
+      }
+
+      p{
+        font-size: 14px;
+        margin: 0px;
+      }
+
+      .company-info,
+      .contact-info {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        line-height: 1.4;
+        margin: 0;
+      }
+
+      .contact-info span {
+        display: inline-block;
+      }
+    }
+
+    .company-logo {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 70px;
+      height: 70px;
+      border-radius: 4px;
+      background: $white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        display: block;
+      }
+    }
+  }
+
+}
+  // ── Pagination ────────────────────────────────────────────────────
+.pagination {
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+
+  .page-numbers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    li {
+      display: flex;
+    }
+
+    a,
+    span {
+      min-width: 40px;
+      height: 40px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      background-color: #fff;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.25s ease;
+
+      &:hover,
+      &:focus {
+        background-color: #f5f5f5;
+        border-color: #ccc;
+        color: #000;
+      }
+    }
+
+    .current {
+      background-color: #23B0B0;
+      border-color: #23B0B0;
+      color: #fff;
+      cursor: default;
+    }
+
+    .prev {
+      font-weight: 600;
+      padding: 0 16px;
+    }
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .pagination {
+    width: 370px;
+    .page-numbers {
+      gap: 6px;
+
+      a,
+      span {
+        min-width: 36px;
+        height: 36px;
+        font-size: 13px;
+      }
+    }
+  }
+}

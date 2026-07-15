@@ -2,64 +2,28 @@
 /**
  * The template for displaying archive pages
  *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
  * @package awps
  */
 
-get_header(); ?>
+get_header();
 
-<div class="container">
+// Archive header callback (title + description)
+$archive_header = function() {
+    ?>
+    <header class="page-header">
+        <?php
+        the_archive_title( '<h1 class="page-title">', '</h1>' );
+        the_archive_description( '<div class="archive-description">', '</div>' );
+        ?>
+    </header>
+    <?php
+};
 
-	<div class="row">
+// Load reusable loop with archive-specific config
+get_template_part( 'views/partials/main-loop', null, array(
+    'content_template' => get_post_format(),
+    'show_pagination'  => true,
+    'before_loop'      => $archive_header,
+) );
 
-		<div class="col-sm-8">
-
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main" role="main">
-
-				<?php
-				if ( have_posts() ) :
-				?>
-
-					<header>
-						<?php
-							the_archive_title( '<h1 class="page-title">', '</h1>' );
-							the_archive_description( '<div class="archive-description">', '</div>' );
-						?>
-					</header>
-
-					<?php
-					/* Start the Loop */
-					while ( have_posts() ) :
-
-						the_post();
-
-						get_template_part( 'views/content', get_post_format() );
-
-					endwhile;
-
-					the_posts_navigation();
-
-				else :
-
-					get_template_part( 'views/content', 'none' );
-
-				endif;
-				?>
-
-				</main><!-- #main -->
-			</div><!-- #primary -->
-
-		</div><!-- .col- -->
-
-		<div class="col-sm-4">
-			<?php get_sidebar(); ?>
-		</div><!-- .col- -->
-
-	</div><!-- .row -->
-
-</div><!-- .container -->
-
-<?php
 get_footer();

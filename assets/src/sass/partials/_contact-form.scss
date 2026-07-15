@@ -1,0 +1,148 @@
+// Contact Form Styles
+.awps-contact-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    width: 100%; // Ensure container itself doesn't overflow
+    box-sizing: border-box; // Include padding in width calculation
+
+    // Ensure all elements respect container width
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        width: 100%; // Ensure form groups don't overflow
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #0f172a;
+
+            .required {
+                color: #d00;
+                margin-left: 2px;
+            }
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            max-width: 100%; // Prevent overflow
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box; // Critical: includes padding in width
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+            &:focus {
+                outline: none;
+                border-color: #007cba;
+                box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
+            }
+
+            &.error {
+                border-color: #d00;
+                background: #fef2f2;
+            }
+
+            // Placeholder styling
+            &::placeholder {
+                color: #94a3b8;
+                opacity: 1;
+            }
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            // Ensure textarea respects width
+            max-width: 100%;
+        }
+    }
+
+    .btn-primary {
+        width: 100%; // Full width button
+        max-width: 100%;
+        background: #007cba;
+        color: #fff;
+        border: none;
+        padding: 0.875rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: background 0.2s ease;
+        box-sizing: border-box;
+
+        &:hover:not(:disabled) {
+            background: #005a87;
+        }
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    }
+
+    // Messages
+    .contact-form-message,
+    .validation-message {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
+
+        &.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        &.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+// Mobile adjustments
+@media (max-width: 676px) {
+    .awps-contact-form {
+        padding: 1.5rem;
+        margin: 1rem;
+        // Ensure it doesn't overflow on small screens
+        max-width: calc(100% - 2rem);
+    }
+}

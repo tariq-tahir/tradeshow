@@ -1,0 +1,25 @@
+.notfound{
+    text-align: center;
+    padding: 100px;
+
+
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;    /* Centers vertically */
+
+
+    .search-field{
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 80%;
+    }
+
+    .search-submit{
+        padding: 10px;
+        border-radius: 0;
+        border: 1px solid #28AFB1;
+        background: #28AFB1;
+        color: white;
+        width: 19%;
+    }
+}

@@ -56,6 +56,45 @@ class PostTypes
 				'supports' => array( 'title',  /*'editor', 'thumbnail' , 'excerpt',  'author', 'comments'*/ ),
 				'description' => 'Inquiries Custom Post Type',
 				'public' => false,
+				'publicly_queryable' => false,
+				'show_ui' => true,
+				'show_in_menu' => true,
+				'query_var' => false,
+				'capability_type' => 'post',
+				'has_archive' => true,
+				'hierarchical' => false,
+				'show_in_rest' => false,
+			),
+			array(
+				'slug' => 'supplier',
+				'singular' => 'Supplier',
+				'plural' => 'Suppliers',
+				'menu_icon' => 'dashicons-businessman',
+				'menu_position' => 18,
+				'text_domain' => 'awps',
+				'supports' => array( 'title', 'editor', 'custom-fields', 'thumbnail', 'excerpt', 'author', 'comments' ),
+				'description' => 'Suppliers Custom Post Type',
+				'public' => true,
+				'publicly_queryable' => true,
+				'show_ui' => true,
+				'show_in_menu' => true,
+				'query_var' => true,
+				'capability_type' => 'post',
+				'has_archive' => false,
+				'hierarchical' => true,
+				'show_in_rest' => true,
+				'rewrite' => array( 'slug' => 'supplier' ),
+			),
+			array(
+				'slug' => 'product',
+				'singular' => 'Supplier Product',
+				'plural' => 'Supplier Products',
+				'menu_icon' => 'dashicons-image-filter',
+				'menu_position' => 18,
+				'text_domain' => 'awps',
+				'supports' => array( 'title', 'editor', 'custom-fields', 'thumbnail', 'excerpt', 'author', 'comments' ),
+				'description' => 'Supplier Products Custom Post Type',
+				'public' => true,
 				'publicly_queryable' => true,
 				'show_ui' => true,
 				'show_in_menu' => true,
@@ -105,6 +144,48 @@ class PostTypes
 
 			register_post_type( $custom_post['slug'], $args );
 		}
+
+
+
+
+
+		// Register Product Categories Taxonomy for Supplier Products
+$cat_labels = array(
+    'name'                       => _x('Product Categories', 'Taxonomy General Name', 'awps'),
+    'singular_name'              => _x('Product Category', 'Taxonomy Singular Name', 'awps'),
+    'menu_name'                  => __('Categories', 'awps'),
+    'all_items'                  => __('All Categories', 'awps'),
+    'parent_item'                => __('Parent Category', 'awps'),
+    'parent_item_colon'          => __('Parent Category:', 'awps'),
+    'new_item_name'              => __('New Category Name', 'awps'),
+    'add_new_item'               => __('Add New Category', 'awps'),
+    'edit_item'                  => __('Edit Category', 'awps'),
+    'update_item'                => __('Update Category', 'awps'),
+    'view_item'                  => __('View Category', 'awps'),
+    'separate_items_with_commas' => __('Separate categories with commas', 'awps'),
+    'add_or_remove_items'        => __('Add or remove categories', 'awps'),
+    'choose_from_most_used'      => __('Choose from the most used', 'awps'),
+    'popular_items'              => __('Popular Categories', 'awps'),
+    'search_items'               => __('Search Categories', 'awps'),
+    'not_found'                  => __('No categories found', 'awps'),
+    'no_terms'                   => __('No categories', 'awps'),
+    'items_list'                 => __('Categories list', 'awps'),
+    'items_list_navigation'      => __('Categories list navigation', 'awps'),
+);
+$cat_args = array(
+    'labels'            => $cat_labels,
+    'hierarchical'      => true, // Categories (not tags)
+    'public'            => true,
+    'show_ui'           => true,
+    'show_admin_column' => true,
+    'show_in_nav_menus' => true,
+    'show_tagcloud'     => false,
+    'query_var'         => true,
+    'rewrite'           => array('slug' => 'product-category'),
+    'show_in_rest'      => true, // Required for block editor support
+    
+);
+register_taxonomy('product_cat', array('product'), $cat_args);
 	}
 
   /**

@@ -12,33 +12,44 @@ class Tags
 	 * @return
 	 */
 	public function register()
+		{
+			add_action( 'edit_category', array( $this, 'category_transient_flusher' ) );
+			add_action( 'save_post', array( $this, 'category_transient_flusher' ) );
+		}
+
+		public static function posted_on()
 	{
-		add_action( 'edit_category', array( $this, 'category_transient_flusher' ) );
-		add_action( 'save_post', array( $this, 'category_transient_flusher' ) );
+		// Date archive link (year / month / day)
+		$date_link = get_day_link(
+			get_the_date( 'Y' ),
+			get_the_date( 'm' ),
+			get_the_date( 'd' )
+		);
+
+		$time_string = sprintf(
+			'<time class="entry-date published" datetime="%1$s">%2$s</time>',
+			esc_attr( get_the_date( 'c' ) ),
+			esc_html( get_the_date() )
+		);
+
+		$posted_on = sprintf(
+			esc_html_x( 'Posted on %s', 'post date', 'awps' ),
+			'<a href="' . esc_url( $date_link ) . '">' . $time_string . '</a>'
+		);
+
+		$byline = sprintf(
+			esc_html_x( 'by %s', 'post author', 'awps' ),
+			'<span class="author vcard">
+				<a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">
+					' . esc_html( get_the_author() ) . '
+				</a>
+			</span>'
+		);
+
+		echo '<span class="posted-on">' . $posted_on . '</span><span class="byline"> ' . $byline . '</span>';
 	}
 
-	public static function posted_on()
-	{
-		$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-		if (get_the_time('U') !== get_the_modified_time('U')) {
-			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated hide" datetime="%3$s">%4$s</time>';
-		}
-		$time_string = sprintf( $time_string,
-			esc_attr( get_the_date( 'c' ) ),
-			esc_html( get_the_date() ),
-			esc_attr( get_the_modified_date( 'c' ) ),
-			esc_html( get_the_modified_date() )
-		);
-		$posted_on = sprintf(
-			esc_html_x('Posted on %s', 'post date', 'awps'),
-			'<a href="'.esc_url(get_permalink()).'" rel="bookmark">'.$time_string.'</a>'
-		);
-		$byline = sprintf(
-			esc_html_x('by %s', 'post author', 'awps'),
-			'<span class="author vcard"><a class="url fn n" href="'.esc_url(get_author_posts_url(get_the_author_meta('ID'))).'">'.esc_html(get_the_author()).'</a></span>'
-		);
-		echo '<span class="posted-on">'.$posted_on.'</span><span class="byline"> '.$byline.'</span>'; // WPCS: XSS OK.
-	}
+
 
 	public static function entry_footer()
 	{
@@ -103,4 +114,60 @@ class Tags
 		}
 		delete_transient('awps_categories');
 	}
+
+
+	public static function get_post_categories_with_links( $post_id = null ) {
+
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		$categories = get_the_category( $post_id );
+
+		if ( empty( $categories ) || is_wp_error( $categories ) ) {
+			return [];
+		}
+
+		$result = [];
+
+		foreach ( $categories as $category ) {
+			$result[] = [
+				'id'   => $category->term_id,
+				'name' => $category->name,
+				'slug' => $category->slug,
+				'url'  => get_category_link( $category->term_id ),
+			];
+		}
+
+		return $result;
+	}
+
+
+	public static function get_post_terms_with_links( $taxonomy = 'category', $post_id = null ) {
+
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		$terms = get_the_terms( $post_id, $taxonomy );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return [];
+		}
+
+		$result = [];
+
+		foreach ( $terms as $term ) {
+			$result[] = [
+				'id'   => $term->term_id,
+				'name' => $term->name,
+				'slug' => $term->slug,
+				'url'  => get_term_link( $term ),
+			];
+		}
+
+		return $result;
+	}
+
+	
 }

@@ -126,30 +126,48 @@ function get_shipping_methods(){
 ];
 }
 
-// Payment Terms
 function get_payment_terms(){
-	return [
-    "Cash in Advance (CIA)",
-    "Telegraphic Transfer (TT)",
-    "Wire Transfer",
-    "Open Account 30 Days",
-    "Open Account 60 Days",
-    "Open Account 90 Days",
-    "Irrevocable Letter of Credit",
-    "Revocable Letter of Credit",
-    "Confirmed Letter of Credit",
-    "Unconfirmed Letter of Credit",
-    "Sight Letter of Credit",
-    "Usance Letter of Credit (Deferred Payment)",
-    "Documents against Payment (D/P)",
-    "Documents against Acceptance (D/A)",
-    "Cash on Delivery (COD)",
-    "Escrow Payment",
-    "Consignment",
-    "Bank Draft",
-    "Standby Letter of Credit (SBLC)"
-];
-} 
+    return [
+        // Pure payment methods/instruments
+        "Cash in Advance (CIA)",
+        "Telegraphic Transfer (TT)",
+        "Wire Transfer",
+        "Bank Draft",
+        "Escrow Payment",
+        "Consignment",
+        "Cash on Delivery (COD)",
+
+        // Open Account terms
+        "Open Account 30 Days",
+        "Open Account 60 Days",
+        "Open Account 90 Days",
+
+        // Letter of Credit types
+        "Irrevocable Letter of Credit",
+        "Revocable Letter of Credit",
+        "Confirmed Letter of Credit",
+        "Unconfirmed Letter of Credit",
+        "Sight Letter of Credit",
+        "Usance Letter of Credit (Deferred Payment)",
+        "Standby Letter of Credit (SBLC)",
+
+        // Documentary Collection
+        "Documents against Payment (D/P)",
+        "Documents against Acceptance (D/A)",
+
+        // Hybrid / Milestone-based terms (most requested by exporters)
+        "100% Advance",
+        "30% Advance - 70% Against Copy of Bill of Lading (BL)",
+        "30% Advance - 70% Against Original BL",
+        "50% Advance - 50% Against Copy of BL",
+        "50% Advance - 50% Before Shipment",
+        "70% Advance - 30% Against BL Copy",
+        "100% Against Copy of Bill of Lading",
+        "100% Against Original Bill of Lading",
+        "20% Advance - 80% via Irrevocable LC at Sight",
+        "30% Advance - 70% via TT Within 7 Days of Shipment"
+    ];
+}
 
 
 
@@ -229,7 +247,7 @@ function get_countries() {
 // ✅ Get full state → city map (same as ProfileFields.php)
 function get_state_cities() {
     return [
-        'Punjab' => ['Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Sargodha', 'Bahawalpur', 'Sialkot', 'Sheikhupura', 'Jhang', 'Rajanpur', 'Chiniot', 'Mian Channu', 'Dera Ghazi Khan', 'Kamalia', 'Bhakkar', 'Wazirabad', 'Mandi Bahauddin'],
+        'Punjab' => ['Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Gujrat', 'Sargodha', 'Bahawalpur', 'Sialkot', 'Sheikhupura', 'Jhang', 'Rajanpur', 'Chiniot', 'Mian Channu', 'Dera Ghazi Khan', 'Kamalia', 'Bhakkar', 'Wazirabad', 'Mandi Bahauddin'],
         'Sindh' => ['Karachi', 'Hyderabad', 'Sukkur', 'Larkana', 'Nawabshah', 'Thatta', 'Badin', 'Dadu', 'Jamshoro', 'Tando Allahyar', 'Tando Muhammad Khan', 'Sanghar', 'Umerkot', 'Mirpur Khas', 'Shikarpur', 'Kandhkot', 'Dera Murad Jamali'],
         'Khyber Pakhtunkhwa' => ['Peshawar', 'Mardan', 'Abbottabad', 'Swat', 'Kohat', 'Dera Ismail Khan', 'Bannu', 'Charsadda', 'Nowshera', 'Chitral', 'Malakand', 'Dir', 'Bajaur', 'Karak', 'Hangu', 'Shangla'],
         'Balochistan' => ['Quetta', 'Turbat', 'Gwadar', 'Khuzdar', 'Sibi', 'Ziarat', 'Lasbela', 'Hub', 'Awaran', 'Dera Bugti', 'Kachhi', 'Kharan', 'Mastung', 'Washuk', 'Lehri', 'Chaman', 'Panjgur'],
@@ -238,6 +256,63 @@ function get_state_cities() {
         'Azad Kashmir' => ['Muzaffarabad', 'Mirpur', 'Kotli', 'Rawalakot', 'Poonch', 'Neelum', 'Bagh']
     ];
 }
+
+/**
+ * Get available quantity units for B2B export inquiries
+ * 
+ * @return array List of quantity unit options
+ */
+function get_quantity_units() {
+    return [
+        'MT'        => 'Metric Tons (MT)',
+        'KG'        => 'Kilograms (KG)',
+        'LBS'       => 'Pounds (LBS)',
+        'PCS'       => 'Pieces (PCS)',
+        'SETS'      => 'Sets',
+        'CARTON'    => 'Cartons',
+        'PALLET'    => 'Pallets',
+        'CONTAINER_20' => '20ft Container',
+        'CONTAINER_40' => '40ft Container',
+        'CONTAINER_40HC' => '40ft High Cube Container',
+        'CBM'       => 'Cubic Meters (CBM)',
+        'LITERS'    => 'Liters',
+        'GALLONS'   => 'Gallons',
+        'BALES'     => 'Bales',
+        'DRUMS'     => 'Drums',
+        'OTHER'     => 'Other (specify in message)'
+    ];
+}
+
+
+if ( ! function_exists( 'custom_navigation' ) ) {
+	/**
+	 * Custom Navigation for pages
+	 *
+	 * @return void
+	 */
+	function custom_navigation() {
+
+        global $wp_query;
+
+        $big = 999999999; // need an unlikely integer
+
+        echo '<nav class="pagination">';
+
+        echo paginate_links( array(
+            'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+            'format'    => '?paged=%#%',
+            'current'   => max( 1, get_query_var( 'paged' ) ),
+            'total'     => $wp_query->max_num_pages,
+            'prev_text' => __('Previous', 'awps'),
+            'next_text' => __('Next', 'awps'),
+            'type'      => 'list',
+        ) );
+
+        echo '</nav>';
+
+	}
+}
+
 
 
 
@@ -352,3 +427,36 @@ if ( ! function_exists('svg') ) {
 		echo get_template_part('assets/dist/svg/inline', $path . '.svg');
 	}
 }
+
+
+/**
+ * Comment Navigation Helper
+ * 
+ * Renders pagination for comments (above or below the list).
+ * 
+ * @param string $position 'above' or 'below'
+ * @return void
+ */
+if ( ! function_exists( 'awps_comment_navigation' ) ) :
+	function awps_comment_navigation( $position = 'above' ) {
+		// Bail if no pagination needed
+		if ( get_comment_pages_count() <= 1 || ! get_option( 'page_comments' ) ) {
+			return;
+		}
+		?>
+		<nav id="comment-nav-<?php echo esc_attr( $position ); ?>" class="navigation comment-navigation" role="navigation" aria-label="<?php esc_attr_e( 'Comment pagination', 'awps' ); ?>">
+			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'awps' ); ?></h2>
+			<div class="nav-links">
+				<div class="nav-previous">
+					<?php previous_comments_link( esc_html__( '&larr; Older Comments', 'awps' ) ); ?>
+				</div>
+				<div class="nav-next">
+					<?php next_comments_link( esc_html__( 'Newer Comments &rarr;', 'awps' ) ); ?>
+				</div>
+			</div>
+		</nav>
+		<?php
+	}
+endif;
+
+

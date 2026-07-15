@@ -7,34 +7,31 @@
  * @package awps
  */
 
-get_header(); ?>
+get_header();
+?>
 
-<div class="container">
+<div class="container notfound">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main" role="main">
 
-	<div class="row">
+                    <?php
+                    get_template_part( 'views/partials/empty-state', null, array(
+                        'heading'     => 'Oops! That page can&rsquo;t be found.',
+                        'message'     => 'It seems we can\'t find what you\'re looking for. Perhaps searching can help or go back to',
+                        'link_url'    => home_url( '/' ),
+                        'link_text'   => 'Homepage',
+                        'show_search' => true,
+                        'image_alt'   => __( '404 error - page not found illustration', 'awps' ),
+                        'css_class'   => 'notfound-empty-state',
+                    ) );
+                    ?>
 
-		<div class="col-sm-8">
-
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main" role="main">
-
-					<h1>
-					<?php
-					esc_html_e( 'Oops! That page can&rsquo;t be found.', 'awps' );
-					?>
-					</h1>
-
-				</main><!-- #main -->
-			</div><!-- #primary -->
-
-		</div><!-- .col- -->
-
-		<div class="col-sm-4">
-			<?php get_sidebar(); ?>
-		</div><!-- .col- -->
-
-	</div><!-- .row -->
-
+                </main><!-- #main -->
+            </div><!-- #primary -->
+        </div><!-- .col-sm-12 -->
+    </div><!-- .row -->
 </div><!-- .container -->
 
 <?php

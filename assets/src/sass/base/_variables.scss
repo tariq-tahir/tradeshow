@@ -6,10 +6,20 @@ $gutter: 10px;
 $spacing: 20;
 
 /*-------------------------
-*  Spacing
+*  Spacing Utilities
 *--------------------------*/
-$paddings: ('pt': 'padding-top', 'pr': 'padding-right', 'pb': 'padding-bottom', 'pl': 'padding-left');
-$margins: ('mt': 'margin-top', 'mr': 'margin-right', 'mb': 'margin-bottom', 'ml': 'margin-left');
+$paddings: (
+  'pt': 'padding-top',
+  'pr': 'padding-right',
+  'pb': 'padding-bottom',
+  'pl': 'padding-left'
+);
+$margins: (
+  'mt': 'margin-top',
+  'mr': 'margin-right',
+  'mb': 'margin-bottom',
+  'ml': 'margin-left'
+);
 
 /*-------------------------
 *  Media Queries
@@ -21,28 +31,108 @@ $lg: 1190px;
 $xl: 1440px;
 $xxl: 1700px;
 
-$breakpoints: ('xs': $xs, 'sm': $sm, 'md': $md, 'lg': $lg, 'xl': $xl);
+$breakpoints: (
+  'xs': $xs,
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl
+);
 
 /*-------------------------
 *  Colours
 *--------------------------*/
+
+// Base
 $white: #fff;
 $black: #000;
-$light-grey: #f0f0f0;
+$light-grey: #f5f5f5;
+$medium-grey: #666;
+$dark-grey: #333;
 
-// custom colours
+// Brand palette (from screenshots)
+$primary: #28AFB1;
+$primary-dark: #008E89;
+$secondary: #F05A28;   
+$accent: #FFD700;      
+$border: #E0E0E0;
+$bg-color: #EEEEEE;
+$bg-light: #FAFAFA;
+$text: #222;
+$text-light: #777;
+$link: $primary;
+$link-hover: $primary-dark;
+$error: #721c24;
+$error-border: #f5c6cb;
+$error-background: #f8d7da;
+$success: #155724;
 
-$colours: ('white': $white, 'black': $black, 'light-grey': $light-grey);
+
+$text-dark: #212529;
+$text-muted: #495057;
+$bg-light: #fafafa;
+
+$whatsapp: #25D366;
+$linkedin: #0077B5;
+$email: #EA4335;
+$copy: #5F6368;
+
+$colours: (
+  'white': $white,
+  'black': $black,
+  'light-grey': $light-grey,
+  'dark-grey': $dark-grey,
+  'primary': $primary,
+  'primary-dark': $primary-dark,
+  'secondary': $secondary,
+  'accent': $accent,
+  'border': $border,
+  'bg-light': $bg-light,
+  'text': $text,
+  'text-light': $text-light,
+  'link': $link,
+  'error': $error,
+  'success': $success
+);
 
 /*-------------------------
 *  Typography
 *--------------------------*/
 $base-font: 'Roboto', sans-serif;
+$heading-font: 'Poppins', sans-serif;
 
 $base-fs: 14px;
+$fs-xs: 12px;
+$fs-sm: 13px;
+$fs-md: 15px;
+$fs-lg: 18px;
+$fs-xl: 22px;
+$fs-xxl: 28px;
+$fs-display: 36px;
+
+$fw-light: 300;
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-bold: 600;
+$fw-extrabold: 700;
 
 /*-------------------------
-*  Animations
+*  Shadows
+*--------------------------*/
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 2px 6px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+/*-------------------------
+*  Radii
+*--------------------------*/
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-round: 50%;
+
+/*-------------------------
+*  Transitions & Animations
 *--------------------------*/
 $time: 320ms;
 $time_slow: 700ms;
@@ -52,3 +142,12 @@ $swift: cubic-bezier(0.4, 0, 0.2, 1);
 $ease: ease;
 
 $transition-default: all $time $ease;
+
+/*-------------------------
+*  Z-Index Layers
+*--------------------------*/
+$z-header: 100;
+$z-menu: 200;
+$z-overlay: 300;
+$z-modal: 400;
+$z-tooltip: 500;

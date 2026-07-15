@@ -2,47 +2,51 @@
 
 namespace Awps\Setup;
 
-/**
- * Enqueue.
- */
 class Enqueue 
 {
-	/**
-	 * register default hooks and actions for WordPress
-	 * @return
-	 */
-	public function register() 
-	{
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-	}
+    public function register() 
+    {
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+    }
 
-	/**
-	 * Notice the mix() function in wp_enqueue_...
-	 * It provides the path to a versioned asset by Laravel Mix using querystring-based 
-	 * cache-busting (This means, the file name won't change, but the md5. Look here for 
-	 * more information: https://github.com/JeffreyWay/laravel-mix/issues/920 )
-	 */
-	public function enqueue_scripts() 
-	{
-		// Deregister the built-in version of jQuery from WordPress
-		if ( ! is_customize_preview() ) {
-			//wp_deregister_script( 'jquery' );
+    public function enqueue_scripts() 
+    {
+
+        
+
+        // CSS
+		wp_enqueue_style('main', mix('css/style.css'), [], '1.0.0', 'all');
+
+		// 🔹 1. Enqueue Cropper.js FIRST (custom handle)
+		if (strpos($_SERVER['REQUEST_URI'], '/dashboard/') !== false) {
+            
+			wp_enqueue_script('cropper-js', 'https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js', [], '1.6.1', true);
+			wp_enqueue_style('cropper-css', 'https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css');
+
+			wp_enqueue_style('wp-jquery-ui-dialog'); // Includes spinner styles
 		}
 
-		// CSS
-		wp_enqueue_style( 'main', mix('css/style.css'), array(), '1.0.0', 'all' );
+		// 🔹 2. Enqueue main script WITH dependencies
+		$deps = ['jquery'];
+		if (strpos($_SERVER['REQUEST_URI'], '/dashboard/') !== false) {
+			wp_enqueue_media(); // This auto-enqueues media scripts (no handle needed)
+			wp_enqueue_script('jquery-ui-autocomplete'); // Handle: 'jquery-ui-autocomplete'
+			$deps[] = 'jquery-ui-autocomplete';
+			$deps[] = 'cropper-js';
 
-		// JS
-		wp_enqueue_script( 'main', mix('js/app.js'), array(), '1.0.0', true );
-
-		// Activate browser-sync on development environment
-		if ( getenv( 'APP_ENV' ) === 'development' ) :
-			wp_enqueue_script( '__bs_script__', getenv('WP_SITEURL') . ':3000/browser-sync/browser-sync-client.js', array(), null, true );
-		endif;
-
-		// Extra
-		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-			wp_enqueue_script( 'comment-reply' );
+            wp_enqueue_script('main', mix('js/app.js'), $deps, '1.0.0', true);
 		}
-	}	
+
+    	wp_enqueue_script('main', mix('js/app.js'), $deps, '1.0.0', true);
+
+        // BrowserSync (dev only)
+        if (getenv('APP_ENV') === 'development') {
+            wp_enqueue_script('__bs_script__', getenv('WP_SITEURL') . ':3000/browser-sync/browser-sync-client.js', [], null, true);
+        }
+
+        // Comment reply
+        if (is_singular() && comments_open() && get_option('thread_comments')) {
+            wp_enqueue_script('comment-reply');
+        }
+    }	
 }
