@@ -231,14 +231,16 @@ class ProfileFields {
                 <tr>
                     <th><label>Exports To</label></th>
                     <td>
-                        <input type="text" id="exports-to-input" placeholder="Start typing country name...">
-                        <div id="exports-to-list" class="tag-list">
-                            <?php foreach ($user_exports_to as $country): ?>
-                                <span class="tag" data-value="<?= esc_attr($country); ?>"><?= esc_html($country); ?> <span class="remove-tag">×</span></span>
-                            <?php endforeach; ?>
+                        <div class="custom-tags-input">
+                            <input type="text" id="exports-to-input" class="tag-input" placeholder="Start typing country name...">
+                            <div id="exports-to-list" class="tag-list">
+                                <?php foreach ($user_exports_to as $country): ?>
+                                    <span class="tag" data-value="<?= esc_attr($country); ?>"><?= esc_html($country); ?> <span class="remove-tag">×</span></span>
+                                <?php endforeach; ?>
+                            </div>
+                            <input type="hidden" name="exports_to" value="<?= esc_attr(implode(',', $user_exports_to)); ?>">
+                            <p class="description">Press Enter or select from dropdown to add.</p>
                         </div>
-                        <input type="hidden" name="exports_to" value="<?= esc_attr(implode(',', $user_exports_to)); ?>">
-                        <p class="description">Press Enter or select from dropdown to add.</p>
                     </td>
                 </tr>
                 <tr>
@@ -264,25 +266,18 @@ class ProfileFields {
                 <tr>
                     <th><label>Languages Spoken</label></th>
                     <td>
-                        <input type="text" id="languages-input" placeholder="Start typing language...">
-                        <div id="languages-list" class="tag-list">
-                            <?php foreach ($user_languages as $lang): ?>
-                                <span class="tag" data-value="<?= esc_attr($lang); ?>"><?= esc_html($lang); ?> <span class="remove-tag">×</span></span>
-                            <?php endforeach; ?>
-                        </div>
-                        <input type="hidden" name="languages" value="<?= esc_attr(implode(',', $user_languages)); ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th><label>FOB Ports</label></th>
-                    <td>
                         <div class="custom-tags-input">
-                            <input type="text" class="tag-input" placeholder="Type port and press Enter or Comma">
-                            <div class="tag-list"></div>
-                            <input type="hidden" name="fob_ports" value="<?= esc_attr(implode(',', $fob_ports)); ?>">
+                            <input type="text" id="languages-input" class="tag-input" placeholder="Start typing language...">
+                            <div id="languages-list" class="tag-list">
+                                <?php foreach ($user_languages as $lang): ?>
+                                    <span class="tag" data-value="<?= esc_attr($lang); ?>"><?= esc_html($lang); ?> <span class="remove-tag">×</span></span>
+                                <?php endforeach; ?>
+                            </div>
+                            <input type="hidden" name="languages" value="<?= esc_attr(implode(',', $user_languages)); ?>">
                         </div>
                     </td>
                 </tr>
+               
                 <tr>
                     <th><label>Lead Time</label></th>
                     <td><input name="lead_time" value="<?= esc_attr($lead_time); ?>" class="regular-text" placeholder="e.g., 15–20 Days"></td>
@@ -324,16 +319,18 @@ class ProfileFields {
                 <tr>
                     <th><label for="certifications">Certifications</label></th>
                     <td>
-                        <input type="text" id="certifications-input" placeholder="Start typing certification name...">
-                        <div id="certifications-list" class="tag-list">
-                            <?php foreach ($user_certs as $cert_id):
-                                $cert = get_post($cert_id);
-                                if ($cert): ?>
-                                    <span class="tag" data-value="<?= esc_attr($cert_id); ?>"><?= esc_html($cert->post_title); ?> <span class="remove-tag">×</span></span>
-                                <?php endif;
-                            endforeach; ?>
+                        <div class="custom-tags-input">
+                            <input type="text" id="certifications-input" class="tag-input" placeholder="Start typing certification name...">
+                            <div id="certifications-list" class="tag-list">
+                                <?php foreach ($user_certs as $cert_id):
+                                    $cert = get_post($cert_id);
+                                    if ($cert): ?>
+                                        <span class="tag" data-value="<?= esc_attr($cert_id); ?>"><?= esc_html($cert->post_title); ?> <span class="remove-tag">×</span></span>
+                                    <?php endif;
+                                endforeach; ?>
+                            </div>
+                            <input type="hidden" name="certifications" value="<?= esc_attr(implode(',', $user_certs)); ?>">
                         </div>
-                        <input type="hidden" name="certifications" value="<?= esc_attr(implode(',', $user_certs)); ?>">
                     </td>
                 </tr>
             </table>
