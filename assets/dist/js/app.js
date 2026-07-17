@@ -1,2 +1,2158 @@
-(()=>{"use strict";var e,t={271:()=>{},360:()=>{},490:()=>{},826:(e,t,n)=>{function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function o(e){return o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},o(e)}function a(e){var t=function(e,t){if("object"!=o(e)||!e)return e;var n=e[Symbol.toPrimitive];if(void 0!==n){var i=n.call(e,t||"default");if("object"!=o(i))return i;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==o(t)?t:t+""}function r(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,a(i.key),i)}}function s(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),Object.defineProperty(e,"prototype",{writable:!1}),e}var l=function(){return s(function e(){i(this,e),this.cacheDOM(),this.bindEvents()},[{key:"cacheDOM",value:function(){this.toggle=document.querySelector(".mobile-menu-toggle"),this.menu=document.querySelector(".main-menu"),this.submenuLinks=document.querySelectorAll(".main-menu .menu-item-has-children > a"),this.welcomeUser=document.querySelector(".awps-welcome"),this.loginDropdown=document.querySelector(".awps-login-dropdown")}},{key:"bindEvents",value:function(){var e=this;this.toggle&&this.menu&&this.toggle.addEventListener("click",function(t){t.preventDefault(),e.toggle.classList.toggle("active"),e.menu.classList.toggle("show")}),this.submenuLinks.length>0&&this.submenuLinks.forEach(function(t){t.addEventListener("click",function(n){if(window.innerWidth<=767){n.preventDefault();var i=t.nextElementSibling;i&&i.classList.contains("dropdown-menu")&&(i.classList.toggle("show"),e.submenuLinks.forEach(function(e){var t=e.nextElementSibling;t&&t!==i&&t.classList.remove("show")}))}})}),this.welcomeUser&&this.loginDropdown&&this.welcomeUser.addEventListener("click",function(t){window.innerWidth<=767&&(t.preventDefault(),e.loginDropdown.classList.toggle("show"))}),document.addEventListener("click",function(t){e.handleClickOutside(t)}),window.addEventListener("resize",function(){window.innerWidth>767&&(e.menu&&e.menu.classList.remove("show"),e.toggle&&e.toggle.classList.remove("active"),document.querySelectorAll(".dropdown-menu").forEach(function(e){e.classList.remove("show")}),e.loginDropdown&&e.loginDropdown.classList.remove("show"))})}},{key:"handleClickOutside",value:function(e){(this.toggle&&this.menu&&(this.toggle.contains(e.target)||this.menu.contains(e.target)||!this.menu.classList.contains("show")||(this.menu.classList.remove("show"),this.toggle.classList.remove("active"))),this.loginDropdown&&!this.loginDropdown.contains(e.target)&&this.loginDropdown.classList.contains("show")&&this.loginDropdown.classList.remove("show"),window.innerWidth<=767)&&(e.target.closest(".dropdown-menu a")&&(document.querySelectorAll(".dropdown-menu").forEach(function(e){e.classList.remove("show")}),this.menu&&this.menu.classList.remove("show"),this.toggle&&this.toggle.classList.remove("active")))}}])}();const c=function(){return s(function e(){i(this,e),new l,this.el=document.querySelector(".el"),this.listeners(),this.init()},[{key:"init",value:function(){console.info("App Initialized")}},{key:"listeners",value:function(){this.el&&this.el.addEventListener("click",this.elClick)}},{key:"elClick",value:function(e){e.target.classList.add("text-light-grey"),e.target.addEventListener("transitionend",function(e){return"color"===e.propertyName?e.target.classList.remove("text-light-grey"):""})}}])}(),u=window.jQuery;var d=n.n(u);document.addEventListener("click",function(e){if("INPUT"!==e.target.tagName||"file"!==e.target.type){var t=e.target.closest("[data-action]");if(t){var n=t.dataset.action,i=document.getElementById("gallery-upload-input"),o=document.getElementById("featured-upload-input");if("upload-featured"===n||"upload-gallery"===n){var a="upload-featured"===n?o:i;a.value="",a.onchange=function(e){var t=Array.from(e.target.files);if(t.length){var i=t.filter(function(e){return!(e.size>2097152)||(alert('⚠️ File too large: "'.concat(e.name,'"\nMaximum allowed size is ').concat(2,"MB.")),!1)});if(0!==i.length){var o=document.getElementById("gallery-preview");document.getElementById("featured-image-container");if("upload-gallery"===n)i.forEach(function(e){var t=new FileReader;t.onload=function(t){var n=document.createElement("div");n.className="gallery-item",n.style.cssText="position:relative; display:inline-block; margin:5px;",n.dataset.filename=e.name,n.innerHTML='\n                            <img src="'.concat(t.target.result,'" alt="').concat(e.name,'" \n                                 style="width:100px;height:100px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">\n                            <button type="button" class="media-remove-btn" data-action="remove-gallery">×</button>\n                            <input type="text" name="gallery_alt_new[]" placeholder="Alt text" style="width:100px; display:block; margin-top:5px; font-size:11px;">\n                        '),o.appendChild(n)},t.readAsDataURL(e)});else if("upload-featured"===n){var r=i[0],s=new FileReader;s.onload=function(e){document.getElementById("featured-image-container").innerHTML='\n                      <div style="position:relative; display:inline-block;">\n                          <img src="'.concat(e.target.result,'" style="max-width:200px;height:auto;border:1px solid #ddd;">\n                          <button type="button" class="media-remove-btn" data-action="remove-featured" data-title="').concat(r.name,'">×</button>\n\n                          <div style="margin-top:5px;">\n                <input type="text" name="featured_image_alt" placeholder="Enter Alt Text..." style="width:100%; padding:4px; font-size:12px;">\n            </div>\n                      </div>\n                  '),document.getElementById("remove_featured_image").value="0",document.getElementById("featured_image_id").value="new_upload"},s.readAsDataURL(r)}}else a.value=""}},a.click()}if("remove-gallery"===n){e.preventDefault(),e.stopImmediatePropagation();var r=t.closest(".gallery-item");if(!r)return;var s=r.dataset.filename,l=r.dataset.id;if(confirm("Are you sure you want to delete this image?")){for(var c=new DataTransfer,u=i.files,d=0;d<u.length;d++)u[d].name!==s&&c.items.add(u[d]);if(i.files=c.files,l&&!l.startsWith("new-")){var p=document.getElementById("remove_gallery_ids");if(p){var m=p.value.trim();p.value=m?m+","+l:l}}r.remove()}}"remove-featured"===n&&(e.preventDefault(),e.stopImmediatePropagation(),confirm("Remove featured image?")&&(document.getElementById("remove_featured_image").value="1",document.getElementById("featured-image-container").innerHTML='\n              <button type="button" class="media-upload-btn" data-action="upload-featured">Upload Image</button>\n          ',o.value=""))}}});var p=function(){return s(function e(t){i(this,e),this.input=document.querySelector(t.inputSelector),this.list=document.querySelector(t.listSelector),this.hidden=document.querySelector(t.hiddenSelector),this.sourceType=t.sourceType,this.ajaxAction=t.ajaxAction,this.sourceArray=t.sourceArray||[],this.allowManualEntry=t.allowManualEntry,this.input&&this.list&&this.hidden&&(this.initFromDOM(),this.setupAutocomplete(),this.setupManualEntry())},[{key:"getCurrentValues",value:function(){return Array.from(this.list.querySelectorAll(".tag")).map(function(e){var t=e.getAttribute("data-value");if(t)return t;var n=e.cloneNode(!0);return n.querySelectorAll(".remove-tag").forEach(function(e){return e.remove()}),n.textContent.trim()})}},{key:"updateHidden",value:function(){this.hidden.value=this.getCurrentValues().join(",")}},{key:"addTag",value:function(e){var t,n,i=this;if(("object"===o(e)&&null!==e?(t=String(e.label||e.value||"").trim(),n=String(e.value||e.label||"").trim()):t=n=String(e||"").trim(),t&&n)&&!Array.from(this.list.querySelectorAll(".tag")).map(function(e){return e.getAttribute("data-value")}).includes(n)){var a=document.createElement("span");a.className="tag",a.setAttribute("data-value",n),a.innerHTML="".concat(t,' <span class="remove-tag">×</span>'),a.querySelector(".remove-tag").addEventListener("click",function(){a.remove(),i.updateHidden()}),this.list.appendChild(a),this.updateHidden()}}},{key:"initFromDOM",value:function(){var e=this,t=this.list.querySelectorAll(".tag");if(t.length>0)t.forEach(function(t){if(!t.hasAttribute("data-value")){var n=t.cloneNode(!0);n.querySelectorAll(".remove-tag").forEach(function(e){return e.remove()}),t.setAttribute("data-value",n.textContent.trim())}var i=t.querySelector(".remove-tag");i&&!i._hasListener&&(i._hasListener=!0,i.addEventListener("click",function(){t.remove(),e.updateHidden()}))}),this.updateHidden();else{var n=(this.hidden.value||"").toString().split(",").map(function(e){return e.trim()}).filter(function(e){return e.length>0});this.list.innerHTML="",this.hidden.value="",n.forEach(function(t){return e.addTag(t)})}}},{key:"setupAutocomplete",value:function(){var e,t=this;if(null!==(e=d().ui)&&void 0!==e&&e.autocomplete)if("ajax"===this.sourceType&&this.ajaxAction){var n=this.input.parentNode.querySelector(".awps-autocomplete-loader");d()(this.input).autocomplete({source:function(e,i){n&&(n.style.display="inline-block"),d().ajax({url:window.ajaxurl||"/wp-admin/admin-ajax.php",dataType:"json",data:{action:t.ajaxAction,term:e.term},success:function(e){return i(e||[])},error:function(){return i([])},complete:function(){n&&(n.style.display="none")}})},focus:function(){return!1},select:function(e,n){return t.addTag(n.item),t.input.value="",!1}})}else"array"===this.sourceType&&Array.isArray(this.sourceArray)&&d()(this.input).autocomplete({source:function(e,n){var i=(e.term||"").toLowerCase();n(t.sourceArray.filter(function(e){return String(e).toLowerCase().includes(i)}))},focus:function(){return!1},select:function(e,n){var i=(null==n?void 0:n.item)&&(n.item.value||n.item.label)||n.item||"";return t.addTag(i),t.input.value="",!1}})}},{key:"setupManualEntry",value:function(){var e=this;this.allowManualEntry&&this.input.addEventListener("keydown",function(t){if("Enter"===t.key||","===t.key){t.preventDefault();var n=e.input.value.trim();n&&e.addTag(n),e.input.value=""}})}}])}();function m(){document.querySelectorAll(".custom-tags-input").forEach(function(e){var t=e.querySelector(".tag-input"),n=e.querySelector(".tag-list"),i=e.querySelector('input[type="hidden"]');function o(e){var t=e.cloneNode(!0);return t.querySelectorAll(".remove-tag").forEach(function(e){return e.remove()}),t.textContent.trim()}function a(){var e=Array.from(n.querySelectorAll(".tag")).map(o).filter(function(e){return e});i.value=e.join(",")}t&&n&&i&&(n.querySelectorAll(".tag").forEach(function(e){if(!e.dataset.initialized){var t=e.querySelector(".remove-tag");t&&t.addEventListener("click",function(){e.remove(),a()}),e.dataset.initialized="true"}}),a(),t.addEventListener("keydown",function(e){"Enter"!==e.key&&","!==e.key||(e.preventDefault(),function(e){var t=e.trim();if(t&&!Array.from(n.querySelectorAll(".tag")).map(o).includes(t)){var i=document.createElement("span");i.className="tag",i.innerHTML="".concat(t,' <span class="remove-tag">×</span>'),i.querySelector(".remove-tag").addEventListener("click",function(){i.remove(),a()}),n.appendChild(i),a()}}(t.value),t.value="")}))})}var y=s(function e(){i(this,e),d()(function(){var e,t,n,i,o,a,r=window.wpExporterData||{},s=r.stateCities,l=r.savedCity,c=r.countries,u=r.languages,y=r.incoterms,h=r.packaging,f=r.shipping,v=r.paymentTerms,g=r.samplePolicies,w=r.keyBenefits,b=r.qualityControl;document.querySelectorAll(".image-upload-wrap").forEach(function(e){var t=e.querySelector(".image-input"),n=e.querySelector(".preview"),i=e.querySelector(".remove-image"),o=e.querySelector('input[type="hidden"]');t&&(t.addEventListener("change",function(e){var t=e.target.files[0];if(t){var a=new FileReader;a.onload=function(e){n.innerHTML='<img src="'.concat(e.target.result,'" style="max-width:200px;height:auto;">'),i&&(i.style.display="inline-block"),o&&(o.value="")},a.readAsDataURL(t)}}),i&&i.addEventListener("click",function(){n.innerHTML="",t&&(t.value=""),o&&(o.value="1"),i.style.display="none"}))}),m(),e=null,t=null,n=document.getElementById("cropper-modal"),i=document.getElementById("cropper-image"),o=document.getElementById("cropper-cancel"),a=document.getElementById("cropper-save"),n&&i&&(document.querySelectorAll(".image-upload-wrap .image-input").forEach(function(o){o.addEventListener("change",function(a){var r,s=null===(r=a.target.files)||void 0===r?void 0:r[0];if(s){var l=new FileReader;l.onload=function(a){var r;if(i.src=a.target.result,n.style.display="flex",t=o.closest(".image-upload-wrap"),e)try{e.destroy()}catch(e){}var s="company_logo"===(null===(r=t)||void 0===r||null===(r=r.dataset)||void 0===r?void 0:r.field)?1:4;"undefined"!=typeof Cropper?e=new Cropper(i,{aspectRatio:s,viewMode:1,autoCropArea:1}):console.error("Cropper.js not loaded")},l.readAsDataURL(s)}})}),null==o||o.addEventListener("click",function(){if(e)try{e.destroy()}catch(e){}n.style.display="none"}),null==a||a.addEventListener("click",function(){if(e&&t){var i="company_logo"===t.dataset.field?300:1200,o=(t.dataset.field,300),a=e.getCroppedCanvas({width:i,height:o});a.toBlob(function(i){t.querySelector(".preview").innerHTML='<img src="'.concat(a.toDataURL(),'" style="max-width:100%;height:auto;">');var o=t.querySelector(".image-input"),r=new DataTransfer;r.items.add(new File([i],"cropped.png",{type:"image/png"})),o.files=r.files;var s=t.querySelector(".remove-image");s&&(s.style.display="inline-block"),n.style.display="none";try{e.destroy()}catch(e){}},"image/png")}})),d()(document).on("submit","#awps-product-form",function(e){var t=document.querySelector("#_certifications_hidden"),n=t?t.value:"NOT FOUND";console.log("🔍 Certifications hidden field value:",n);var i=document.querySelectorAll('input[name="_certifications"]');console.log('🔍 All inputs with name="_certifications":',i.length,i);var o=d()("#product_categories"),a=o.val()?o.val().trim():"";if(""===a||0===a.length){e.preventDefault(),e.stopImmediatePropagation(),alert("⚠️ Please select at least one Product Category before saving.");var r=d()(".awps-tag-container").first();return r.css({border:"2px solid #dc3232",padding:"10px","border-radius":"5px",background:"#fff5f5"}),d()("html, body").animate({scrollTop:r.offset().top-100},400),!1}}),s&&void 0!==l&&function(e,t){var n=function(){var n=document.getElementById("state"),i=document.getElementById("city");if(i&&n){var o=n.value.trim();if(i.innerHTML='<option value="">— Select State First —</option>',o&&e[o]&&e[o].forEach(function(e){var t=document.createElement("option");t.value=e,t.textContent=e,i.appendChild(t)}),t)for(var a=0;a<i.options.length;a++)if(i.options[a].value===t){i.selectedIndex=a;break}}},i=document.getElementById("state");i&&(i.addEventListener("change",n),n())}(s,l),document.getElementById("exports-to-input")&&new p({inputSelector:"#exports-to-input",listSelector:"#exports-to-list",hiddenSelector:"input[name='exports_to']",sourceType:"array",sourceArray:c||[],allowManualEntry:!0}),document.getElementById("languages-input")&&new p({inputSelector:"#languages-input",listSelector:"#languages-list",hiddenSelector:"input[name='languages']",sourceType:"array",sourceArray:u||[],allowManualEntry:!0}),document.getElementById("payment_terms_input")&&new p({inputSelector:"#payment_terms_input",listSelector:"#payment_terms_list",hiddenSelector:"input[name='payment_terms']",sourceType:"array",sourceArray:v||[],allowManualEntry:!0}),document.getElementById("packaging_details_input")&&new p({inputSelector:"#packaging_details_input",listSelector:"#packaging_details_list",hiddenSelector:"input[name='packaging']",sourceType:"array",sourceArray:h||[],allowManualEntry:!0}),document.getElementById("_incoterms_input")&&new p({inputSelector:"#_incoterms_input",listSelector:"#_incoterms_list",hiddenSelector:"input[name='_incoterms']",sourceType:"array",sourceArray:y||[],allowManualEntry:!0}),document.getElementById("_packaging_input")&&new p({inputSelector:"#_packaging_input",listSelector:"#_packaging_list",hiddenSelector:"input[name='_packaging']",sourceType:"array",sourceArray:h||[],allowManualEntry:!0}),document.getElementById("_shipping_input")&&new p({inputSelector:"#_shipping_input",listSelector:"#_shipping_list",hiddenSelector:"input[name='_shipping']",sourceType:"array",sourceArray:f||[],allowManualEntry:!0}),document.getElementById("_payment_terms_input")&&new p({inputSelector:"#_payment_terms_input",listSelector:"#_payment_terms_list",hiddenSelector:"input[name='_payment_terms']",sourceType:"array",sourceArray:v||[],allowManualEntry:!0}),document.getElementById("_sample_policies_input")&&new p({inputSelector:"#_sample_policies_input",listSelector:"#_sample_policies_list",hiddenSelector:"input[name='_sample_policies']",sourceType:"array",sourceArray:g||[],allowManualEntry:!0}),document.getElementById("_key_benefits_input")&&new p({inputSelector:"#_key_benefits_input",listSelector:"#_key_benefits_list",hiddenSelector:"input[name='_key_benefits']",sourceType:"array",sourceArray:w||[],allowManualEntry:!0}),document.getElementById("_quality_control_input")&&new p({inputSelector:"#_quality_control_input",listSelector:"#_quality_control_list",hiddenSelector:"input[name='_quality_control']",sourceType:"array",sourceArray:b||[],allowManualEntry:!0}),document.getElementById("_certifications_input")&&new p({inputSelector:"#_certifications_input",listSelector:"#_certifications_list",hiddenSelector:"#_certifications_hidden",sourceType:"ajax",ajaxAction:"awps_search_certifications_by_id",allowManualEntry:!1}),document.getElementById("product_categories_input")&&new p({inputSelector:"#product_categories_input",listSelector:"#product_categories_list",hiddenSelector:"#product_categories",sourceType:"ajax",ajaxAction:"awps_search_product_categories",allowManualEntry:!1})})});document.addEventListener("click",function(e){var t=e.target.closest(".awps-iso-remove-btn");if(t){e.preventDefault();var n=t.closest(".awps-iso-wrap");if(n){var i=n.dataset.field,o=n.querySelector(".awps-iso-preview-box"),a=n.querySelector(".awps-iso-preview-cont"),r=n.querySelector(".awps-iso-controls"),s=n.querySelector('input[name="remove_'+i+'"]'),l=n.querySelector(".awps-iso-input");o&&(o.innerHTML=""),a&&a.setAttribute("style","display: none !important"),r&&r.setAttribute("style","display: block !important"),l&&(l.value=""),s&&(s.value="1"),console.log("AWPS ISO: Image removed safely.")}}},!0),document.addEventListener("change",function(e){if(e.target.classList.contains("awps-iso-input")){var t=e.target,n=t.files[0];if(n){var i=t.closest(".awps-iso-wrap");if(i){var o=i.dataset.field,a=document.getElementById("cropper-modal"),r=document.getElementById("cropper-image"),s=new FileReader;s.onload=function(e){if(r&&a){r.src=e.target.result,a.style.display="flex",window.isoCropper&&window.isoCropper.destroy();var n="company_logo"===o?1:4;window.isoCropper=new Cropper(r,{aspectRatio:n,viewMode:1});var s=document.getElementById("cropper-save"),l=s.cloneNode(!0);s.parentNode.replaceChild(l,s),l.addEventListener("click",function(){var e=window.isoCropper.getCroppedCanvas({width:800,height:800});e.toBlob(function(n){var r,s,l=new DataTransfer,c=(null===(r=document.querySelector('input[name="company_name"]'))||void 0===r?void 0:r.value)||"company",u="".concat((s=c,s.toString().toLowerCase().trim().replace(/\s+/g,"-").replace(/[^\w\-]+/g,"").replace(/\-\-+/g,"-")),"-").concat(o,".png");l.items.add(new File([n],u,{type:"image/png"})),t.files=l.files;var d=i.querySelector(".awps-iso-preview-box"),p=i.querySelector(".awps-iso-preview-cont"),m=i.querySelector(".awps-iso-controls");if(d){var y="banner_image"===o?"400px":"150px";d.innerHTML='\n                            <img src="'.concat(e.toDataURL(),'" style="max-width:').concat(y,'; width:100%; height:auto;">\n                            <input type="text" name="').concat(o,'_alt" placeholder="Alt text..." style="width:100%; font-size:12px; padding:4px;">\n                            <button type="button" class="awps-iso-remove-btn">×</button>\n                        ')}p&&(p.style.display="block"),m&&(m.style.display="none"),a.style.display="none",window.isoCropper.destroy()})})}},s.readAsDataURL(n)}}}});var h=function(){return s(function e(){i(this,e),this.lightbox=null,this.lightboxImg=null,this.currentIndex=0,this.imageIds=[],this.imageUrls={},this.init()},[{key:"init",value:function(){document.querySelector(".awps-product-container")&&(this.cacheElements(),this.parseImageData(),this.bindEvents())}},{key:"cacheElements",value:function(){this.lightbox=document.getElementById("awps-lightbox"),this.lightboxImg=document.getElementById("lightbox-image"),this.closeBtn=document.getElementById("lightbox-close"),this.prevBtn=document.getElementById("lightbox-prev"),this.nextBtn=document.getElementById("lightbox-next"),this.form=document.getElementById("awps-inquiry-form"),this.responseDiv=document.getElementById("inquiry-response"),this.shareCopyBtn=document.querySelector(".share-copy")}},{key:"parseImageData",value:function(){var e=document.querySelector(".awps-product-container");if(e)try{this.imageUrls=JSON.parse(e.dataset.imageUrls||"{}"),this.imageIds=JSON.parse(e.dataset.imageIds||"[]")}catch(e){console.error("Failed to parse product image ",e)}}},{key:"bindEvents",value:function(){var e=this;document.querySelectorAll(".gallery-thumb").forEach(function(t){t.addEventListener("click",function(n){n.preventDefault(),e.openLightbox(t.dataset.id)})}),this.closeBtn&&this.closeBtn.addEventListener("click",function(){return e.closeLightbox()}),this.prevBtn&&this.prevBtn.addEventListener("click",function(){return e.showImage(e.currentIndex-1)}),this.nextBtn&&this.nextBtn.addEventListener("click",function(){return e.showImage(e.currentIndex+1)}),document.addEventListener("keydown",function(t){return e.handleKeydown(t)}),this.lightbox&&this.lightbox.addEventListener("click",function(t){t.target===e.lightbox&&e.closeLightbox()}),this.form&&this.form.addEventListener("submit",function(t){return e.handleInquirySubmit(t)}),this.shareCopyBtn&&this.shareCopyBtn.addEventListener("click",function(t){t.preventDefault(),e.copyToClipboard(e.shareCopyBtn.dataset.url)})}},{key:"openLightbox",value:function(e){var t=this.imageIds.indexOf(parseInt(e));if(-1!==t&&this.lightbox&&this.lightboxImg){this.currentIndex=t;var n=this.imageUrls[e];n&&(this.lightboxImg.src=n,this.lightbox.style.display="block",this.lightbox.offsetWidth,this.lightbox.style.opacity="1",document.body.style.overflow="hidden")}}},{key:"closeLightbox",value:function(){var e=this;this.lightbox&&(this.lightbox.style.opacity="0",setTimeout(function(){e.lightbox.style.display="none",document.body.style.overflow=""},300))}},{key:"showImage",value:function(e){if(this.imageIds.length){e<0&&(e=this.imageIds.length-1),e>=this.imageIds.length&&(e=0),this.currentIndex=e;var t=this.imageIds[e],n=this.imageUrls[t];n&&this.lightboxImg&&(this.lightboxImg.src=n)}}},{key:"handleKeydown",value:function(e){this.lightbox&&"block"===this.lightbox.style.display&&("Escape"===e.key?this.closeLightbox():"ArrowLeft"===e.key?this.showImage(this.currentIndex-1):"ArrowRight"===e.key&&this.showImage(this.currentIndex+1))}},{key:"handleInquirySubmit",value:function(e){var t=this;e.preventDefault();var n=this.form.querySelector('button[type="submit"]'),i=n.innerHTML,o=this.form.dataset.ajaxUrl||"/wp-admin/admin-ajax.php";n.disabled=!0,n.innerHTML='<i class="fas fa-spinner fa-spin"></i> Sending...';var a=new FormData(this.form);a.append("action","awps_send_inquiry"),console.log("📤 Sending inquiry to:",o),console.log("FormData:",Object.fromEntries(a)),fetch(o,{method:"POST",body:a,credentials:"same-origin",headers:{"X-Requested-With":"XMLHttpRequest"}}).then(function(e){console.log("📥 Response status:",e.status);var t=e.headers.get("content-type");if(!t||!t.includes("application/json"))throw new Error("Expected JSON response, got: "+t);return e.json()}).then(function(e){var n;console.log("📥 Response data:",e),t.showResponse(e.success,(null===(n=e.data)||void 0===n?void 0:n.message)||"Submission failed. Please try again."),e.success&&t.form.reset()}).catch(function(e){console.error("❌ AJAX error:",e),t.showResponse(!1,"Network error. Please check your connection.")}).finally(function(){n.disabled=!1,n.innerHTML=i})}},{key:"showResponse",value:function(e,t){var n=this;this.responseDiv&&(this.responseDiv.style.display="block",this.responseDiv.className="notice ".concat(e?"success":"error"),this.responseDiv.innerHTML='\n            <div style="background:'.concat(e?"#d4edda":"#f8d7da",";\n                        color:").concat(e?"#155724":"#721c24",';\n                        padding:12px;\n                        border-radius:4px;\n                        margin-top:1rem;">\n                ').concat(t,"\n            </div>\n        "),e&&setTimeout(function(){n.responseDiv.style.display="none"},5e3))}},{key:"copyToClipboard",value:function(e){var t=this;e&&(navigator.clipboard?navigator.clipboard.writeText(e).then(function(){t.showCopyFeedback("Copied!")}).catch(function(){t.fallbackCopy(e)}):this.fallbackCopy(e))}},{key:"fallbackCopy",value:function(e){var t=document.createElement("textarea");t.value=e,t.style.position="fixed",t.style.left="-9999px",document.body.appendChild(t),t.select();try{document.execCommand("copy"),this.showCopyFeedback("Copied!")}catch(e){this.showCopyFeedback("Failed to copy")}document.body.removeChild(t)}},{key:"showCopyFeedback",value:function(e){var t=this;if(this.shareCopyBtn){var n=this.shareCopyBtn.innerHTML;this.shareCopyBtn.innerHTML='<i class="fas fa-check"></i> '.concat(e),setTimeout(function(){t.shareCopyBtn.innerHTML=n},2e3)}}}])}(),f=function(){return s(function e(){i(this,e),this.form=document.querySelector(".awps-register-form"),this.form&&(this.stateEl=document.getElementById("state"),this.cityEl=document.getElementById("city"),this.paymentCards=document.querySelectorAll(".payment-plan-card"),this.paymentRadios=document.querySelectorAll('input[name="payment_plan"]'),this.citiesData=JSON.parse(this.form.dataset.cities||"{}"),this.savedCity=this.form.dataset.savedCity||"",this.init())},[{key:"init",value:function(){this.initStateCity(),this.initPaymentPlans()}},{key:"initStateCity",value:function(){var e=this;if(this.stateEl&&this.cityEl&&this.citiesData){var t=function(){var t=e.stateEl.value;if(e.cityEl.innerHTML="",!t){e.cityEl.disabled=!0;var n=document.createElement("option");return n.value="",n.textContent="— Select State First —",void e.cityEl.appendChild(n)}e.cityEl.disabled=!1;var i=document.createElement("option");i.value="",i.textContent="— Select City —",e.cityEl.appendChild(i),(e.citiesData[t]||[]).forEach(function(t){var n=document.createElement("option");n.value=t,n.textContent=t,t===e.savedCity&&(n.selected=!0),e.cityEl.appendChild(n)})};this.stateEl.addEventListener("change",t),t()}}},{key:"initPaymentPlans",value:function(){var e=this;if(this.paymentCards.length&&this.paymentRadios.length){var t=function(){e.paymentCards.forEach(function(e){e.querySelector('input[type="radio"]').checked?e.classList.add("selected"):e.classList.remove("selected")})};this.paymentCards.forEach(function(e){e.addEventListener("click",function(n){"INPUT"!==n.target.tagName&&(e.querySelector('input[type="radio"]').checked=!0,t())})}),this.paymentRadios.forEach(function(e){e.addEventListener("change",t)}),t()}}}])}(),v=function(){return s(function e(){i(this,e),this.form=document.getElementById("exporter-inquiry-form"),this.shareCopyBtn=document.querySelector(".share-copy"),(this.form||this.shareCopyBtn)&&this.init()},[{key:"init",value:function(){this.form&&this.bindInquiryForm(),this.shareCopyBtn&&this.bindCopyLink()}},{key:"bindInquiryForm",value:function(){var e=this;this.form.addEventListener("submit",function(t){t.preventDefault();var n=e.form.querySelector('button[type="submit"]'),i=n.innerHTML,o=document.getElementById("exporter-inquiry-result");n.disabled=!0,n.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...',o&&(o.style.display="none",o.innerHTML="");var a=new FormData(e.form);fetch(e.form.dataset.ajaxUrl,{method:"POST",body:a,credentials:"same-origin",headers:{"X-Requested-With":"XMLHttpRequest"}}).then(function(e){return e.json()}).then(function(t){var n,i;o&&(o.style.display="block",o.className="exporter-inquiry-result notice ".concat(t.success?"success":"error"),o.innerHTML=t.success?'<i class="fa-solid fa-circle-check"></i> '.concat((null===(n=t.data)||void 0===n?void 0:n.message)||"Inquiry sent successfully!"):'<i class="fa-solid fa-circle-exclamation"></i> '.concat((null===(i=t.data)||void 0===i?void 0:i.message)||"Failed to send inquiry. Please try again."),t.success&&e.form.reset())}).catch(function(e){console.error("Inquiry AJAX error:",e),o&&(o.style.display="block",o.className="exporter-inquiry-result notice error",o.innerHTML='<i class="fa-solid fa-circle-exclamation"></i> Network error. Please check your connection.')}).finally(function(){n.disabled=!1,n.innerHTML=i})})}},{key:"bindCopyLink",value:function(){var e=this;this.shareCopyBtn.addEventListener("click",function(t){t.preventDefault();var n=e.shareCopyBtn.dataset.url;n&&(navigator.clipboard?navigator.clipboard.writeText(n):Promise.resolve().then(function(){var e=document.createElement("textarea");e.value=n,e.style.position="fixed",e.style.left="-9999px",document.body.appendChild(e),e.select(),document.execCommand("copy"),document.body.removeChild(e)})).then(function(){var t=e.shareCopyBtn.innerHTML;e.shareCopyBtn.innerHTML='<i class="fa-solid fa-check"></i> Copied!',setTimeout(function(){e.shareCopyBtn.innerHTML=t},2e3)}).catch(function(e){console.error("Copy failed:",e),alert("Could not copy link. Please copy manually.")})})}}])}(),g=function(){return s(function e(){i(this,e),this.form=document.getElementById("awps-contact-form"),this.form&&(this.submitBtn=document.getElementById("contact-submit-btn"),this.loadTimestamp=Date.now(),this.init())},[{key:"init",value:function(){var e=this;this.form.addEventListener("submit",function(t){return e.handleSubmit(t)})}},{key:"handleSubmit",value:function(e){var t=Math.floor((Date.now()-this.loadTimestamp)/1e3),n=document.getElementById("submit_time");n&&(n.value=t);var i=this.form.querySelectorAll("[required]"),o=!0;if(i.forEach(function(e){e.value.trim()||(o=!1,e.classList.add("error"),e.addEventListener("input",function t(){e.classList.remove("error"),e.removeEventListener("input",t)},{once:!0}))}),!o)return e.preventDefault(),void this.showValidationMessage(__("Please fill in all required fields.","awps"));this.setLoadingState(!0)}},{key:"setLoadingState",value:function(e){this.submitBtn&&(e?(this.submitBtn.disabled=!0,this.submitBtn.dataset.originalText=this.submitBtn.innerHTML,this.submitBtn.innerHTML='<span class="spinner"></span> '+__("Sending...","awps")):(this.submitBtn.disabled=!1,this.submitBtn.innerHTML=this.submitBtn.dataset.originalText||__("Send Message","awps")))}},{key:"showValidationMessage",value:function(e){var t=this.form.querySelector(".validation-message");t&&t.remove();var n=document.createElement("div");n.className="validation-message error",n.setAttribute("role","alert"),n.textContent=e,this.form.insertBefore(n,this.form.firstChild),setTimeout(function(){return n.remove()},5e3)}}])}();new c,(document.querySelector(".exporter-dashboard")||document.querySelector(".awps-register-form"))&&new y,document.querySelector(".awps-product-container")&&new h,document.querySelector(".awps-contact-form")&&new g,document.querySelector(".awps-register-form")&&new f,document.querySelector(".exporter-profile")&&new v,document.querySelector(".awps-contact-form")&&new g,document.addEventListener("DOMContentLoaded",function(){var e=document.querySelector(".back-to-top");window.addEventListener("scroll",function(){e.style.display=window.pageYOffset>300?"flex":"none"}),e.addEventListener("click",function(e){e.preventDefault(),window.scrollTo({top:0,behavior:"smooth"})})})}},n={};function i(e){var o=n[e];if(void 0!==o)return o.exports;var a=n[e]={exports:{}};return t[e](a,a.exports,i),a.exports}i.m=t,e=[],i.O=(t,n,o,a)=>{if(!n){var r=1/0;for(u=0;u<e.length;u++){for(var[n,o,a]=e[u],s=!0,l=0;l<n.length;l++)(!1&a||r>=a)&&Object.keys(i.O).every(e=>i.O[e](n[l]))?n.splice(l--,1):(s=!1,a<r&&(r=a));if(s){e.splice(u--,1);var c=o();void 0!==c&&(t=c)}}return t}a=a||0;for(var u=e.length;u>0&&e[u-1][2]>a;u--)e[u]=e[u-1];e[u]=[n,o,a]},i.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return i.d(t,{a:t}),t},i.d=(e,t)=>{for(var n in t)i.o(t,n)&&!i.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{var e={847:0,266:0,22:0,364:0};i.O.j=t=>0===e[t];var t=(t,n)=>{var o,a,[r,s,l]=n,c=0;if(r.some(t=>0!==e[t])){for(o in s)i.o(s,o)&&(i.m[o]=s[o]);if(l)var u=l(i)}for(t&&t(n);c<r.length;c++)a=r[c],i.o(e,a)&&e[a]&&e[a][0](),e[a]=0;return i.O(u)},n=self.webpackChunkawps=self.webpackChunkawps||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))})(),i.O(void 0,[266,22,364],()=>i(826)),i.O(void 0,[266,22,364],()=>i(490)),i.O(void 0,[266,22,364],()=>i(271));var o=i.O(void 0,[266,22,364],()=>i(360));o=i.O(o)})();
-//# sourceMappingURL=app.js.map
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./assets/src/sass/admin.scss":
+/*!************************************!*\
+  !*** ./assets/src/sass/admin.scss ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./assets/src/sass/gutenberg.scss":
+/*!****************************************!*\
+  !*** ./assets/src/sass/gutenberg.scss ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./assets/src/sass/style.scss":
+/*!************************************!*\
+  !*** ./assets/src/sass/style.scss ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./assets/src/scripts/app.js":
+/*!***********************************!*\
+  !*** ./assets/src/scripts/app.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_app_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/app.js */ "./assets/src/scripts/modules/app.js");
+/* harmony import */ var _modules_frontend_admin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/frontend-admin.js */ "./assets/src/scripts/modules/frontend-admin.js");
+/* harmony import */ var _modules_product_single_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/product-single.js */ "./assets/src/scripts/modules/product-single.js");
+/* harmony import */ var _modules_account_register_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/account-register.js */ "./assets/src/scripts/modules/account-register.js");
+/* harmony import */ var _modules_profile_public_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/profile-public.js */ "./assets/src/scripts/modules/profile-public.js");
+/* harmony import */ var _modules_contact_form_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/contact-form.js */ "./assets/src/scripts/modules/contact-form.js");
+// app.js
+
+/**
+ * Manage global libraries like jQuery or THREE from the webpack.mix.js file
+ */
+
+// Import custom modules
+
+
+
+
+
+
+//import ChangePassword from './modules/change-password.js';
+
+new _modules_app_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+// Run frontend admin logic if dashboard OR registration page exists
+if (document.querySelector('.exporter-dashboard') || document.querySelector('.awps-register-form')) {
+  new _modules_frontend_admin_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+}
+
+// Run product single page logic ONLY if product container exists
+if (document.querySelector('.awps-product-container')) {
+  new _modules_product_single_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+}
+
+// Initialize contact form if present
+if (document.querySelector('.awps-contact-form')) {
+  new _modules_contact_form_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+}
+
+// Run registration form logic if registration form exists
+if (document.querySelector('.awps-register-form')) {
+  new _modules_account_register_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
+}
+
+// Run public profile logic if profile page exists
+if (document.querySelector('.exporter-profile')) {
+  new _modules_profile_public_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+}
+
+// // Run change password logic if form exists
+// if ( document.getElementById( 'change-password-form' ) ) {
+//     new ChangePassword();
+// }
+
+// Run ContactForm logic if contact form exists
+if (document.querySelector('.awps-contact-form')) {
+  new _modules_contact_form_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+}
+
+// Basic back-to-top functionality
+document.addEventListener('DOMContentLoaded', function () {
+  var backToTop = document.querySelector('.back-to-top');
+  window.addEventListener('scroll', function () {
+    backToTop.style.display = window.pageYOffset > 300 ? 'flex' : 'none';
+  });
+  backToTop.addEventListener('click', function (e) {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/account-register.js":
+/*!********************************************************!*\
+  !*** ./assets/src/scripts/modules/account-register.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ AccountRegister)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+/**
+ * Account Registration Form Functionality
+ * Handles state/city dropdowns and payment plan selection
+ * 
+ * @package awps
+ */
+var AccountRegister = /*#__PURE__*/function () {
+  function AccountRegister() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, AccountRegister);
+    this.form = document.querySelector('.awps-register-form');
+    if (!this.form) return;
+    this.stateEl = document.getElementById('state');
+    this.cityEl = document.getElementById('city');
+    this.paymentCards = document.querySelectorAll('.payment-plan-card');
+    this.paymentRadios = document.querySelectorAll('input[name="payment_plan"]');
+
+    // Get data from form data attributes
+    this.citiesData = JSON.parse(this.form.dataset.cities || '{}');
+    this.savedCity = this.form.dataset.savedCity || '';
+    this.init();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(AccountRegister, [{
+    key: "init",
+    value: function init() {
+      this.initStateCity();
+      this.initPaymentPlans();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // State → City Dropdown Logic
+    // ─────────────────────────────────────────────────────────────
+  }, {
+    key: "initStateCity",
+    value: function initStateCity() {
+      var _this = this;
+      if (!this.stateEl || !this.cityEl || !this.citiesData) return;
+      var updateCities = function updateCities() {
+        var state = _this.stateEl.value;
+
+        // Reset dropdown content
+        _this.cityEl.innerHTML = '';
+
+        // CASE 1: No State Selected → Disable City Dropdown
+        if (!state) {
+          _this.cityEl.disabled = true;
+          var defaultOpt = document.createElement('option');
+          defaultOpt.value = '';
+          defaultOpt.textContent = '— Select State First —';
+          _this.cityEl.appendChild(defaultOpt);
+          return;
+        }
+
+        // CASE 2: State Selected → Enable City Dropdown
+        _this.cityEl.disabled = false;
+
+        // Add placeholder
+        var placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '— Select City —';
+        _this.cityEl.appendChild(placeholder);
+
+        // Populate cities from the data
+        var cities = _this.citiesData[state] || [];
+        cities.forEach(function (cityName) {
+          var opt = document.createElement('option');
+          opt.value = cityName;
+          opt.textContent = cityName;
+
+          // Restore selection if it matches the saved city
+          if (cityName === _this.savedCity) {
+            opt.selected = true;
+          }
+          _this.cityEl.appendChild(opt);
+        });
+      };
+
+      // Attach event listener
+      this.stateEl.addEventListener('change', updateCities);
+
+      // Run on page load
+      updateCities();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Payment Plan Selection Logic
+    // ─────────────────────────────────────────────────────────────
+  }, {
+    key: "initPaymentPlans",
+    value: function initPaymentPlans() {
+      var _this2 = this;
+      if (!this.paymentCards.length || !this.paymentRadios.length) return;
+      var updateSelectedCard = function updateSelectedCard() {
+        _this2.paymentCards.forEach(function (card) {
+          var radio = card.querySelector('input[type="radio"]');
+          if (radio.checked) {
+            card.classList.add('selected');
+          } else {
+            card.classList.remove('selected');
+          }
+        });
+      };
+
+      // Add click listeners to all cards
+      this.paymentCards.forEach(function (card) {
+        card.addEventListener('click', function (e) {
+          // Don't trigger if clicking directly on the radio
+          if (e.target.tagName === 'INPUT') return;
+          var radio = card.querySelector('input[type="radio"]');
+          radio.checked = true;
+          updateSelectedCard();
+        });
+      });
+
+      // Add change listeners to radios
+      this.paymentRadios.forEach(function (radio) {
+        radio.addEventListener('change', updateSelectedCard);
+      });
+
+      // Run on page load to set initial state
+      updateSelectedCard();
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/app.js":
+/*!*******************************************!*\
+  !*** ./assets/src/scripts/modules/app.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _header_menu_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header-menu.js */ "./assets/src/scripts/modules/header-menu.js");
+
+
+
+var App = /*#__PURE__*/function () {
+  function App() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, App);
+    new _header_menu_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+    this.el = document.querySelector('.el');
+    this.listeners();
+    this.init();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(App, [{
+    key: "init",
+    value: function init() {
+      // eslint-disable-next-line no-console
+      console.info('App Initialized');
+    }
+  }, {
+    key: "listeners",
+    value: function listeners() {
+      if (this.el) {
+        this.el.addEventListener('click', this.elClick);
+      }
+    }
+  }, {
+    key: "elClick",
+    value: function elClick(e) {
+      e.target.classList.add('text-light-grey');
+      e.target.addEventListener('transitionend', function (event) {
+        return 'color' === event.propertyName ? event.target.classList.remove('text-light-grey') : '';
+      });
+    }
+  }]);
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+// import HeaderMenu from './header-menu.js';
+
+// class App {
+// 	constructor() {
+// 		this.el = document.querySelector('.el');
+// 		this.headerMenu = new HeaderMenu();
+
+// 		this.listeners();
+// 		this.init();
+// 	}
+
+// 	init() {
+// 		// eslint-disable-next-line no-console
+// 		console.info('App Initialized');
+// 	}
+
+// 	listeners() {
+// 		if (this.el) {
+// 			this.el.addEventListener('click', this.elClick);
+// 		}
+// 	}
+
+// 	elClick(e) {
+// 		e.target.classList.add('text-light-grey');
+// 		e.target.addEventListener('transitionend', (event) => {
+// 			if (event.propertyName === 'color') {
+// 				event.target.classList.remove('text-light-grey');
+// 			}
+// 		});
+// 	}
+// }
+
+// export default App;
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/contact-form.js":
+/*!****************************************************!*\
+  !*** ./assets/src/scripts/modules/contact-form.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ContactForm)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+/**
+ * Contact Form Functionality
+ * Handles submission timestamp, basic validation feedback, and UX enhancements
+ */
+var ContactForm = /*#__PURE__*/function () {
+  function ContactForm() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ContactForm);
+    this.form = document.getElementById('awps-contact-form');
+    if (!this.form) return;
+    this.submitBtn = document.getElementById('contact-submit-btn');
+    this.loadTimestamp = Date.now();
+    this.init();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ContactForm, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      this.form.addEventListener('submit', function (e) {
+        return _this.handleSubmit(e);
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      // Set elapsed time for rate-limiting backend check
+      var elapsedSeconds = Math.floor((Date.now() - this.loadTimestamp) / 1000);
+      var timeInput = document.getElementById('submit_time');
+      if (timeInput) {
+        timeInput.value = elapsedSeconds;
+      }
+
+      // Basic client-side validation feedback (optional enhancement)
+      var requiredFields = this.form.querySelectorAll('[required]');
+      var isValid = true;
+      requiredFields.forEach(function (field) {
+        if (!field.value.trim()) {
+          isValid = false;
+          field.classList.add('error');
+
+          // Remove error state on input
+          field.addEventListener('input', function handler() {
+            field.classList.remove('error');
+            field.removeEventListener('input', handler);
+          }, {
+            once: true
+          });
+        }
+      });
+      if (!isValid) {
+        e.preventDefault();
+        this.showValidationMessage(__('Please fill in all required fields.', 'awps'));
+        return;
+      }
+
+      // Show loading state
+      this.setLoadingState(true);
+    }
+  }, {
+    key: "setLoadingState",
+    value: function setLoadingState(loading) {
+      if (!this.submitBtn) return;
+      if (loading) {
+        this.submitBtn.disabled = true;
+        this.submitBtn.dataset.originalText = this.submitBtn.innerHTML;
+        this.submitBtn.innerHTML = '<span class="spinner"></span> ' + __('Sending...', 'awps');
+      } else {
+        this.submitBtn.disabled = false;
+        this.submitBtn.innerHTML = this.submitBtn.dataset.originalText || __('Send Message', 'awps');
+      }
+    }
+  }, {
+    key: "showValidationMessage",
+    value: function showValidationMessage(message) {
+      // Remove existing messages
+      var existing = this.form.querySelector('.validation-message');
+      if (existing) existing.remove();
+
+      // Create and insert message
+      var msg = document.createElement('div');
+      msg.className = 'validation-message error';
+      msg.setAttribute('role', 'alert');
+      msg.textContent = message;
+      this.form.insertBefore(msg, this.form.firstChild);
+
+      // Auto-remove after 5 seconds
+      setTimeout(function () {
+        return msg.remove();
+      }, 5000);
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/frontend-admin.js":
+/*!******************************************************!*\
+  !*** ./assets/src/scripts/modules/frontend-admin.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FrontendAdmin)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+// Universal Media Handler
+document.addEventListener('click', function (e) {
+  // 🔒 Ignore file input clicks directly
+  if (e.target.tagName === 'INPUT' && e.target.type === 'file') {
+    return;
+  }
+  var btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  var action = btn.dataset.action;
+
+  // IDs for both inputs
+  var galleryInput = document.getElementById('gallery-upload-input');
+  var featuredInput = document.getElementById('featured-upload-input');
+
+  // ==========================================
+  // 1. HANDLE UPLOAD ACTIONS (Gallery & Featured)
+  // ==========================================
+  if (action === 'upload-featured' || action === 'upload-gallery') {
+    // Pick the correct input based on action
+    var activeInput = action === 'upload-featured' ? featuredInput : galleryInput;
+    activeInput.value = ''; // Reset to allow re-selection
+
+    activeInput.onchange = function (event) {
+      var rawFiles = Array.from(event.target.files);
+      if (!rawFiles.length) return;
+
+      // --- NEW: FILE SIZE VALIDATION ---
+      var MAX_SIZE_MB = 2; // Set your limit here
+      var MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
+      // Filter out files that are too large
+      var files = rawFiles.filter(function (file) {
+        if (file.size > MAX_SIZE_BYTES) {
+          alert("\u26A0\uFE0F File too large: \"".concat(file.name, "\"\nMaximum allowed size is ").concat(MAX_SIZE_MB, "MB."));
+          return false;
+        }
+        return true;
+      });
+
+      // If no files passed the size check, stop here
+      if (files.length === 0) {
+        activeInput.value = '';
+        return;
+      }
+      // ---------------------------------
+
+      var galleryContainer = document.getElementById('gallery-preview');
+      var featuredContainer = document.getElementById('featured-image-container');
+
+      // --- GALLERY LOGIC ---
+      if (action === 'upload-gallery') {
+        files.forEach(function (file) {
+          var reader = new FileReader();
+          reader.onload = function (ev) {
+            var item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.style.cssText = "position:relative; display:inline-block; margin:5px;";
+            item.dataset.filename = file.name;
+            item.innerHTML = "\n                            <img src=\"".concat(ev.target.result, "\" alt=\"").concat(file.name, "\" \n                                 style=\"width:100px;height:100px;object-fit:cover;border-radius:4px;border:1px solid #ddd;\">\n                            <button type=\"button\" class=\"media-remove-btn\" data-action=\"remove-gallery\">\xD7</button>\n                            <input type=\"text\" name=\"gallery_alt_new[]\" placeholder=\"Alt text\" style=\"width:100px; display:block; margin-top:5px; font-size:11px;\">\n                        ");
+            galleryContainer.appendChild(item);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // --- FEATURED LOGIC ---
+      else if (action === 'upload-featured') {
+        var file = files[0];
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          // We only update the preview area
+          document.getElementById('featured-image-container').innerHTML = "\n                      <div style=\"position:relative; display:inline-block;\">\n                          <img src=\"".concat(ev.target.result, "\" style=\"max-width:200px;height:auto;border:1px solid #ddd;\">\n                          <button type=\"button\" class=\"media-remove-btn\" data-action=\"remove-featured\" data-title=\"").concat(file.name, "\">\xD7</button>\n\n                          <div style=\"margin-top:5px;\">\n                <input type=\"text\" name=\"featured_image_alt\" placeholder=\"Enter Alt Text...\" style=\"width:100%; padding:4px; font-size:12px;\">\n            </div>\n                      </div>\n                  ");
+          // Update the hidden status values without deleting the inputs
+          document.getElementById('remove_featured_image').value = "0";
+          document.getElementById('featured_image_id').value = "new_upload";
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    activeInput.click();
+  }
+
+  // ==========================================
+  // 2. HANDLE REMOVE GALLERY IMAGE
+  // ==========================================
+  if (action === 'remove-gallery') {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var item = btn.closest('.gallery-item');
+    if (!item) return;
+    var fileName = item.dataset.filename;
+    var imageId = item.dataset.id;
+    if (confirm("Are you sure you want to delete this image?")) {
+      // Sync the Gallery File Input
+      var dt = new DataTransfer();
+      var files = galleryInput.files;
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].name !== fileName) dt.items.add(files[i]);
+      }
+      galleryInput.files = dt.files;
+
+      // Handle DB IDs
+      if (imageId && !imageId.startsWith('new-')) {
+        var removeInput = document.getElementById('remove_gallery_ids');
+        if (removeInput) {
+          var existingValue = removeInput.value.trim();
+          removeInput.value = existingValue ? existingValue + ',' + imageId : imageId;
+        }
+      }
+      item.remove();
+    }
+  }
+
+  // ==========================================
+  // 3. HANDLE REMOVE FEATURED IMAGE
+  // ==========================================
+  if (action === 'remove-featured') {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (confirm('Remove featured image?')) {
+      // Set the flag for the PHP handler
+      document.getElementById('remove_featured_image').value = '1';
+
+      // Clear the preview UI
+      document.getElementById('featured-image-container').innerHTML = "\n              <button type=\"button\" class=\"media-upload-btn\" data-action=\"upload-featured\">Upload Image</button>\n          ";
+
+      // Note: We keep the value in #featured_image_id so the PHP knows 
+      // which ID was there to delete it from media, but the UI is cleared.
+      featuredInput.value = '';
+    }
+  }
+});
+
+// ---------------------------
+// Image Upload (preview + remove)
+// ---------------------------
+function initImageUploads() {
+  document.querySelectorAll('.image-upload-wrap').forEach(function (wrap) {
+    var input = wrap.querySelector('.image-input');
+    var preview = wrap.querySelector('.preview');
+    var removeBtn = wrap.querySelector('.remove-image');
+    var hiddenRemove = wrap.querySelector('input[type="hidden"]');
+    if (!input) return;
+    input.addEventListener('change', function (e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        preview.innerHTML = "<img src=\"".concat(ev.target.result, "\" style=\"max-width:200px;height:auto;\">");
+        if (removeBtn) removeBtn.style.display = 'inline-block';
+        if (hiddenRemove) hiddenRemove.value = '';
+      };
+      reader.readAsDataURL(file);
+    });
+    if (removeBtn) {
+      removeBtn.addEventListener('click', function () {
+        preview.innerHTML = '';
+        if (input) input.value = '';
+        if (hiddenRemove) hiddenRemove.value = '1';
+        removeBtn.style.display = 'none';
+      });
+    }
+  });
+}
+
+// ---------------------------
+// State -> City Logic
+// ---------------------------
+function initStateCity(citiesData, savedCity) {
+  var updateCities = function updateCities() {
+    var stateEl = document.getElementById('state');
+    var citySelect = document.getElementById('city');
+    if (!citySelect || !stateEl) return;
+    var state = stateEl.value.trim();
+    citySelect.innerHTML = '<option value="">— Select State First —</option>';
+    if (state && citiesData[state]) {
+      citiesData[state].forEach(function (city) {
+        var option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+    if (savedCity) {
+      for (var i = 0; i < citySelect.options.length; i++) {
+        if (citySelect.options[i].value === savedCity) {
+          citySelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+  };
+  var stateEl = document.getElementById('state');
+  if (stateEl) {
+    stateEl.addEventListener('change', updateCities);
+    updateCities();
+  }
+}
+
+// ---------------------------
+// Generic Tag Widget (for autocomplete fields)
+// ---------------------------
+var TagWidget = /*#__PURE__*/function () {
+  function TagWidget(opts) {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, TagWidget);
+    this.input = document.querySelector(opts.inputSelector);
+    this.list = document.querySelector(opts.listSelector);
+    this.hidden = document.querySelector(opts.hiddenSelector);
+    this.sourceType = opts.sourceType;
+    this.ajaxAction = opts.ajaxAction;
+    this.sourceArray = opts.sourceArray || [];
+    this.allowManualEntry = opts.allowManualEntry;
+    if (!this.input || !this.list || !this.hidden) return;
+    this.initFromDOM();
+    this.setupAutocomplete();
+    this.setupManualEntry();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(TagWidget, [{
+    key: "getCurrentValues",
+    value: function getCurrentValues() {
+      return Array.from(this.list.querySelectorAll('.tag')).map(function (el) {
+        var dataValue = el.getAttribute('data-value');
+        if (dataValue) return dataValue;
+        var clone = el.cloneNode(true);
+        clone.querySelectorAll('.remove-tag').forEach(function (btn) {
+          return btn.remove();
+        });
+        return clone.textContent.trim();
+      });
+    }
+  }, {
+    key: "updateHidden",
+    value: function updateHidden() {
+      this.hidden.value = this.getCurrentValues().join(',');
+    }
+  }, {
+    key: "addTag",
+    value: function addTag(valueOrObject) {
+      var _this = this;
+      var displayText, storageValue;
+      if ((0,_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(valueOrObject) === 'object' && valueOrObject !== null) {
+        // Handle { label, value } from AJAX
+        displayText = String(valueOrObject.label || valueOrObject.value || '').trim();
+        storageValue = String(valueOrObject.value || valueOrObject.label || '').trim();
+      } else {
+        // Fallback for string input (backward compatibility)
+        displayText = storageValue = String(valueOrObject || '').trim();
+      }
+      if (!displayText || !storageValue) return;
+      var currentStorageValues = Array.from(this.list.querySelectorAll('.tag')).map(function (el) {
+        return el.getAttribute('data-value');
+      });
+      if (currentStorageValues.includes(storageValue)) return;
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.setAttribute('data-value', storageValue); // ← stores ID for categories
+      tag.innerHTML = "".concat(displayText, " <span class=\"remove-tag\">\xD7</span>"); // ← shows name
+
+      tag.querySelector('.remove-tag').addEventListener('click', function () {
+        tag.remove();
+        _this.updateHidden();
+      });
+      this.list.appendChild(tag);
+      this.updateHidden();
+    }
+  }, {
+    key: "initFromDOM",
+    value: function initFromDOM() {
+      var _this2 = this;
+      var existingTags = this.list.querySelectorAll('.tag');
+      if (existingTags.length > 0) {
+        // Ensure every pre-existing tag has a proper data-value and remove listener
+        existingTags.forEach(function (tag) {
+          if (!tag.hasAttribute('data-value')) {
+            var clone = tag.cloneNode(true);
+            clone.querySelectorAll('.remove-tag').forEach(function (btn) {
+              return btn.remove();
+            });
+            tag.setAttribute('data-value', clone.textContent.trim());
+          }
+
+          // 🔹 CRITICAL: Attach remove listener if not already present
+          var removeBtn = tag.querySelector('.remove-tag');
+          if (removeBtn && !removeBtn._hasListener) {
+            removeBtn._hasListener = true; // prevent duplicate listeners
+            removeBtn.addEventListener('click', function () {
+              tag.remove();
+              _this2.updateHidden();
+            });
+          }
+        });
+        this.updateHidden();
+      } else {
+        var raw = (this.hidden.value || '').toString();
+        var arr = raw.split(',').map(function (t) {
+          return t.trim();
+        }).filter(function (t) {
+          return t.length > 0;
+        });
+        this.list.innerHTML = '';
+        this.hidden.value = '';
+        arr.forEach(function (v) {
+          return _this2.addTag(v);
+        });
+      }
+    }
+  }, {
+    key: "setupAutocomplete",
+    value: function setupAutocomplete() {
+      var _$$ui,
+        _this3 = this;
+      if (!((_$$ui = (jquery__WEBPACK_IMPORTED_MODULE_3___default().ui)) !== null && _$$ui !== void 0 && _$$ui.autocomplete)) return;
+      if (this.sourceType === 'ajax' && this.ajaxAction) {
+        var spinner = this.input.parentNode.querySelector('.awps-autocomplete-loader');
+        jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.input).autocomplete({
+          source: function source(request, response) {
+            if (spinner) spinner.style.display = 'inline-block';
+            jquery__WEBPACK_IMPORTED_MODULE_3___default().ajax({
+              url: window.ajaxurl || '/wp-admin/admin-ajax.php',
+              dataType: 'json',
+              data: {
+                action: _this3.ajaxAction,
+                term: request.term
+              },
+              success: function success(data) {
+                return response(data || []);
+              },
+              error: function error() {
+                return response([]);
+              },
+              complete: function complete() {
+                if (spinner) spinner.style.display = 'none';
+              }
+            });
+          },
+          focus: function focus() {
+            return false;
+          },
+          select: function select(event, ui) {
+            // Pass the full item object so addTag can extract label + value
+            _this3.addTag(ui.item);
+            _this3.input.value = '';
+            return false;
+          }
+        });
+      } else if (this.sourceType === 'array' && Array.isArray(this.sourceArray)) {
+        jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.input).autocomplete({
+          source: function source(request, response) {
+            var term = (request.term || '').toLowerCase();
+            var results = _this3.sourceArray.filter(function (item) {
+              return String(item).toLowerCase().includes(term);
+            });
+            response(results);
+          },
+          focus: function focus() {
+            return false;
+          },
+          select: function select(event, ui) {
+            var val = (ui === null || ui === void 0 ? void 0 : ui.item) && (ui.item.value || ui.item.label) || ui.item || '';
+            _this3.addTag(val);
+            _this3.input.value = '';
+            return false;
+          }
+        });
+      }
+    }
+  }, {
+    key: "setupManualEntry",
+    value: function setupManualEntry() {
+      var _this4 = this;
+      if (!this.allowManualEntry) return;
+      this.input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          var v = _this4.input.value.trim();
+          if (v) _this4.addTag(v);
+          _this4.input.value = '';
+        }
+      });
+    }
+  }]);
+}(); // ---------------------------
+// Custom Tags (for FOB Ports - free text)
+// ---------------------------
+function initCustomTags() {
+  document.querySelectorAll('.custom-tags-input').forEach(function (container) {
+    var input = container.querySelector('.tag-input');
+    var list = container.querySelector('.tag-list');
+    var hidden = container.querySelector('input[type="hidden"]');
+    if (!input || !list || !hidden) return;
+    function getTagText(tagEl) {
+      var clone = tagEl.cloneNode(true);
+      clone.querySelectorAll('.remove-tag').forEach(function (btn) {
+        return btn.remove();
+      });
+      return clone.textContent.trim();
+    }
+    function syncHidden() {
+      var tags = Array.from(list.querySelectorAll('.tag')).map(getTagText).filter(function (t) {
+        return t;
+      });
+      hidden.value = tags.join(',');
+    }
+    function addTag(text) {
+      var cleanText = text.trim();
+      if (!cleanText) return;
+      var existing = Array.from(list.querySelectorAll('.tag')).map(getTagText);
+      if (existing.includes(cleanText)) return;
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.innerHTML = "".concat(cleanText, " <span class=\"remove-tag\">\xD7</span>");
+      tag.querySelector('.remove-tag').addEventListener('click', function () {
+        tag.remove();
+        syncHidden();
+      });
+      list.appendChild(tag);
+      syncHidden();
+    }
+
+    // Attach listeners to pre-rendered tags
+    list.querySelectorAll('.tag').forEach(function (tag) {
+      if (tag.dataset.initialized) return;
+      var removeBtn = tag.querySelector('.remove-tag');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', function () {
+          tag.remove();
+          syncHidden();
+        });
+      }
+      tag.dataset.initialized = 'true';
+    });
+    syncHidden();
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        addTag(input.value);
+        input.value = '';
+      }
+    });
+  });
+}
+
+// ---------------------------
+// Image Cropper
+// ---------------------------
+function initImageCropper() {
+  var cropper = null;
+  var activeWrap = null;
+  var modal = document.getElementById('cropper-modal');
+  var cropperImage = document.getElementById('cropper-image');
+  var btnCancel = document.getElementById('cropper-cancel');
+  var btnSave = document.getElementById('cropper-save');
+  if (!modal || !cropperImage) return;
+  document.querySelectorAll('.image-upload-wrap .image-input').forEach(function (input) {
+    input.addEventListener('change', function (e) {
+      var _e$target$files;
+      var file = (_e$target$files = e.target.files) === null || _e$target$files === void 0 ? void 0 : _e$target$files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        var _activeWrap;
+        cropperImage.src = ev.target.result;
+        modal.style.display = 'flex';
+        activeWrap = input.closest('.image-upload-wrap');
+        if (cropper) {
+          try {
+            cropper.destroy();
+          } catch (_unused) {}
+        }
+        var ratio = ((_activeWrap = activeWrap) === null || _activeWrap === void 0 || (_activeWrap = _activeWrap.dataset) === null || _activeWrap === void 0 ? void 0 : _activeWrap.field) === 'company_logo' ? 1 : 4 / 1;
+        if (typeof Cropper === 'undefined') {
+          console.error('Cropper.js not loaded');
+          return;
+        }
+        cropper = new Cropper(cropperImage, {
+          aspectRatio: ratio,
+          viewMode: 1,
+          autoCropArea: 1
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+  btnCancel === null || btnCancel === void 0 || btnCancel.addEventListener('click', function () {
+    if (cropper) try {
+      cropper.destroy();
+    } catch (_unused2) {}
+    modal.style.display = 'none';
+  });
+  btnSave === null || btnSave === void 0 || btnSave.addEventListener('click', function () {
+    if (!cropper || !activeWrap) return;
+    var width = activeWrap.dataset.field === 'company_logo' ? 300 : 1200;
+    var height = activeWrap.dataset.field === 'company_logo' ? 300 : 300;
+    var canvas = cropper.getCroppedCanvas({
+      width: width,
+      height: height
+    });
+    canvas.toBlob(function (blob) {
+      var preview = activeWrap.querySelector('.preview');
+      preview.innerHTML = "<img src=\"".concat(canvas.toDataURL(), "\" style=\"max-width:100%;height:auto;\">");
+      var fileInput = activeWrap.querySelector('.image-input');
+      var dt = new DataTransfer();
+      dt.items.add(new File([blob], 'cropped.png', {
+        type: 'image/png'
+      }));
+      fileInput.files = dt.files;
+      var removeBtn = activeWrap.querySelector('.remove-image');
+      if (removeBtn) removeBtn.style.display = 'inline-block';
+      modal.style.display = 'none';
+      try {
+        cropper.destroy();
+      } catch (_unused3) {}
+    }, 'image/png');
+  });
+}
+
+// ---------------------------
+// Main Class
+// ---------------------------
+var FrontendAdmin = /*#__PURE__*/(0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(function FrontendAdmin() {
+  (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, FrontendAdmin);
+  jquery__WEBPACK_IMPORTED_MODULE_3___default()(function () {
+    var _ref = window.wpExporterData || {},
+      stateCities = _ref.stateCities,
+      savedCity = _ref.savedCity,
+      countries = _ref.countries,
+      languages = _ref.languages,
+      incoterms = _ref.incoterms,
+      packaging = _ref.packaging,
+      shipping = _ref.shipping,
+      paymentTerms = _ref.paymentTerms,
+      samplePolicies = _ref.samplePolicies,
+      keyBenefits = _ref.keyBenefits,
+      qualityControl = _ref.qualityControl;
+
+    // Always initialize
+    initImageUploads();
+    initCustomTags(); // for FOB Ports (free-text)
+    initImageCropper();
+
+    // 🔹 NEW: Form Validation Logic
+    // This checks if the product categories hidden input is empty on submit
+    // Inside your FrontendAdmin constructor, within the $(() => { ... }) block:
+
+    // --- ADD THIS VALIDATION BLOCK ---
+    jquery__WEBPACK_IMPORTED_MODULE_3___default()(document).on('submit', '#awps-product-form', function (e) {
+      var hiddenField = document.querySelector('#_certifications_hidden');
+      var rawValue = hiddenField ? hiddenField.value : 'NOT FOUND';
+      console.log('🔍 Certifications hidden field value:', rawValue);
+
+      // Also log all hidden inputs with name="_certifications" to check for duplicates
+      var allHiddenByName = document.querySelectorAll('input[name="_certifications"]');
+      console.log('🔍 All inputs with name="_certifications":', allHiddenByName.length, allHiddenByName);
+      var $hiddenInput = jquery__WEBPACK_IMPORTED_MODULE_3___default()('#product_categories');
+      var categories = $hiddenInput.val() ? $hiddenInput.val().trim() : "";
+
+      // Check if value is truly empty
+      if (categories === "" || categories.length === 0) {
+        e.preventDefault(); // Stop the form from submitting
+        e.stopImmediatePropagation();
+
+        // 1. Show the alert
+        alert('⚠️ Please select at least one Product Category before saving.');
+
+        // 2. Visual feedback (Highlighting the category box)
+        var $container = jquery__WEBPACK_IMPORTED_MODULE_3___default()('.awps-tag-container').first(); // Grab the categories container
+        $container.css({
+          'border': '2px solid #dc3232',
+          'padding': '10px',
+          'border-radius': '5px',
+          'background': '#fff5f5'
+        });
+
+        // 3. Scroll to the field
+        jquery__WEBPACK_IMPORTED_MODULE_3___default()('html, body').animate({
+          scrollTop: $container.offset().top - 100
+        }, 400);
+        return false;
+      }
+    });
+    // ---------------------------------
+
+    // State-City (Profile tab)
+    if (stateCities && typeof savedCity !== 'undefined') {
+      initStateCity(stateCities, savedCity);
+    }
+    if (document.getElementById('exports-to-input')) {
+      new TagWidget({
+        inputSelector: '#exports-to-input',
+        listSelector: '#exports-to-list',
+        hiddenSelector: "input[name='exports_to']",
+        sourceType: 'array',
+        sourceArray: countries || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('languages-input')) {
+      new TagWidget({
+        inputSelector: '#languages-input',
+        listSelector: '#languages-list',
+        hiddenSelector: "input[name='languages']",
+        sourceType: 'array',
+        sourceArray: languages || [],
+        allowManualEntry: true
+      });
+    }
+
+    // Payment Terms & Packaging on Profile tab (if present)
+    if (document.getElementById('payment_terms_input')) {
+      new TagWidget({
+        inputSelector: '#payment_terms_input',
+        listSelector: '#payment_terms_list',
+        hiddenSelector: "input[name='payment_terms']",
+        sourceType: 'array',
+        sourceArray: paymentTerms || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('packaging_details_input')) {
+      new TagWidget({
+        inputSelector: '#packaging_details_input',
+        listSelector: '#packaging_details_list',
+        hiddenSelector: "input[name='packaging']",
+        sourceType: 'array',
+        sourceArray: packaging || [],
+        allowManualEntry: true
+      });
+    }
+
+    // 🔹 Product Edit Tab Fields (underscore-prefixed)
+    if (document.getElementById('_incoterms_input')) {
+      new TagWidget({
+        inputSelector: '#_incoterms_input',
+        listSelector: '#_incoterms_list',
+        hiddenSelector: "input[name='_incoterms']",
+        sourceType: 'array',
+        sourceArray: incoterms || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_packaging_input')) {
+      new TagWidget({
+        inputSelector: '#_packaging_input',
+        listSelector: '#_packaging_list',
+        hiddenSelector: "input[name='_packaging']",
+        sourceType: 'array',
+        sourceArray: packaging || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_shipping_input')) {
+      new TagWidget({
+        inputSelector: '#_shipping_input',
+        listSelector: '#_shipping_list',
+        hiddenSelector: "input[name='_shipping']",
+        sourceType: 'array',
+        sourceArray: shipping || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_payment_terms_input')) {
+      new TagWidget({
+        inputSelector: '#_payment_terms_input',
+        listSelector: '#_payment_terms_list',
+        hiddenSelector: "input[name='_payment_terms']",
+        sourceType: 'array',
+        sourceArray: paymentTerms || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_sample_policies_input')) {
+      new TagWidget({
+        inputSelector: '#_sample_policies_input',
+        listSelector: '#_sample_policies_list',
+        hiddenSelector: "input[name='_sample_policies']",
+        sourceType: 'array',
+        sourceArray: samplePolicies || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_key_benefits_input')) {
+      new TagWidget({
+        inputSelector: '#_key_benefits_input',
+        listSelector: '#_key_benefits_list',
+        hiddenSelector: "input[name='_key_benefits']",
+        sourceType: 'array',
+        sourceArray: keyBenefits || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_quality_control_input')) {
+      new TagWidget({
+        inputSelector: '#_quality_control_input',
+        listSelector: '#_quality_control_list',
+        hiddenSelector: "input[name='_quality_control']",
+        sourceType: 'array',
+        sourceArray: qualityControl || [],
+        allowManualEntry: true
+      });
+    }
+    if (document.getElementById('_certifications_input')) {
+      new TagWidget({
+        inputSelector: '#_certifications_input',
+        listSelector: '#_certifications_list',
+        hiddenSelector: '#_certifications_hidden',
+        sourceType: 'ajax',
+        ajaxAction: 'awps_search_certifications_by_id',
+        allowManualEntry: false
+      });
+    }
+
+    // 🔹 NEW: Product Categories (on Add/Edit Product form)
+    if (document.getElementById('product_categories_input')) {
+      new TagWidget({
+        inputSelector: '#product_categories_input',
+        listSelector: '#product_categories_list',
+        hiddenSelector: '#product_categories',
+        sourceType: 'ajax',
+        ajaxAction: 'awps_search_product_categories',
+        allowManualEntry: false
+      });
+    }
+  });
+});
+/**
+ * AWPS INDEPENDENT IMAGE HANDLER (Final Version)
+ * Specifically handles .awps-unique-remove and .awps-unique-input
+ */
+
+(function () {
+  var slugify = function slugify(t) {
+    return t.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+  };
+
+  // 1. REMOVE LOGIC (Safe Version)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.awps-iso-remove-btn');
+    if (!btn) return; // Exit if the click wasn't on our remove button
+
+    e.preventDefault();
+    var wrap = btn.closest('.awps-iso-wrap');
+    if (!wrap) return; // SAFETY CHECK: Stop if no wrapper found
+
+    var fieldName = wrap.dataset.field;
+    var previewBox = wrap.querySelector('.awps-iso-preview-box');
+    var previewCont = wrap.querySelector('.awps-iso-preview-cont');
+    var controls = wrap.querySelector('.awps-iso-controls');
+    var hiddenRemove = wrap.querySelector('input[name="remove_' + fieldName + '"]');
+    var fileInput = wrap.querySelector('.awps-iso-input');
+    if (previewBox) previewBox.innerHTML = '';
+    if (previewCont) previewCont.setAttribute('style', 'display: none !important');
+    if (controls) controls.setAttribute('style', 'display: block !important');
+    if (fileInput) fileInput.value = '';
+    if (hiddenRemove) hiddenRemove.value = '1';
+    console.log("AWPS ISO: Image removed safely.");
+  }, true);
+
+  // 2. UPLOAD & CROP LOGIC (Safe Version)
+  document.addEventListener('change', function (e) {
+    if (!e.target.classList.contains('awps-iso-input')) return;
+    var input = e.target;
+    var file = input.files[0];
+    if (!file) return;
+    var wrap = input.closest('.awps-iso-wrap');
+    if (!wrap) return; // SAFETY CHECK: Stop if no wrapper found
+
+    var fieldName = wrap.dataset.field;
+    var modal = document.getElementById('cropper-modal');
+    var cropperImg = document.getElementById('cropper-image');
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      if (!cropperImg || !modal) return;
+      cropperImg.src = ev.target.result;
+      modal.style.display = 'flex';
+      if (window.isoCropper) window.isoCropper.destroy();
+      var ratio = fieldName === 'company_logo' ? 1 : 4 / 1;
+      window.isoCropper = new Cropper(cropperImg, {
+        aspectRatio: ratio,
+        viewMode: 1
+      });
+      var saveBtn = document.getElementById('cropper-save');
+      var newBtn = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+      newBtn.addEventListener('click', function () {
+        var canvas = window.isoCropper.getCroppedCanvas({
+          width: 800,
+          height: 800
+        });
+        canvas.toBlob(function (blob) {
+          var _document$querySelect;
+          var dt = new DataTransfer();
+          var companyName = ((_document$querySelect = document.querySelector('input[name="company_name"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.value) || 'company';
+          var fileName = "".concat(slugify(companyName), "-").concat(fieldName, ".png");
+          dt.items.add(new File([blob], fileName, {
+            type: 'image/png'
+          }));
+          input.files = dt.files;
+          var pBox = wrap.querySelector('.awps-iso-preview-box');
+          var pCont = wrap.querySelector('.awps-iso-preview-cont');
+          var ctrl = wrap.querySelector('.awps-iso-controls');
+          if (pBox) {
+            // Determine the width based on the field name
+            // If it's the banner, use 400px, otherwise use 150px (for logo)
+            var imgWidth = fieldName === 'banner_image' ? '400px' : '150px';
+            pBox.innerHTML = "\n                            <img src=\"".concat(canvas.toDataURL(), "\" style=\"max-width:").concat(imgWidth, "; width:100%; height:auto;\">\n                            <input type=\"text\" name=\"").concat(fieldName, "_alt\" placeholder=\"Alt text...\" style=\"width:100%; font-size:12px; padding:4px;\">\n                            <button type=\"button\" class=\"awps-iso-remove-btn\">\xD7</button>\n                        ");
+          }
+          if (pCont) pCont.style.display = 'block';
+          if (ctrl) ctrl.style.display = 'none';
+          modal.style.display = 'none';
+          window.isoCropper.destroy();
+        });
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+})();
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/header-menu.js":
+/*!***************************************************!*\
+  !*** ./assets/src/scripts/modules/header-menu.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HeaderMenu)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+/**
+ * Header Menu Module
+ * Handles mobile menu toggle, dropdown interactions, and responsive behavior
+ */
+var HeaderMenu = /*#__PURE__*/function () {
+  function HeaderMenu() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, HeaderMenu);
+    this.cacheDOM();
+    this.bindEvents();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(HeaderMenu, [{
+    key: "cacheDOM",
+    value: function cacheDOM() {
+      this.toggle = document.querySelector('.mobile-menu-toggle');
+      this.menu = document.querySelector('.main-menu');
+      this.submenuLinks = document.querySelectorAll('.main-menu .menu-item-has-children > a');
+      this.welcomeUser = document.querySelector('.awps-welcome');
+      this.loginDropdown = document.querySelector('.awps-login-dropdown');
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      var _this = this;
+      // Mobile menu toggle
+      if (this.toggle && this.menu) {
+        this.toggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          _this.toggle.classList.toggle('active');
+          _this.menu.classList.toggle('show');
+        });
+      }
+
+      // Submenu toggle on mobile
+      if (this.submenuLinks.length > 0) {
+        this.submenuLinks.forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            if (window.innerWidth <= 767) {
+              e.preventDefault();
+              var submenu = link.nextElementSibling;
+              if (submenu && submenu.classList.contains('dropdown-menu')) {
+                submenu.classList.toggle('show');
+
+                // Close other open submenus
+                _this.submenuLinks.forEach(function (otherLink) {
+                  var otherSubmenu = otherLink.nextElementSibling;
+                  if (otherSubmenu && otherSubmenu !== submenu) {
+                    otherSubmenu.classList.remove('show');
+                  }
+                });
+              }
+            }
+          });
+        });
+      }
+
+      // User dropdown toggle on mobile
+      if (this.welcomeUser && this.loginDropdown) {
+        this.welcomeUser.addEventListener('click', function (e) {
+          if (window.innerWidth <= 767) {
+            e.preventDefault();
+            _this.loginDropdown.classList.toggle('show');
+          }
+        });
+      }
+
+      // Close all menus when clicking outside
+      document.addEventListener('click', function (e) {
+        _this.handleClickOutside(e);
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 767) {
+          // Reset mobile states on desktop
+          if (_this.menu) _this.menu.classList.remove('show');
+          if (_this.toggle) _this.toggle.classList.remove('active');
+          document.querySelectorAll('.dropdown-menu').forEach(function (submenu) {
+            submenu.classList.remove('show');
+          });
+          if (_this.loginDropdown) _this.loginDropdown.classList.remove('show');
+        }
+      });
+    }
+  }, {
+    key: "handleClickOutside",
+    value: function handleClickOutside(e) {
+      // Close mobile menu
+      if (this.toggle && this.menu) {
+        if (!this.toggle.contains(e.target) && !this.menu.contains(e.target) && this.menu.classList.contains('show')) {
+          this.menu.classList.remove('show');
+          this.toggle.classList.remove('active');
+        }
+      }
+
+      // Close user dropdown
+      if (this.loginDropdown) {
+        if (!this.loginDropdown.contains(e.target) && this.loginDropdown.classList.contains('show')) {
+          this.loginDropdown.classList.remove('show');
+        }
+      }
+
+      // Close submenus when clicking a link (mobile only)
+      if (window.innerWidth <= 767) {
+        var clickedLink = e.target.closest('.dropdown-menu a');
+        if (clickedLink) {
+          document.querySelectorAll('.dropdown-menu').forEach(function (submenu) {
+            submenu.classList.remove('show');
+          });
+          if (this.menu) this.menu.classList.remove('show');
+          if (this.toggle) this.toggle.classList.remove('active');
+        }
+      }
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/product-single.js":
+/*!******************************************************!*\
+  !*** ./assets/src/scripts/modules/product-single.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ProductSingle)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+/**
+ * Product Single Page Functionality
+ * Handles lightbox gallery, inquiry form AJAX, and share actions
+ * 
+ * NOTE: Uses Promise chains instead of async/await to avoid regenerator-runtime dependency
+ */
+var ProductSingle = /*#__PURE__*/function () {
+  function ProductSingle() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ProductSingle);
+    this.lightbox = null;
+    this.lightboxImg = null;
+    this.currentIndex = 0;
+    this.imageIds = [];
+    this.imageUrls = {};
+    this.init();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ProductSingle, [{
+    key: "init",
+    value: function init() {
+      // Initialize only if we're on a product page
+      if (!document.querySelector('.awps-product-container')) return;
+      this.cacheElements();
+      this.parseImageData();
+      this.bindEvents();
+    }
+  }, {
+    key: "cacheElements",
+    value: function cacheElements() {
+      this.lightbox = document.getElementById('awps-lightbox');
+      this.lightboxImg = document.getElementById('lightbox-image');
+      this.closeBtn = document.getElementById('lightbox-close');
+      this.prevBtn = document.getElementById('lightbox-prev');
+      this.nextBtn = document.getElementById('lightbox-next');
+      this.form = document.getElementById('awps-inquiry-form');
+      this.responseDiv = document.getElementById('inquiry-response');
+      this.shareCopyBtn = document.querySelector('.share-copy');
+    }
+  }, {
+    key: "parseImageData",
+    value: function parseImageData() {
+      // Read image data from data attributes on the container
+      var container = document.querySelector('.awps-product-container');
+      if (!container) return;
+      try {
+        this.imageUrls = JSON.parse(container.dataset.imageUrls || '{}');
+        this.imageIds = JSON.parse(container.dataset.imageIds || '[]');
+      } catch (e) {
+        console.error('Failed to parse product image ', e);
+      }
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      var _this = this;
+      // Lightbox: thumbnail clicks
+      document.querySelectorAll('.gallery-thumb').forEach(function (thumb) {
+        thumb.addEventListener('click', function (e) {
+          e.preventDefault();
+          _this.openLightbox(thumb.dataset.id);
+        });
+      });
+
+      // Lightbox: controls
+      if (this.closeBtn) {
+        this.closeBtn.addEventListener('click', function () {
+          return _this.closeLightbox();
+        });
+      }
+      if (this.prevBtn) {
+        this.prevBtn.addEventListener('click', function () {
+          return _this.showImage(_this.currentIndex - 1);
+        });
+      }
+      if (this.nextBtn) {
+        this.nextBtn.addEventListener('click', function () {
+          return _this.showImage(_this.currentIndex + 1);
+        });
+      }
+
+      // Lightbox: keyboard navigation
+      document.addEventListener('keydown', function (e) {
+        return _this.handleKeydown(e);
+      });
+
+      // Lightbox: close on backdrop click
+      if (this.lightbox) {
+        this.lightbox.addEventListener('click', function (e) {
+          if (e.target === _this.lightbox) _this.closeLightbox();
+        });
+      }
+
+      // Inquiry form AJAX
+      if (this.form) {
+        this.form.addEventListener('submit', function (e) {
+          return _this.handleInquirySubmit(e);
+        });
+      }
+
+      // Share: copy link
+      if (this.shareCopyBtn) {
+        this.shareCopyBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          _this.copyToClipboard(_this.shareCopyBtn.dataset.url);
+        });
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Lightbox Methods
+    // ─────────────────────────────────────────────────────────────
+  }, {
+    key: "openLightbox",
+    value: function openLightbox(id) {
+      var index = this.imageIds.indexOf(parseInt(id));
+      if (index === -1 || !this.lightbox || !this.lightboxImg) return;
+      this.currentIndex = index;
+      var url = this.imageUrls[id];
+      if (url) {
+        this.lightboxImg.src = url;
+        this.lightbox.style.display = 'block';
+        // Trigger reflow for transition
+        void this.lightbox.offsetWidth;
+        this.lightbox.style.opacity = '1';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  }, {
+    key: "closeLightbox",
+    value: function closeLightbox() {
+      var _this2 = this;
+      if (!this.lightbox) return;
+      this.lightbox.style.opacity = '0';
+      setTimeout(function () {
+        _this2.lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 300);
+    }
+  }, {
+    key: "showImage",
+    value: function showImage(index) {
+      if (!this.imageIds.length) return;
+
+      // Wrap around
+      if (index < 0) index = this.imageIds.length - 1;
+      if (index >= this.imageIds.length) index = 0;
+      this.currentIndex = index;
+      var id = this.imageIds[index];
+      var url = this.imageUrls[id];
+      if (url && this.lightboxImg) {
+        this.lightboxImg.src = url;
+      }
+    }
+  }, {
+    key: "handleKeydown",
+    value: function handleKeydown(e) {
+      if (!this.lightbox || this.lightbox.style.display !== 'block') return;
+      if (e.key === 'Escape') {
+        this.closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        this.showImage(this.currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        this.showImage(this.currentIndex + 1);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Inquiry Form AJAX (Promise-based, NO async/await)
+    // ─────────────────────────────────────────────────────────────
+  }, {
+    key: "handleInquirySubmit",
+    value: function handleInquirySubmit(e) {
+      var _this3 = this;
+      e.preventDefault();
+      var submitBtn = this.form.querySelector('button[type="submit"]');
+      var originalBtnText = submitBtn.innerHTML;
+
+      // ✅ SAFETY CHECK: Ensure ajaxUrl exists
+      var ajaxUrl = this.form.dataset.ajaxUrl || '/wp-admin/admin-ajax.php';
+
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      var formData = new FormData(this.form);
+
+      // Add action and security fields explicitly (in case form doesn't have them)
+      formData.append('action', 'awps_send_inquiry');
+      // If you have a nonce field in the form, it will be included automatically
+      // Otherwise, you may need to add it via JS (see Step 3)
+
+      console.log('📤 Sending inquiry to:', ajaxUrl);
+      console.log('FormData:', Object.fromEntries(formData));
+      fetch(ajaxUrl, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }).then(function (response) {
+        console.log('📥 Response status:', response.status);
+
+        // ✅ Check if response is actually JSON before parsing
+        var contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Expected JSON response, got: ' + contentType);
+        }
+        return response.json();
+      }).then(function (data) {
+        var _data$data;
+        console.log('📥 Response data:', data);
+        _this3.showResponse(data.success, ((_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.message) || 'Submission failed. Please try again.');
+        if (data.success) {
+          _this3.form.reset();
+        }
+      })["catch"](function (error) {
+        console.error('❌ AJAX error:', error);
+        _this3.showResponse(false, 'Network error. Please check your connection.');
+      })["finally"](function () {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      });
+    }
+  }, {
+    key: "showResponse",
+    value: function showResponse(success, message) {
+      var _this4 = this;
+      if (!this.responseDiv) return;
+      this.responseDiv.style.display = 'block';
+      this.responseDiv.className = "notice ".concat(success ? 'success' : 'error');
+      this.responseDiv.innerHTML = "\n            <div style=\"background:".concat(success ? '#d4edda' : '#f8d7da', ";\n                        color:").concat(success ? '#155724' : '#721c24', ";\n                        padding:12px;\n                        border-radius:4px;\n                        margin-top:1rem;\">\n                ").concat(message, "\n            </div>\n        ");
+
+      // Auto-hide success messages after 5 seconds
+      if (success) {
+        setTimeout(function () {
+          _this4.responseDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Utility Methods
+    // ─────────────────────────────────────────────────────────────
+  }, {
+    key: "copyToClipboard",
+    value: function copyToClipboard(text) {
+      var _this5 = this;
+      if (!text) return;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function () {
+          _this5.showCopyFeedback('Copied!');
+        })["catch"](function () {
+          _this5.fallbackCopy(text);
+        });
+      } else {
+        this.fallbackCopy(text);
+      }
+    }
+  }, {
+    key: "fallbackCopy",
+    value: function fallbackCopy(text) {
+      // Fallback for older browsers
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        this.showCopyFeedback('Copied!');
+      } catch (err) {
+        this.showCopyFeedback('Failed to copy');
+      }
+      document.body.removeChild(textarea);
+    }
+  }, {
+    key: "showCopyFeedback",
+    value: function showCopyFeedback(message) {
+      var _this6 = this;
+      if (!this.shareCopyBtn) return;
+      var originalText = this.shareCopyBtn.innerHTML;
+      this.shareCopyBtn.innerHTML = "<i class=\"fas fa-check\"></i> ".concat(message);
+      setTimeout(function () {
+        _this6.shareCopyBtn.innerHTML = originalText;
+      }, 2000);
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./assets/src/scripts/modules/profile-public.js":
+/*!******************************************************!*\
+  !*** ./assets/src/scripts/modules/profile-public.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ProfilePublic)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+
+
+/**
+ * Public Supplier Profile Functionality
+ * Handles inquiry form AJAX and share actions
+ * 
+ * @package awps
+ * 
+ * NOTE: Uses Promise chains instead of async/await to avoid regenerator-runtime dependency
+ */
+var ProfilePublic = /*#__PURE__*/function () {
+  function ProfilePublic() {
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ProfilePublic);
+    this.form = document.getElementById('exporter-inquiry-form');
+    this.shareCopyBtn = document.querySelector('.share-copy');
+    if (!this.form && !this.shareCopyBtn) return;
+    this.init();
+  }
+  return (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ProfilePublic, [{
+    key: "init",
+    value: function init() {
+      if (this.form) this.bindInquiryForm();
+      if (this.shareCopyBtn) this.bindCopyLink();
+    }
+  }, {
+    key: "bindInquiryForm",
+    value: function bindInquiryForm() {
+      var _this = this;
+      this.form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var submitBtn = _this.form.querySelector('button[type="submit"]');
+        var originalBtnText = submitBtn.innerHTML;
+        var resultDiv = document.getElementById('exporter-inquiry-result');
+
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+        if (resultDiv) {
+          resultDiv.style.display = 'none';
+          resultDiv.innerHTML = '';
+        }
+        var formData = new FormData(_this.form);
+
+        // Use Promise chain instead of async/await
+        fetch(_this.form.dataset.ajaxUrl, {
+          method: 'POST',
+          body: formData,
+          credentials: 'same-origin',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          if (resultDiv) {
+            var _data$data, _data$data2;
+            resultDiv.style.display = 'block';
+            resultDiv.className = "exporter-inquiry-result notice ".concat(data.success ? 'success' : 'error');
+            resultDiv.innerHTML = data.success ? "<i class=\"fa-solid fa-circle-check\"></i> ".concat(((_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.message) || 'Inquiry sent successfully!') : "<i class=\"fa-solid fa-circle-exclamation\"></i> ".concat(((_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.message) || 'Failed to send inquiry. Please try again.');
+            if (data.success) _this.form.reset();
+          }
+        })["catch"](function (error) {
+          console.error('Inquiry AJAX error:', error);
+          if (resultDiv) {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'exporter-inquiry-result notice error';
+            resultDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Network error. Please check your connection.';
+          }
+        })["finally"](function () {
+          // Restore button state
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnText;
+        });
+      });
+    }
+  }, {
+    key: "bindCopyLink",
+    value: function bindCopyLink() {
+      var _this2 = this;
+      this.shareCopyBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = _this2.shareCopyBtn.dataset.url;
+        if (!url) return;
+
+        // Use Promise for clipboard API
+        var copyPromise = navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.resolve().then(function () {
+          // Fallback for older browsers
+          var textarea = document.createElement('textarea');
+          textarea.value = url;
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-9999px';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        });
+        copyPromise.then(function () {
+          // Show feedback
+          var originalText = _this2.shareCopyBtn.innerHTML;
+          _this2.shareCopyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+          setTimeout(function () {
+            _this2.shareCopyBtn.innerHTML = originalText;
+          }, 2000);
+        })["catch"](function (err) {
+          console.error('Copy failed:', err);
+          alert('Could not copy link. Please copy manually.');
+        });
+      });
+    }
+  }]);
+}();
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _classCallCheck)
+/* harmony export */ });
+function _classCallCheck(a, n) {
+  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/createClass.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/createClass.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _createClass)
+/* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
+
+function _defineProperties(e, r) {
+  for (var t = 0; t < r.length; t++) {
+    var o = r[t];
+    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o.key), o);
+  }
+}
+function _createClass(e, r, t) {
+  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+    writable: !1
+  }), e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPrimitive)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+
+function toPrimitive(t, r) {
+  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPropertyKey)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
+
+
+function toPropertyKey(t) {
+  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _typeof)
+/* harmony export */ });
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
+}
+
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/***/ ((module) => {
+
+module.exports = window["jQuery"];
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/js/app": 0,
+/******/ 			"css/style": 0,
+/******/ 			"css/gutenberg": 0,
+/******/ 			"css/admin": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkawps"] = self["webpackChunkawps"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["css/style","css/gutenberg","css/admin"], () => (__webpack_require__("./assets/src/scripts/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/style","css/gutenberg","css/admin"], () => (__webpack_require__("./assets/src/sass/style.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/style","css/gutenberg","css/admin"], () => (__webpack_require__("./assets/src/sass/admin.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/style","css/gutenberg","css/admin"], () => (__webpack_require__("./assets/src/sass/gutenberg.scss")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
