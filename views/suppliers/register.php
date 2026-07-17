@@ -288,7 +288,7 @@ $success_messages = array(
                     <input type="checkbox" name="terms_accepted" required>
                     <span>
                         <?php esc_html_e( 'I agree to the', 'awps' ); ?> 
-                        <a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>" target="_blank" rel="noopener">
+                        <a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>" target="_blank" rel="noopener">
                             <?php esc_html_e( 'Terms & Conditions', 'awps' ); ?>
                         </a> 
                         <?php esc_html_e( 'and', 'awps' ); ?> 
