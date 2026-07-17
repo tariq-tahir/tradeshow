@@ -292,7 +292,7 @@ $success_messages = array(
                             <?php esc_html_e( 'Terms & Conditions', 'awps' ); ?>
                         </a> 
                         <?php esc_html_e( 'and', 'awps' ); ?> 
-                        <a href="<?php echo esc_url( home_url( '/privacy/' ) ); ?>" target="_blank" rel="noopener">
+                        <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" target="_blank" rel="noopener">
                             <?php esc_html_e( 'Privacy Policy', 'awps' ); ?>
                         </a>.
                     </span>
