@@ -41,7 +41,7 @@ class Shortcodes
  * Displays a grid of all authors with posts
  */
 
-    public function awps_my_authors_list()
+    public function awps_my_authors_list($atts)
     {
     
         $atts = shortcode_atts([
