@@ -93,6 +93,16 @@ $term_name = $current_term->name ?? __('Products', 'awps');
             <!-- Pagination -->
             <?php custom_navigation(); ?>
 
+
+            <?php
+            $category_description = term_description( $current_term->term_id, 'product_cat' );
+            if ( ! empty( $category_description ) ) :
+            ?>
+                <div class="product-category-description">
+                    <?php echo wp_kses_post( $category_description ); ?>
+                </div>
+            <?php endif; ?>
+
         </main>
 
     </div>

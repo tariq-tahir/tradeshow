@@ -520,6 +520,21 @@ $container-max-width: 1200px;
     }
 }
 
+// ====== PRODUCT DESCRIPTION ======
+.product-category-description{
+    h1,h2,h3,h4,h5,h6{
+        font-size: 1rem;
+        font-weight: 600;
+        color: $medium-grey;
+    }
+
+    p{
+        color: $medium-grey;
+        font-size: 14px;
+        line-height: 1.3em;
+    }
+}
+
 // ====== PAGE TEMPLATE OVERRIDES ======
 
 .page-id-8388 #content{ padding: 0 !important; }

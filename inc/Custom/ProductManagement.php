@@ -20,6 +20,9 @@ class ProductManagement
         // Exclude products from disabled companies in main query
         add_action('pre_get_posts', [$this, 'exclude_products_from_disabled_companies']);
 
+        // Show 36 products per page on product category archives
+        add_action('pre_get_posts', [$this, 'set_product_category_per_page']);
+
         // AJAX: Toggle product visibility (publish/draft)
         add_action('wp_ajax_toggle_product_visibility', [$this, 'toggle_product_visibility']);
 
@@ -33,7 +36,7 @@ class ProductManagement
     public function enable_product_author_support() {
         add_post_type_support('product', 'author');
     }
-    
+
     /**
      * Exclude products belonging to disabled exporter accounts
      * from frontend product queries.
@@ -64,6 +67,19 @@ class ProductManagement
                 ];
                 $query->set('meta_query', $meta_query);
             }
+        }
+    }
+
+    /**
+     * Show 36 products per page on product category archive pages.
+     *
+     * @param \WP_Query $query
+     * @return void
+     */
+    public function set_product_category_per_page($query)
+    {
+        if (!is_admin() && $query->is_main_query() && is_tax('product_cat')) {
+            $query->set('posts_per_page', 36);
         }
     }
 
@@ -123,6 +139,4 @@ class ProductManagement
 
         wp_send_json($results);
     }
-
-    
 }
