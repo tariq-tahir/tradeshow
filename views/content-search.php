@@ -6,11 +6,23 @@
  * @package awps
  */
 
+// Suppliers store their logo in post meta, not as a featured image.
+$is_supplier    = 'supplier' === get_post_type();
+$supplier_logo  = $is_supplier ? get_post_meta( get_the_ID(), 'company_logo', true ) : '';
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('search-result-card'); ?>>
 
-	<?php if ( has_post_thumbnail() ) : ?>
+	<?php if ( $is_supplier && ! empty( $supplier_logo ) ) : ?>
+		<div class="search-result-thumb">
+			<a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+				<img src="<?php echo esc_url( $supplier_logo ); ?>"
+					 alt="<?php echo esc_attr( sprintf( __( '%s logo', 'awps' ), get_the_title() ) ); ?>"
+					 width="300" height="194"
+					 loading="lazy" decoding="async">
+			</a>
+		</div>
+	<?php elseif ( has_post_thumbnail() ) : ?>
 		<div class="search-result-thumb">
 			<a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 				<?php the_post_thumbnail( 'medium', array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
@@ -47,7 +59,7 @@
 		</div><!-- .entry-content -->
 
 		<a href="<?php echo esc_url( get_permalink() ); ?>" class="read-more">
-			<?php esc_html_e( 'Read More', 'awps' ); ?> <span aria-hidden="true">&rarr;</span>
+			<?php esc_html_e( 'Read More', 'awps' ); ?>
 		</a>
 	</div>
 

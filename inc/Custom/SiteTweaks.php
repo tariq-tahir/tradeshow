@@ -22,6 +22,9 @@ class SiteTweaks
 
         // Hide admin toolbar for Supplier role users
         add_filter('show_admin_bar', [$this, 'hide_admin_bar_for_suppliers'], 999);
+
+        // Exclude certain content types/pages from front-end search results
+        add_action('pre_get_posts', [$this, 'filter_search_results']);
     }
 
 
@@ -63,5 +66,66 @@ class SiteTweaks
         }
         
         return $show;
+    }
+
+    /**
+     * Exclude specific post types and pages from front-end search results.
+     *
+     * - Excludes the 'certification' CPT entirely.
+     * - Excludes specific admin/account pages by slug (dashboard, my-account, etc.)
+     *   so private/utility pages never surface in public search.
+     *
+     * @param \WP_Query $query
+     * @return void
+     */
+    public function filter_search_results($query)
+    {
+        if (is_admin() || !$query->is_search() || !$query->is_main_query()) {
+            return;
+        }
+
+        // 1. Exclude the 'certification' CPT from search results
+        $post_types = $query->get('post_type');
+
+        if (empty($post_types) || $post_types === 'any') {
+            // No explicit post_type set, so build the default searchable list
+            // (all public, search-enabled post types) minus 'certification'.
+            $post_types = get_post_types([
+                'public'              => true,
+                'exclude_from_search' => false,
+            ]);
+        } else {
+            $post_types = (array) $post_types;
+        }
+
+        $post_types = array_diff($post_types, ['certification']);
+        $query->set('post_type', array_values($post_types));
+
+        // 2. Exclude specific pages by slug (dashboard, my-account, etc.)
+        $excluded_slugs = [
+            'dashboard',
+            'my-account',
+            'home-page',
+            'suppliers',
+            'products',
+            'join-tradeshow',
+            'terms-conditions',
+            'privacy-policy',
+            'about-us',
+            'faqs'
+        ];
+
+        $excluded_ids = [];
+        foreach ($excluded_slugs as $slug) {
+            $page = get_page_by_path($slug);
+            if ($page) {
+                $excluded_ids[] = $page->ID;
+            }
+        }
+
+        if (!empty($excluded_ids)) {
+            $existing_excludes = (array) $query->get('post__not_in');
+            $query->set('post__not_in', array_merge($existing_excludes, $excluded_ids));
+        }
     }
 }
