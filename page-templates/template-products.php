@@ -200,6 +200,16 @@ if ( is_tax( 'product_cat' ) ) {
                 <?php endif; ?>
             </div>
 
+
+            <!-- Page Description (content of this /products/ page) -->
+            <?php if ( have_posts() ) : the_post(); ?>
+                <?php if ( ! empty( get_the_content() ) ) : ?>
+                    <div class="products-page-description">
+                        <?php the_content(); ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+
         </main>
     </div>
 </div><!-- .container -->

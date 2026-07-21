@@ -211,3 +211,32 @@
     }
   }
 }
+
+
+.suppliers-page-description{
+  padding: 70px;
+
+  @media (max-width: 480px) {
+    padding: 30px;
+  }
+
+  h1,h2,h3,h4,h5,h6{
+      font-size: 1rem;
+      font-weight: 600;
+      color: $medium-grey;
+  }
+
+  p{
+      color: $medium-grey;
+      font-size: 14px;
+      line-height: 1.3em;
+  }
+
+  ul,ol{
+      li{
+          color: $medium-grey;
+          font-size: 14px;
+          line-height: 1.3em;
+      }
+  }
+}
