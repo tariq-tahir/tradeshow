@@ -36,6 +36,7 @@ final class Init
 			Custom\SiteTweaks::class,
 			Api\Customizer::class,
 			Api\Gutenberg::class,
+			Api\MobileApi::class,
 			Api\Widgets\TextWidget::class,
 			Api\Widgets\LatestProductsWidget::class,
 			Plugins\ThemeJetpack::class,

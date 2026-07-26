@@ -160,7 +160,7 @@ class InquiryManager {
     /**
      * Send email notifications to exporter & buyer (with conditional fields + WhatsApp)
      */
-    protected function send_emails($inquiry_id, $source) {
+    public function send_emails($inquiry_id, $source) {
 
 
         $exporter_id = get_post_meta($inquiry_id, 'exporter_id', true);
