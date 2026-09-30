@@ -50,7 +50,7 @@ class InquiryManager {
      */
     public function handle_profile_inquiry() {
         if (!check_ajax_referer('exporter_inquiry_nonce', 'security', false)) {
-            wp_send_json_error(['message' => 'Security check failed. Please reload.']);
+            wp_send_json_error(['message' => __('Security check failed. Please reload.', 'awps')]);
         }
         
         $name        = sanitize_text_field($_POST['name'] ?? '');
@@ -60,7 +60,7 @@ class InquiryManager {
         $exporter_id = intval($_POST['exporter_id'] ?? 0);
 
         if (!$name || !$email || !$message || !$exporter_id) {
-            wp_send_json_error(['message' => 'Please fill Name, Email, and Message.']);
+            wp_send_json_error(['message' => __('Please fill Name, Email, and Message.', 'awps')]);
         }
 
         $inquiry_id = wp_insert_post([
@@ -71,7 +71,7 @@ class InquiryManager {
         ]);
 
         if (!$inquiry_id || is_wp_error($inquiry_id)) {
-            wp_send_json_error(['message' => 'Failed to save inquiry.']);
+            wp_send_json_error(['message' => __('Failed to save inquiry.', 'awps')]);
         }
 
 
@@ -86,7 +86,7 @@ class InquiryManager {
         update_post_meta($inquiry_id, 'product_id', 0);
 
         $this->send_emails($inquiry_id, 'profile');
-        wp_send_json_success(['message' => '✅ Inquiry sent successfully!']);
+        wp_send_json_success(['message' => __('✅ Inquiry sent successfully!', 'awps')]);
     }
 
     /**
@@ -96,7 +96,7 @@ class InquiryManager {
      */
         public function handle_product_inquiry() {
         if (!check_ajax_referer('awps_inquiry_nonce', 'security', false)) {
-            wp_send_json_error(['message' => 'Security check failed. Please reload.']);
+            wp_send_json_error(['message' => __('Security check failed. Please reload.', 'awps')]);
         }
         
         // Sanitize all fields (ADD WHATSAPP LINE)
@@ -115,10 +115,10 @@ class InquiryManager {
 
         // Validate required fields (WhatsApp is optional, so not in validation)
         if (!$company || !$name || !$email || !$country || !$destination_port || !$shipment_type || !$qty_value || !$qty_unit || !$message || !$product_id) {
-            wp_send_json_error(['message' => 'Please fill all required fields.']);
+            wp_send_json_error(['message' => __('Please fill all required fields.', 'awps')]);
         }
         if (!is_email($email)) {
-            wp_send_json_error(['message' => '❌ Please enter a valid email address.']);
+            wp_send_json_error(['message' => __('❌ Please enter a valid email address.', 'awps')]);
         }
 
         $inquiry_id = wp_insert_post([
@@ -129,7 +129,7 @@ class InquiryManager {
         ]);
 
         if (!$inquiry_id || is_wp_error($inquiry_id)) {
-            wp_send_json_error(['message' => 'Failed to save inquiry.']);
+            wp_send_json_error(['message' => __('Failed to save inquiry.', 'awps')]);
         }
 
         $code = $this->generate_inquiry_code();
@@ -153,7 +153,7 @@ class InquiryManager {
         update_post_meta($inquiry_id, 'exporter_id', $exporter_id);
 
         $this->send_emails($inquiry_id, 'product');
-        wp_send_json_success(['message' => '✅ Inquiry sent successfully! Reference: ' . $code]);
+        wp_send_json_success(['message' => sprintf(__('✅ Inquiry sent successfully! Reference: %s', 'awps'), $code)]);
     }
 
    

@@ -203,7 +203,17 @@ class Dashboard {
      * For PROFILE: returns certification titles only (text-based autocomplete)
      */
     public function get_certifications() {
-        $term = sanitize_text_field($_GET['term'] ?? '');
+        // Verify nonce for security
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'get_certifications')) {
+            wp_send_json_error(['message' => __('Security check failed.', 'awps')]);
+        }
+
+        $term = isset($_GET['term']) ? sanitize_text_field($_GET['term']) : '';
+        
+        if (empty($term)) {
+            wp_send_json_success([]);
+        }
+
         $certs = get_posts([
             'post_type'      => 'certification',
             'posts_per_page' => 15,
@@ -219,19 +229,29 @@ class Dashboard {
             if (!isset($seen[$cert->post_title])) {
                 $seen[$cert->post_title] = true;
                 $results[] = [
-                    'label' => $cert->post_title,
-                    'value' => $cert->post_title // ← intentional: text value for user meta
+                    'label' => esc_html($cert->post_title),
+                    'value' => esc_html($cert->post_title) // ← intentional: text value for user meta
                 ];
             }
         }
-        wp_send_json($results);
+        wp_send_json_success($results);
     }
 
     /**
      * For PRODUCT FORMS: returns { value: ID, label: Title } for proper post meta linking
      */
     public function search_certifications_by_id() {
-        $term = sanitize_text_field($_GET['term'] ?? '');
+        // Verify nonce for security
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'search_certifications_by_id')) {
+            wp_send_json_error(['message' => __('Security check failed.', 'awps')]);
+        }
+
+        $term = isset($_GET['term']) ? sanitize_text_field($_GET['term']) : '';
+        
+        if (empty($term)) {
+            wp_send_json_success([]);
+        }
+
         $certs = get_posts([
             'post_type'      => 'certification',
             'posts_per_page' => 15,
@@ -245,9 +265,9 @@ class Dashboard {
         foreach ($certs as $cert) {
             $results[] = [
                 'value' => (string) $cert->ID,      // Must be string ID
-                'label' => $cert->post_title
+                'label' => esc_html($cert->post_title)
             ];
         }
-        wp_send_json($results);
+        wp_send_json_success($results);
     }
 }

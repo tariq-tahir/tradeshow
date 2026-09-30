@@ -72,27 +72,52 @@ class ProductManagement
      */
     public function toggle_product_visibility()
     {
-        if (!wp_verify_nonce($_POST['visibility_nonce'] ?? '', 'toggle_visibility')) {
-            wp_send_json_error();
+        // Verify nonce
+        if (!isset($_POST['visibility_nonce']) || !wp_verify_nonce($_POST['visibility_nonce'], 'toggle_visibility')) {
+            wp_send_json_error(['message' => __('Security check failed. Please reload the page.', 'awps')]);
         }
 
-        $product_id = intval($_POST['product_id']);
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+        
+        if (!$product_id) {
+            wp_send_json_error(['message' => __('Invalid product ID.', 'awps')]);
+        }
+
         $user_id = get_current_user_id();
+
+        if (!$user_id) {
+            wp_send_json_error(['message' => __('You must be logged in to perform this action.', 'awps')]);
+        }
 
         // Security: ensure current user owns the product
         if (get_post_field('post_author', $product_id) != $user_id) {
-            wp_send_json_error();
+            wp_send_json_error(['message' => __('You do not have permission to modify this product.', 'awps')]);
         }
 
         $current_status = get_post_status($product_id);
+        
+        if (!$current_status) {
+            wp_send_json_error(['message' => __('Product not found.', 'awps')]);
+        }
+
         $new_status = ($current_status === 'publish') ? 'draft' : 'publish';
 
-        wp_update_post([
+        $result = wp_update_post([
             'ID'          => $product_id,
             'post_status' => $new_status
         ]);
 
-        wp_send_json_success(['status' => $new_status]);
+        if (is_wp_error($result)) {
+            wp_send_json_error(['message' => __('Failed to update product status.', 'awps')]);
+        }
+
+        wp_send_json_success([
+            'status' => $new_status,
+            'message' => sprintf(
+                __('Product %s successfully.', 'awps'),
+                $new_status === 'publish' ? __('published', 'awps') : __('hidden', 'awps')
+            )
+        ]);
     }
 
     /**
@@ -101,27 +126,37 @@ class ProductManagement
      */
     public function search_product_categories()
     {
-        $term = sanitize_text_field($_GET['term'] ?? '');
-        if (strlen($term) < 2) {
-            wp_send_json([]);
+        // Verify nonce for security
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'search_product_categories')) {
+            wp_send_json_error(['message' => __('Security check failed.', 'awps')]);
         }
 
-        $terms = get_terms( array(
+        $term = isset($_GET['term']) ? sanitize_text_field($_GET['term']) : '';
+        
+        if (empty($term) || strlen($term) < 2) {
+            wp_send_json_success([]);
+        }
+
+        $terms = get_terms([
             'taxonomy'   => 'product_cat',
             'hide_empty' => false,
             'search'     => $term,
             'number'     => 10,
-        ) );
+        ]);
+
+        if (is_wp_error($terms)) {
+            wp_send_json_error(['message' => __('Failed to search categories.', 'awps')]);
+        }
 
         $results = [];
         foreach ($terms as $term_obj) {
             $results[] = [
-                'label' => $term_obj->name,
+                'label' => esc_html($term_obj->name),
                 'value' => (string) $term_obj->term_id
             ];
         }
 
-        wp_send_json($results);
+        wp_send_json_success($results);
     }
 
     
