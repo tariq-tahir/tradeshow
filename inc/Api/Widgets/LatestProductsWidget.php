@@ -16,11 +16,11 @@ class LatestProductsWidget extends WP_Widget {
 
 	public function __construct() {
 		$this->widget_ID = 'awps_latest_products';
-		$this->widget_name = 'AWPS Latest Products';
+		$this->widget_name = __( 'AWPS Latest Products', 'awps' );
 
 		$this->widget_options = array(
 			'classname' => $this->widget_ID,
-			'description' => 'Shows latest WooCommerce products in a carousel.',
+			'description' => __( 'Shows latest WooCommerce products in a carousel.', 'awps' ),
 			'customize_selective_refresh' => true,
 		);
 

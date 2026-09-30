@@ -292,7 +292,7 @@ class ProductMeta {
         global $post;
 
         echo '<div class="options_group" id="awps-export-details">';
-        echo '<h3>🇵🇰 AWPS Export & Product Details</h3>';
+        echo '<h3>🇵🇰 ' . esc_html__( 'AWPS Export & Product Details', 'awps' ) . '</h3>';
 
         // Made in Pakistan Toggle
         woocommerce_wp_checkbox([
@@ -309,8 +309,8 @@ class ProductMeta {
             'id'          => '_hs_code',
             'label'       => '🔢 HS Code',
             'desc_tip'    => true,
-            'description' => 'Harmonized System Code for customs and tariffs.',
-            'placeholder' => 'e.g., 1006.30',
+            'description' => __('Harmonized System Code for customs and tariffs.', 'awps'),
+            'placeholder' => __('e.g., 1006.30', 'awps'),
             'value'       => get_post_meta($post->ID, '_hs_code', true),
         ]);
 
@@ -319,8 +319,8 @@ class ProductMeta {
             'id'          => '_moq',
             'label'       => '📦 Minimum Order Quantity (MOQ)',
             'desc_tip'    => true,
-            'description' => 'e.g., 1 Ton, 500 Units',
-            'placeholder' => 'e.g., 1 Ton',
+            'description' => __('e.g., 1 Ton, 500 Units', 'awps'),
+            'placeholder' => __('e.g., 1 Ton', 'awps'),
             'value'       => get_post_meta($post->ID, '_moq', true),
         ]);
 
@@ -328,7 +328,7 @@ class ProductMeta {
         $packaging_value = get_post_meta($post->ID, '_packaging_details', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_packaging_details">🧷 Packaging Options</label>';
-        echo '<input type="text" id="_packaging_details_input" class="awps-tag-input" placeholder="Start typing packaging option...">';
+        echo '<input type="text" id="_packaging_details_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing packaging option...', 'awps' ); ?>">';
         echo '<div id="_packaging_details_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_packaging_details" value="' . esc_attr($packaging_value) . '">';
         echo '<span class="description">Select from standard packaging options.</span>';
@@ -339,8 +339,8 @@ class ProductMeta {
             'id'          => '_lead_time',
             'label'       => '⏱️ Lead Time',
             'desc_tip'    => true,
-            'description' => 'Production + preparation time after order confirmation.',
-            'placeholder' => 'e.g., 15–20 Days After Order Confirmation',
+            'description' => __('Production + preparation time after order confirmation.', 'awps'),
+            'placeholder' => __('e.g., 15–20 Days After Order Confirmation', 'awps'),
             'value'       => get_post_meta($post->ID, '_lead_time', true),
         ]);
 
@@ -348,7 +348,7 @@ class ProductMeta {
         $shipping_value = get_post_meta($post->ID, '_shipping_options', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_shipping_options">🚢 Shipping Methods</label>';
-        echo '<input type="text" id="_shipping_options_input" class="awps-tag-input" placeholder="Start typing shipping method...">';
+        echo '<input type="text" id="_shipping_options_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing shipping method...', 'awps' ); ?>">';
         echo '<div id="_shipping_options_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_shipping_options" value="' . esc_attr($shipping_value) . '">';
         echo '<span class="description">e.g., FCL, LCL, Express Air Cargo.</span>';
@@ -358,7 +358,7 @@ class ProductMeta {
         $payment_value = get_post_meta($post->ID, '_payment_terms', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_payment_terms">💵 Payment Terms</label>';
-        echo '<input type="text" id="_payment_terms_input" class="awps-tag-input" placeholder="Start typing payment term...">';
+        echo '<input type="text" id="_payment_terms_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing payment term...', 'awps' ); ?>">';
         echo '<div id="_payment_terms_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_payment_terms" value="' . esc_attr($payment_value) . '">';
         echo '<span class="description">e.g., TT, LC at Sight, Open Account 30 Days.</span>';
@@ -368,7 +368,7 @@ class ProductMeta {
         $incoterms_value = get_post_meta($post->ID, '_incoterms', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_incoterms">🧭 Incoterms</label>';
-        echo '<input type="text" id="_incoterms_input" class="awps-tag-input" placeholder="Start typing incoterm code or description...">';
+        echo '<input type="text" id="_incoterms_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing incoterm code or description...', 'awps' ); ?>">';
         echo '<div id="_incoterms_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_incoterms" value="' . esc_attr($incoterms_value) . '">';
         echo '<span class="description">e.g., FOB, CIF, DDP — stores code only. Full description used for tooltip later.</span>';
@@ -378,7 +378,7 @@ class ProductMeta {
         $benefits_value = get_post_meta($post->ID, '_key_benefits', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_key_benefits">✅ Key Benefits</label>';
-        echo '<input type="text" id="_key_benefits_input" class="awps-tag-input" placeholder="Start typing benefit or press Enter/Comma">';
+        echo '<input type="text" id="_key_benefits_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing benefit or press Enter/Comma', 'awps' ); ?>">';
         echo '<div id="_key_benefits_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_key_benefits" value="' . esc_attr($benefits_value) . '">';
         echo '<span class="description">Press Enter or Comma to add custom benefits. Common ones auto-suggested.</span>';
@@ -388,7 +388,7 @@ class ProductMeta {
         $quality_value = get_post_meta($post->ID, '_quality_control', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_quality_control">🧪 Quality Control & Sample Info</label>';
-        echo '<input type="text" id="_quality_control_input" class="awps-tag-input" placeholder="Start typing QC phrase or press Enter/Comma">';
+        echo '<input type="text" id="_quality_control_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing QC phrase or press Enter/Comma', 'awps' ); ?>">';
         echo '<div id="_quality_control_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_quality_control" value="' . esc_attr($quality_value) . '">';
         echo '<span class="description">Includes sample policies. Press Enter or Comma to add custom phrases.</span>';
@@ -398,7 +398,7 @@ class ProductMeta {
         $sample_value = get_post_meta($post->ID, '_sample_policies', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_sample_policies">📦 Sample Policies</label>';
-        echo '<input type="text" id="_sample_policies_input" class="awps-tag-input" placeholder="Start typing sample policy...">';
+        echo '<input type="text" id="_sample_policies_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing sample policy...', 'awps' ); ?>">';
         echo '<div id="_sample_policies_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_sample_policies" value="' . esc_attr($sample_value) . '">';
         echo '<span class="description">Standardized sample availability terms.</span>';
@@ -408,7 +408,7 @@ class ProductMeta {
         $certifications_value = get_post_meta($post->ID, '_certifications', true);
         echo '<p class="form-field awps-tag-container">';
         echo '<label for="_certifications">🏅 Certifications</label>';
-        echo '<input type="text" id="_certifications_input" class="awps-tag-input" placeholder="Start typing certification name...">';
+        echo '<input type="text" id="_certifications_input" class="awps-tag-input" placeholder="<?php esc_attr_e( 'Start typing certification name...', 'awps' ); ?>">';
         echo '<div id="_certifications_list" class="awps-tag-list"></div>';
         echo '<input type="hidden" name="_certifications" value="' . esc_attr($certifications_value) . '">';
         echo '<span class="description">Select from verified certifications. Press Enter or select to add.</span>';
@@ -419,8 +419,8 @@ class ProductMeta {
             'id'          => '_factory_video_url',
             'label'       => '🎥 Factory/Processing Video (Optional)',
             'desc_tip'    => true,
-            'description' => 'YouTube, Vimeo, or direct video URL.',
-            'placeholder' => 'https://youtube.com/watch?v=...',
+            'description' => __('YouTube, Vimeo, or direct video URL.', 'awps'),
+            'placeholder' => __('https://youtube.com/watch?v=...', 'awps'),
             'type'        => 'url',
             'value'       => get_post_meta($post->ID, '_factory_video_url', true),
         ]);

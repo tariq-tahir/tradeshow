@@ -146,7 +146,7 @@ class UserRolesAndRedirects
     {
         if (isset($_GET['login']) && $_GET['login'] === 'disabled') {
             wc_print_notice(
-                'Your company account has been disabled. Please contact the administrator for assistance.',
+                esc_html__( 'Your company account has been disabled. Please contact the administrator for assistance.', 'awps' ),
                 'error'
             );
         }

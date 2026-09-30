@@ -242,7 +242,7 @@ class Shortcodes
                         <?php endwhile; ?>
                         <?php wp_reset_postdata(); ?>
                     <?php else : ?>
-                        <p class="no-results">No suppliers found.</p>
+                        <p class="no-results"><?php esc_html_e( 'No suppliers found.', 'awps' ); ?></p>
                     <?php endif; ?>
                 </div>
 
@@ -254,8 +254,8 @@ class Shortcodes
                             'current' => $paged,
                             'base'    => trailingslashit(get_permalink()) . '%_%',
                             'format'  => 'page/%#%/',
-                            'prev_text' => '&laquo; Prev',
-                            'next_text' => 'Next &raquo;',
+                            'prev_text' => __( '&laquo; Prev', 'awps' ),
+                            'next_text' => __( 'Next &raquo;', 'awps' ),
                             'type'      => 'list',
                         ]);
                         ?>
@@ -366,7 +366,7 @@ class Shortcodes
 
         } elseif ( is_search() ) {
 
-            echo 'Search results for "' . get_search_query() . '"';
+            printf( '%s &ldquo;%s&rdquo;', esc_html__( 'Search results for', 'awps' ), esc_html( get_search_query() ) );
 
         } elseif ( is_tag() ) {
 
@@ -374,7 +374,7 @@ class Shortcodes
 
         } elseif ( is_author() ) {
 
-            echo 'Author: ' . get_the_author();
+            echo esc_html__( 'Author:', 'awps' ) . ' ' . esc_html( get_the_author() );
 
         } elseif ( is_archive() ) {
 
@@ -483,7 +483,7 @@ class Shortcodes
         // ════════════════════════════════════════════════════════════════
         $inquiry_id = wp_insert_post([
             'post_type' => 'inquiry',
-            'post_title' => $subject ?: 'Contact Form Inquiry',
+            'post_title' => $subject ?: __( 'Contact Form Inquiry', 'awps' ),
             'post_status' => 'publish',
             'post_author' => 1,
             'post_content' => $message,
@@ -511,15 +511,15 @@ class Shortcodes
             'Content-Type: text/html; charset=UTF-8'
         ];
 
-        $email_body = '<h3>New Contact Form Inquiry</h3>';
-        $email_body .= '<p><strong>Name:</strong> ' . esc_html($name) . '</p>';
-        $email_body .= '<p><strong>Email:</strong> ' . esc_html($email) . '</p>';
-        $email_body .= '<p><strong>Subject:</strong> ' . esc_html($subject) . '</p>';
-        $email_body .= '<p><strong>Message:</strong></p>';
+        $email_body = '<h3>' . esc_html__( 'New Contact Form Inquiry', 'awps' ) . '</h3>';
+        $email_body .= '<p><strong>' . esc_html__( 'Name:', 'awps' ) . '</strong> ' . esc_html($name) . '</p>';
+        $email_body .= '<p><strong>' . esc_html__( 'Email:', 'awps' ) . '</strong> ' . esc_html($email) . '</p>';
+        $email_body .= '<p><strong>' . esc_html__( 'Subject:', 'awps' ) . '</strong> ' . esc_html($subject) . '</p>';
+        $email_body .= '<p><strong>' . esc_html__( 'Message:', 'awps' ) . '</strong></p>';
         $email_body .= '<p>' . nl2br(esc_html($message)) . '</p>';
-        $email_body .= '<p><em>Sent from: ' . home_url() . ' | IP: ' . esc_html($ip) . '</em></p>';
+        $email_body .= '<p><em>' . esc_html__( 'Sent from:', 'awps' ) . ' ' . esc_url( home_url() ) . ' | ' . esc_html__( 'IP:', 'awps' ) . ' ' . esc_html($ip) . '</em></p>';
 
-        wp_mail($admin_email, 'New Contact: ' . $subject, $email_body, $headers);
+        wp_mail( $admin_email, sprintf( __( 'New Contact: %s', 'awps' ), $subject ), $email_body, $headers );
 
         // ════════════════════════════════════════════════════════════════
         // ✅ SUCCESS REDIRECT

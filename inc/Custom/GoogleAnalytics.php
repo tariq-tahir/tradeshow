@@ -95,7 +95,7 @@ class GoogleAnalytics
 
 		if ( empty( $measurement_id ) ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'GoogleAnalytics: No Measurement ID configured.' );
+				error_log( 'GoogleAnalytics: ' . __( 'No Measurement ID configured.', 'awps' ) );
 			}
 			return;
 		}

@@ -689,10 +689,10 @@ class InquiryManager {
     public function handle_export_csv() {
         if (!isset($_GET['export_inquiries'])) return;
         if (!wp_verify_nonce($_GET['_wpnonce'] ?? '', 'export_inquiries_nonce')) {
-            wp_die('Security check failed.');
+            wp_die( esc_html__( 'Security check failed.', 'awps' ) );
         }
         if (!current_user_can('edit_posts')) {
-            wp_die('Insufficient permissions.');
+            wp_die( esc_html__( 'Insufficient permissions.', 'awps' ) );
         }
 
         $source = isset($_GET['source']) ? sanitize_text_field($_GET['source']) : '';
@@ -707,8 +707,10 @@ class InquiryManager {
         
         $output = fopen('php://output', 'w');
         fputcsv($output, [
-            'Ref Code', 'Source', 'Company', 'Name', 'Email', 'WhatsApp', 
-            'Country', 'Port', 'Shipment', 'Quantity', 'Message', 'Supplier', 'Date'
+            __( 'Ref Code', 'awps' ), __( 'Source', 'awps' ), __( 'Company', 'awps' ), __( 'Name', 'awps' ),
+            __( 'Email', 'awps' ), __( 'WhatsApp', 'awps' ), __( 'Country', 'awps' ), __( 'Port', 'awps' ),
+            __( 'Shipment', 'awps' ), __( 'Quantity', 'awps' ), __( 'Message', 'awps' ), __( 'Supplier', 'awps' ),
+            __( 'Date', 'awps' )
         ]);
 
         

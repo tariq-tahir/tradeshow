@@ -331,7 +331,7 @@ Reference: {$reg_data['company_name']} - Supplier Registration
         wp_mail($admin_email, $subject, $admin_message, $headers);
         
         // ✅ STEP 2: Email user with confirmation + payment instructions
-        $user_subject = 'Thank you for registering with TradeShow - Next Steps';
+        $user_subject = __( 'Thank you for registering with TradeShow - Next Steps', 'awps' );
 
 
         //<hr>

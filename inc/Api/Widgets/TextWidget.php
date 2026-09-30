@@ -20,7 +20,7 @@ class TextWidget extends WP_Widget
 
 		$this->widget_ID = 'widget_awps';
 
-		$this->widget_name = 'AWPS Custom Text';
+		$this->widget_name = __( 'AWPS Custom Text', 'awps' );
 
 		$this->widget_options = array(
 			'classname' => $this->widget_ID,
