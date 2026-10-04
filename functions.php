@@ -34,6 +34,9 @@ add_action('template_redirect', function() {
 
 
 add_action( 'awps_breadcrumb', 'awps_render_breadcrumb' );
+/**
+ * Awps render breadcrumb.
+ */
 function awps_render_breadcrumb() {
     if ( function_exists( 'awps_custom_breadcrumb' ) ) {
         awps_custom_breadcrumb();

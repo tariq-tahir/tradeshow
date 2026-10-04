@@ -35,7 +35,7 @@ class Footer
 		) );
 
 		$wp_customize->add_setting( 'awps_footer_copy_text' , array(
-			'default' => 'Proudly powered by AWPS',
+			'default' => __( 'Proudly powered by AWPS', 'awps' ),
 			'transport' => 'postMessage', // or refresh if you want the entire page to reload
 		) );
 

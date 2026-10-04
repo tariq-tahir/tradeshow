@@ -1,7 +1,13 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Defines the field schema used by the supplier profile form.
+ */
 class ProfileFields {
+    /**
+     * Register.
+     */
     public function register() {
         add_action('show_user_profile', [$this, 'fields']);
         add_action('edit_user_profile', [$this, 'fields']);
@@ -45,6 +51,11 @@ class ProfileFields {
         });
     }
 
+    /**
+     * Fields.
+     *
+     * @param mixed $user The user.
+     */
     public function fields($user) {
         if (!in_array('supplier', (array) $user->roles)) return;
 
@@ -317,6 +328,11 @@ class ProfileFields {
         <?php
     }
 
+    /**
+     * Save.
+     *
+     * @param int $user_id The user id.
+     */
     public function save($user_id) {
         if (!current_user_can('edit_user', $user_id)) return;
 

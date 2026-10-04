@@ -17,6 +17,9 @@ class Tags
 			add_action( 'save_post', array( $this, 'category_transient_flusher' ) );
 		}
 
+		/**
+		 * Posted on.
+		 */
 		public static function posted_on()
 	{
 		// Date archive link (year / month / day)
@@ -51,6 +54,9 @@ class Tags
 
 
 
+	/**
+	 * Entry footer.
+	 */
 	public static function entry_footer()
 	{
 
@@ -84,6 +90,9 @@ class Tags
 		);
 	}
 
+	/**
+	 * Categorized blog.
+	 */
 	public static function categorized_blog()
 	{
 		if (false === ($all_the_cool_cats = get_transient('awps_categories'))) {
@@ -107,6 +116,9 @@ class Tags
 		}
 	}
 
+	/**
+	 * Category transient flusher.
+	 */
 	public function category_transient_flusher()
 	{
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
@@ -116,6 +128,11 @@ class Tags
 	}
 
 
+	/**
+	 * Get post categories with links.
+	 *
+	 * @param int $post_id The post id.
+	 */
 	public static function get_post_categories_with_links( $post_id = null ) {
 
 		if ( ! $post_id ) {
@@ -143,6 +160,12 @@ class Tags
 	}
 
 
+	/**
+	 * Get post terms with links.
+	 *
+	 * @param mixed $taxonomy The taxonomy.
+	 * @param int $post_id The post id.
+	 */
 	public static function get_post_terms_with_links( $taxonomy = 'category', $post_id = null ) {
 
 		if ( ! $post_id ) {

@@ -1,8 +1,14 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Rewrite rules and query vars for frontend supplier dashboard routes.
+ */
 class Routes
 {
+    /**
+     * Register.
+     */
     public function register()
     {
         add_action('init', [$this, 'add_rewrite_rules']);
@@ -11,6 +17,9 @@ class Routes
         add_action('after_switch_theme', 'flush_rewrite_rules');
     }
 
+    /**
+     * Add rewrite rules.
+     */
     public function add_rewrite_rules()
     {
 
@@ -19,12 +28,20 @@ class Routes
         add_rewrite_rule('^supplier/([^/]+)/?$', 'index.php?supplier=$matches[1]', 'top');
     }
 
+    /**
+     * Add query vars.
+     *
+     * @param mixed $vars The vars.
+     */
     public function add_query_vars($vars)
     {
         $vars[] = 'supplier'; // WordPress will auto-resolve this for CPT
         return $vars;
     }
 
+    /**
+     * Load templates.
+     */
     public function load_templates()
     {
         // Handle single supplier profile

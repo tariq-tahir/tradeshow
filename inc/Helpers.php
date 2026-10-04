@@ -126,6 +126,9 @@ function get_shipping_methods(){
 ];
 }
 
+/**
+ * Get payment terms.
+ */
 function get_payment_terms(){
     return [
         // Pure payment methods/instruments
@@ -171,6 +174,9 @@ function get_payment_terms(){
 
 
 
+/**
+ * Get intoterms.
+ */
 function get_intoterms(){
 	return [
     "EXW" => "Ex Works",
@@ -187,6 +193,9 @@ function get_intoterms(){
 	];
 }
 
+/**
+ * Get languages.
+ */
 function get_languages() {
 	return [
 		    'English', 'Mandarin Chinese', 'Hindi', 'Spanish', 'French', 'Arabic', 
@@ -214,6 +223,9 @@ function get_languages() {
 	];
 }
 
+/**
+ * Get countries.
+ */
 function get_countries() {
 	return [
 		'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
@@ -438,6 +450,11 @@ if ( ! function_exists('svg') ) {
  * @return void
  */
 if ( ! function_exists( 'awps_comment_navigation' ) ) :
+	/**
+	 * Awps comment navigation.
+	 *
+	 * @param mixed $position The position.
+	 */
 	function awps_comment_navigation( $position = 'above' ) {
 		// Bail if no pagination needed
 		if ( get_comment_pages_count() <= 1 || ! get_option( 'page_comments' ) ) {

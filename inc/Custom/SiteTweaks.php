@@ -17,7 +17,7 @@ class SiteTweaks
         // Set custom excerpt length
         add_filter('excerpt_length', [$this, 'set_excerpt_length']);
 
-        // Show "Password changed" notice on My Account page
+        // Show the password-changed notice on My Account page (see show_password_changed_notice)
         add_action('woocommerce_before_customer_login_form', [$this, 'show_password_changed_notice']);
 
         // Hide admin toolbar for Supplier role users

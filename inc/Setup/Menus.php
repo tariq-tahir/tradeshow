@@ -16,6 +16,9 @@ class Menus
         add_action( 'after_setup_theme', array( $this, 'menus' ) );
     }
 
+    /**
+     * Menus.
+     */
     public function menus()
     {
         /*

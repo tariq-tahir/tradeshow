@@ -115,28 +115,75 @@ class UserRolesAndRedirects
     public function check_exporter_account_status()
     {
         // Only run on dashboard pages
-        if (is_page('dashboard') || strpos($_SERVER['REQUEST_URI'] ?? '', '/dashboard/') !== false) {
-            $current_user = wp_get_current_user();
+        if (!$this->is_dashboard_request()) {
+            return;
+        }
 
-            // If logged in and is an exporter
-            if ($current_user->ID && in_array('exporter', (array) $current_user->roles)) {
-                $company_status = get_user_meta($current_user->ID, 'company_status', true);
-                if ($company_status === 'disabled') {
-                    if (ob_get_level()) {
-                        ob_end_clean();
-                    }
-                    wp_logout();
-                    wp_redirect(add_query_arg('login', 'disabled', wc_get_page_permalink('myaccount')));
-                    exit;
-                }
+        $current_user = wp_get_current_user();
+
+        // Logged-out visitors are sent to My Account
+        if (!$current_user->ID) {
+            wp_redirect($this->my_account_url());
+            exit;
+        }
+
+        // Disabled exporters are logged out and redirected
+        if ($this->is_disabled_exporter($current_user)) {
+            if (ob_get_level()) {
+                ob_end_clean();
             }
+            wp_logout();
+            wp_redirect(add_query_arg('login', 'disabled', $this->my_account_url()));
+            exit;
+        }
+    }
 
-            // If not logged in, redirect to My Account
-            if (!$current_user->ID) {
-                wp_redirect(wc_get_page_permalink('myaccount'));
-                exit;
+    /**
+     * Whether the current request targets a dashboard page.
+     *
+     * @return bool
+     */
+    protected function is_dashboard_request()
+    {
+        if (is_page('dashboard')) {
+            return true;
+        }
+
+        $uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+
+        return strpos($uri, '/dashboard/') !== false;
+    }
+
+    /**
+     * Whether the given user is an exporter with a disabled company account.
+     *
+     * @param \WP_User $current_user
+     * @return bool
+     */
+    protected function is_disabled_exporter($current_user)
+    {
+        if (!in_array('exporter', (array) $current_user->roles, true)) {
+            return false;
+        }
+
+        return get_user_meta($current_user->ID, 'company_status', true) === 'disabled';
+    }
+
+    /**
+     * Resolve the My Account URL, with a safe fallback when WooCommerce is inactive.
+     *
+     * @return string
+     */
+    protected function my_account_url()
+    {
+        if (function_exists('wc_get_page_permalink')) {
+            $url = wc_get_page_permalink('myaccount');
+            if ($url) {
+                return $url;
             }
         }
+
+        return home_url('/my-account/');
     }
 
     /**
@@ -146,7 +193,7 @@ class UserRolesAndRedirects
     {
         if (isset($_GET['login']) && $_GET['login'] === 'disabled') {
             wc_print_notice(
-                'Your company account has been disabled. Please contact the administrator for assistance.',
+                esc_html__( 'Your company account has been disabled. Please contact the administrator for assistance.', 'awps' ),
                 'error'
             );
         }

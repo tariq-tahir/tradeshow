@@ -1,8 +1,14 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Keeps the supplier CPT in sync with WP user role/profile changes.
+ */
 class SupplierSync
 {
+    /**
+     * Register.
+     */
     public function register()
     {
         add_action('set_user_role', [$this, 'on_user_role_change'], 10, 3);
@@ -10,6 +16,13 @@ class SupplierSync
         add_action('profile_update', [$this, 'on_profile_update'], 10, 2);
     }
 
+    /**
+     * On user role change.
+     *
+     * @param int $user_id The user id.
+     * @param string $new_role The new role.
+     * @param array $old_roles The old roles.
+     */
     public function on_user_role_change($user_id, $new_role, $old_roles)
     {
         $was_supplier = in_array('supplier', (array) $old_roles);
@@ -22,6 +35,12 @@ class SupplierSync
         }
     }
 
+    /**
+     * On profile update.
+     *
+     * @param int $user_id The user id.
+     * @param WP_User $old_user_data The old user data.
+     */
     public function on_profile_update($user_id, $old_user_data)
     {
         $old_roles = (array) $old_user_data->roles;
@@ -38,6 +57,11 @@ class SupplierSync
         }
     }
 
+    /**
+     * On user delete.
+     *
+     * @param int $user_id The user id.
+     */
     public function on_user_delete($user_id)
     {
         $user = get_user_by('ID', $user_id);
@@ -46,6 +70,11 @@ class SupplierSync
         }
     }
 
+    /**
+     * Create supplier post.
+     *
+     * @param int $user_id The user id.
+     */
     private function create_supplier_post($user_id)
     {
         // Prevent duplicates
@@ -106,6 +135,11 @@ class SupplierSync
         }
     }
 
+    /**
+     * Trash supplier post.
+     *
+     * @param int $user_id The user id.
+     */
     private function trash_supplier_post($user_id)
     {
         $post = $this->get_supplier_post_by_user($user_id);
@@ -114,6 +148,11 @@ class SupplierSync
         }
     }
 
+    /**
+     * Get supplier post by user.
+     *
+     * @param int $user_id The user id.
+     */
     public function get_supplier_post_by_user($user_id)
     {
         $posts = get_posts([

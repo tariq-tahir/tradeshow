@@ -1,8 +1,14 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Supplier dashboard: admin menu, assets, profile saving, and AJAX endpoints.
+ */
 class Dashboard {
 
+    /**
+     * Register.
+     */
     public function register() {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_dashboard_assets']);
         
@@ -14,6 +20,9 @@ class Dashboard {
         add_action('wp_ajax_awps_search_certifications_by_id', [$this, 'search_certifications_by_id']);
     }
 
+    /**
+     * Enqueue dashboard assets.
+     */
     public function enqueue_dashboard_assets() {
         // Only load on the actual Dashboard page (by slug)
         if (!is_page()) {
@@ -77,6 +86,30 @@ class Dashboard {
     public function save_profile($user_id) {
         $u = $user_id;
         $company_name = !empty($_POST['company_name']) ? sanitize_title($_POST['company_name']) : 'company-' . $u;
+
+        $this->save_profile_images($u, $company_name);
+        $this->save_profile_fields($u);
+
+        /**
+         * Fires after a supplier profile has been saved from the frontend dashboard.
+         *
+         * @param int    $u            The user ID whose profile was saved.
+         * @param string $company_name The sanitized company slug used for media naming.
+         */
+        do_action('awps_profile_saved', $u, $company_name);
+
+        $redirect_url = add_query_arg('updated', '1', wp_get_referer());
+        wp_safe_redirect($redirect_url);
+        exit;
+    }
+
+    /**
+     * Handle logo/banner uploads and removals for the profile.
+     *
+     * @param int    $u            User ID.
+     * @param string $company_name Sanitized company name used for file naming.
+     */
+    protected function save_profile_images($u, $company_name) {
         $page = get_page_by_path('dashboard');
         $parent_id = $page ? $page->ID : 0;
 
@@ -99,7 +132,7 @@ class Dashboard {
             ]
         ];
 
-        foreach ($image_map as $type => $keys) {
+        foreach ($image_map as $keys) {
             $existing_url = get_user_meta($u, $keys['meta_key'], true);
             $existing_id = $existing_url ? attachment_url_to_postid($existing_url) : 0;
             $attachment_id = $existing_id;
@@ -146,7 +179,14 @@ class Dashboard {
                 update_post_meta($attachment_id, '_wp_attachment_image_alt', sanitize_text_field($_POST[$keys['alt_key']]));
             }
         }
+    }
 
+    /**
+     * Persist all non-file profile fields to user meta.
+     *
+     * @param int $u User ID.
+     */
+    protected function save_profile_fields($u) {
         // Text fields
         $text_fields = ['company_name', 'address', 'state', 'city', 'phone', 'whatsapp', 'annual_capacity', 'lead_time', 'contact_person', 'designation', 'skype', 'working_hours'];
         foreach ($text_fields as $field) {
@@ -193,10 +233,6 @@ class Dashboard {
         } else {
             delete_user_meta($u, 'certifications');
         }
-
-        $redirect_url = add_query_arg('updated', '1', wp_get_referer());
-        wp_safe_redirect($redirect_url);
-        exit;
     }
 
     /**

@@ -2,8 +2,14 @@
 
 namespace AWPS\Suppliers;
 
+/**
+ * Public supplier profile page rendering helpers.
+ */
 class SupplierProfile
 {
+    /**
+     * Register.
+     */
     public function register()
     {
         add_action('add_meta_boxes', [$this, 'add_supplier_meta_box']);

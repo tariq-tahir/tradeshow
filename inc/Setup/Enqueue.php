@@ -2,13 +2,22 @@
 
 namespace Awps\Setup;
 
+/**
+ * Frontend/admin script and style enqueuing.
+ */
 class Enqueue 
 {
+    /**
+     * Register.
+     */
     public function register() 
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
+    /**
+     * Enqueue scripts.
+     */
     public function enqueue_scripts() 
     {
 

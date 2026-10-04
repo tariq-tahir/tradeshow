@@ -30,6 +30,9 @@ class ProductManagement
         add_action('init', [$this, 'enable_product_author_support']);
     }
 
+    /**
+     * Enable product author support.
+     */
     public function enable_product_author_support() {
         add_post_type_support('product', 'author');
     }
@@ -110,6 +113,16 @@ class ProductManagement
         if (is_wp_error($result)) {
             wp_send_json_error(['message' => __('Failed to update product status.', 'awps')]);
         }
+
+        /**
+         * Fires after a supplier toggles a product's visibility from the dashboard.
+         *
+         * @param int    $product_id The product post ID.
+         * @param string $new_status The new post status ('publish' or 'draft').
+         * @param string $current_status The previous post status.
+         * @param int    $user_id    The user who performed the toggle.
+         */
+        do_action('awps_product_visibility_changed', $product_id, $new_status, $current_status, $user_id);
 
         wp_send_json_success([
             'status' => $new_status,

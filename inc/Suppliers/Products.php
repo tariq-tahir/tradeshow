@@ -8,6 +8,9 @@
 
 namespace AWPS\Suppliers;
 
+/**
+ * Supplier-facing product management helpers.
+ */
 class Products {
     
     /**

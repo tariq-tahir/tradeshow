@@ -1,7 +1,13 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Manages custom user roles (supplier/exporter) and their capabilities.
+ */
 class Roles {
+  /**
+   * Register.
+   */
   public function register() {
     add_action('init', function () {
       add_role('supplier', 'Supplier', [
