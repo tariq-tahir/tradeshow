@@ -16,11 +16,11 @@ class LatestProductsWidget extends WP_Widget {
 
 	public function __construct() {
 		$this->widget_ID = 'awps_latest_products';
-		$this->widget_name = 'AWPS Latest Products';
+		$this->widget_name = __( 'AWPS Latest Products', 'awps' );
 
 		$this->widget_options = array(
 			'classname' => $this->widget_ID,
-			'description' => 'Shows latest WooCommerce products in a carousel.',
+			'description' => __( 'Shows latest WooCommerce products in a carousel.', 'awps' ),
 			'customize_selective_refresh' => true,
 		);
 
@@ -37,14 +37,26 @@ class LatestProductsWidget extends WP_Widget {
 		);
 	}
 
+	/**
+	 * Register.
+	 */
 	public function register() {
 		add_action( 'widgets_init', array( $this, 'widgetsInit' ) );
 	}
 
+	/**
+	 * Widgetsinit.
+	 */
 	public function widgetsInit() {
 		register_widget( $this );
 	}
 
+	/**
+	 * Widget.
+	 *
+	 * @param array $args The args.
+	 * @param mixed $instance The instance.
+	 */
 	public function widget( $args, $instance ) {
 		if ( ! function_exists( 'wc_get_products' ) ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -187,6 +199,11 @@ class LatestProductsWidget extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
+	/**
+	 * Form.
+	 *
+	 * @param mixed $instance The instance.
+	 */
 	public function form( $instance ) {
 		$title  = ! empty( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 4;
@@ -217,6 +234,12 @@ class LatestProductsWidget extends WP_Widget {
 		<?php
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param mixed $new_instance The new instance.
+	 * @param mixed $old_instance The old instance.
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']  = sanitize_text_field( $new_instance['title'] );

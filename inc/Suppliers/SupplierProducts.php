@@ -9,6 +9,9 @@ namespace AWPS\Suppliers;
 
 use WP_Query;
 
+/**
+ * Admin UI for supplier products: tabbed meta boxes and field rendering/saving.
+ */
 class SupplierProducts
 {
     const POST_TYPE = 'product';
@@ -26,6 +29,9 @@ class SupplierProducts
         add_action('edit_user_profile', [$this, 'show_supplier_product_count']);
     }
 
+    /**
+     * Register hooks.
+     */
     public function register_hooks()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
@@ -33,6 +39,11 @@ class SupplierProducts
         add_filter('post_type_labels_' . self::POST_TYPE, [$this, 'modify_admin_labels']);
     }
 
+    /**
+     * Modify admin labels.
+     *
+     * @param array $labels The labels.
+     */
     public function modify_admin_labels($labels)
     {
         $labels->name = __('Supplier Products', 'awps');
@@ -48,6 +59,9 @@ class SupplierProducts
         return $labels;
     }
 
+    /**
+     * Add meta boxes.
+     */
     public function add_meta_boxes()
     {
         add_meta_box(
@@ -60,6 +74,11 @@ class SupplierProducts
         );
     }
 
+    /**
+     * Render tabbed meta box.
+     *
+     * @param WP_Post $post The post.
+     */
     public function render_tabbed_meta_box($post)
     {
         wp_nonce_field('awps_product_tabbed_meta', 'awps_product_tabbed_meta_nonce');
@@ -579,6 +598,12 @@ jQuery(document).ready(function($) {
         updateHidden($list, $hidden);
     }
 
+    /**
+     * Updatehidden.
+     *
+     * @param mixed $list The list.
+     * @param mixed $hidden The hidden.
+     */
     function updateHidden($list, $hidden) {
         const vals = $list.find('.tag').map((i, el) => $(el).data('value')).get();
         $hidden.val(vals.join(','));
@@ -644,6 +669,12 @@ jQuery(document).ready(function($) {
         <?php
     }
 
+    /**
+     * Save product meta.
+     *
+     * @param int $post_id The post id.
+     * @param WP_Post $post The post.
+     */
     public function save_product_meta($post_id, $post)
     {
         if (!isset($_POST['awps_product_tabbed_meta_nonce']) ||
@@ -695,6 +726,11 @@ jQuery(document).ready(function($) {
     }
 
 
+    /**
+     * Add admin columns.
+     *
+     * @param array $columns The columns.
+     */
     public function add_admin_columns($columns)
     {
         $new_columns = [];
@@ -709,6 +745,12 @@ jQuery(document).ready(function($) {
         return $new_columns;
     }
 
+    /**
+     * Render admin columns.
+     *
+     * @param mixed $column The column.
+     * @param int $post_id The post id.
+     */
     public function render_admin_columns($column, $post_id)
     {
         switch ($column) {
@@ -725,6 +767,9 @@ jQuery(document).ready(function($) {
         }
     }
 
+    /**
+     * Register rest fields.
+     */
     public function register_rest_fields()
     {
         $fields = [
@@ -751,6 +796,11 @@ jQuery(document).ready(function($) {
         }
     }
 
+    /**
+     * Show supplier product count.
+     *
+     * @param mixed $user The user.
+     */
     public function show_supplier_product_count($user)
     {
         if (!in_array('supplier', $user->roles)) return;
@@ -770,6 +820,11 @@ jQuery(document).ready(function($) {
     }
 
 
+    /**
+     * Enqueue admin scripts.
+     *
+     * @param mixed $hook The hook.
+     */
     public function enqueue_admin_scripts($hook) {
         global $post_type, $pagenow;
         
@@ -800,6 +855,11 @@ jQuery(document).ready(function($) {
 
 
 
+    /**
+     * Add body class.
+     *
+     * @param mixed $classes The classes.
+     */
     public function add_body_class($classes)
     {
         if (is_singular(self::POST_TYPE)) {
@@ -808,11 +868,23 @@ jQuery(document).ready(function($) {
         return $classes;
     }
 
+    /**
+     * Get meta.
+     *
+     * @param int $post_id The post id.
+     * @param string $key The key.
+     * @param mixed $single The single.
+     */
     public static function get_meta($post_id, $key, $single = true)
     {
         return get_post_meta($post_id, self::META_PREFIX . $key, $single);
     }
 
+    /**
+     * Get all meta.
+     *
+     * @param int $post_id The post id.
+     */
     public static function get_all_meta($post_id)
     {
         $meta = [];
@@ -828,6 +900,12 @@ jQuery(document).ready(function($) {
         return $meta;
     }
 
+    /**
+     * Get supplier products.
+     *
+     * @param int $supplier_id The supplier id.
+     * @param array $args The args.
+     */
     public static function get_supplier_products($supplier_id, $args = [])
     {
         $defaults = [
@@ -839,6 +917,11 @@ jQuery(document).ready(function($) {
         return new WP_Query(wp_parse_args($args, $defaults));
     }
 
+    /**
+     * Get all products.
+     *
+     * @param array $args The args.
+     */
     public static function get_all_products($args = [])
     {
         $defaults = [
@@ -849,11 +932,21 @@ jQuery(document).ready(function($) {
         return new WP_Query(wp_parse_args($args, $defaults));
     }
 
+    /**
+     * Explode tags.
+     *
+     * @param mixed $str The str.
+     */
     public static function explode_tags($str)
     {
         return $str ? array_filter(array_map('trim', explode(',', $str))) : [];
     }
 
+    /**
+     * Get supplier data.
+     *
+     * @param int $post_id The post id.
+     */
     public static function get_supplier_data($post_id)
     {
         $post = get_post($post_id);
@@ -874,6 +967,11 @@ jQuery(document).ready(function($) {
         ];
     }
 
+    /**
+     * Get certifications.
+     *
+     * @param int $post_id The post id.
+     */
     public static function get_certifications($post_id)
     {
         $cert_ids_str = self::get_meta($post_id, 'certifications');

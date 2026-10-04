@@ -39,7 +39,14 @@ class InquiryManager {
      * Generate professional inquiry code: TS26-04-X9K2L
      */
     protected function generate_inquiry_code() {
-        return "TS" . date('y') . "-" . date('m') . "-" . strtoupper(substr(wp_generate_password(10, false, false), 0, 5));
+        $code = "TS" . date('y') . "-" . date('m') . "-" . strtoupper(substr(wp_generate_password(10, false, false), 0, 5));
+
+        /**
+         * Filters the generated inquiry reference code.
+         *
+         * @param string $code The newly generated inquiry code (e.g. "TS26-04-X9K2L").
+         */
+        return apply_filters('awps_inquiry_code', $code);
     }
 
 
@@ -50,7 +57,7 @@ class InquiryManager {
      */
     public function handle_profile_inquiry() {
         if (!check_ajax_referer('exporter_inquiry_nonce', 'security', false)) {
-            wp_send_json_error(['message' => 'Security check failed. Please reload.']);
+            wp_send_json_error(['message' => __('Security check failed. Please reload.', 'awps')]);
         }
         
         $name        = sanitize_text_field($_POST['name'] ?? '');
@@ -60,7 +67,7 @@ class InquiryManager {
         $exporter_id = intval($_POST['exporter_id'] ?? 0);
 
         if (!$name || !$email || !$message || !$exporter_id) {
-            wp_send_json_error(['message' => 'Please fill Name, Email, and Message.']);
+            wp_send_json_error(['message' => __('Please fill Name, Email, and Message.', 'awps')]);
         }
 
         $inquiry_id = wp_insert_post([
@@ -71,22 +78,55 @@ class InquiryManager {
         ]);
 
         if (!$inquiry_id || is_wp_error($inquiry_id)) {
-            wp_send_json_error(['message' => 'Failed to save inquiry.']);
+            wp_send_json_error(['message' => __('Failed to save inquiry.', 'awps')]);
         }
 
 
         $code = $this->generate_inquiry_code();
-        update_post_meta($inquiry_id, 'inquiry_code', $code);
-        update_post_meta($inquiry_id, 'source', 'exporter_profile');
-        update_post_meta($inquiry_id, 'buyer_name', $name);
-        update_post_meta($inquiry_id, 'buyer_email', $email);
-        update_post_meta($inquiry_id, 'buyer_whatsapp', $whatsapp);
-        update_post_meta($inquiry_id, 'buyer_message', $message);
-        update_post_meta($inquiry_id, 'exporter_id', $exporter_id);
-        update_post_meta($inquiry_id, 'product_id', 0);
+
+        $meta = [
+            'inquiry_code'   => $code,
+            'source'         => 'exporter_profile',
+            'buyer_name'     => $name,
+            'buyer_email'    => $email,
+            'buyer_whatsapp' => $whatsapp,
+            'buyer_message'  => $message,
+            'exporter_id'    => $exporter_id,
+            'product_id'     => 0,
+        ];
+
+        /**
+         * Filters the post meta saved for a profile-page inquiry.
+         *
+         * @param array  $meta        Key => value pairs of inquiry meta.
+         * @param int    $inquiry_id  The newly created inquiry post ID.
+         * @param string $source      Source identifier ('exporter_profile').
+         */
+        $meta = apply_filters('awps_inquiry_meta', $meta, $inquiry_id, 'exporter_profile');
+
+        foreach ($meta as $key => $value) {
+            update_post_meta($inquiry_id, $key, $value);
+        }
+
+        /**
+         * Fires after a profile inquiry post has been created and its meta saved.
+         *
+         * @param int   $inquiry_id  The inquiry post ID.
+         * @param array $meta        The saved inquiry meta.
+         */
+        do_action('awps_inquiry_created', $inquiry_id, $meta);
 
         $this->send_emails($inquiry_id, 'profile');
-        wp_send_json_success(['message' => '✅ Inquiry sent successfully!']);
+
+        /**
+         * Fires after all profile inquiry processing (including emails) completes.
+         *
+         * @param int   $inquiry_id The inquiry post ID.
+         * @param array $meta       The saved inquiry meta.
+         */
+        do_action('awps_inquiry_processed', $inquiry_id, $meta);
+
+        wp_send_json_success(['message' => __('✅ Inquiry sent successfully!', 'awps')]);
     }
 
     /**
@@ -96,7 +136,7 @@ class InquiryManager {
      */
         public function handle_product_inquiry() {
         if (!check_ajax_referer('awps_inquiry_nonce', 'security', false)) {
-            wp_send_json_error(['message' => 'Security check failed. Please reload.']);
+            wp_send_json_error(['message' => __('Security check failed. Please reload.', 'awps')]);
         }
         
         // Sanitize all fields (ADD WHATSAPP LINE)
@@ -115,10 +155,10 @@ class InquiryManager {
 
         // Validate required fields (WhatsApp is optional, so not in validation)
         if (!$company || !$name || !$email || !$country || !$destination_port || !$shipment_type || !$qty_value || !$qty_unit || !$message || !$product_id) {
-            wp_send_json_error(['message' => 'Please fill all required fields.']);
+            wp_send_json_error(['message' => __('Please fill all required fields.', 'awps')]);
         }
         if (!is_email($email)) {
-            wp_send_json_error(['message' => '❌ Please enter a valid email address.']);
+            wp_send_json_error(['message' => __('❌ Please enter a valid email address.', 'awps')]);
         }
 
         $inquiry_id = wp_insert_post([
@@ -129,31 +169,47 @@ class InquiryManager {
         ]);
 
         if (!$inquiry_id || is_wp_error($inquiry_id)) {
-            wp_send_json_error(['message' => 'Failed to save inquiry.']);
+            wp_send_json_error(['message' => __('Failed to save inquiry.', 'awps')]);
         }
 
         $code = $this->generate_inquiry_code();
         $qty_formatted = "{$qty_value} {$qty_unit}";
         
-        // Save all meta (ADD WHATSAPP LINE)
-        update_post_meta($inquiry_id, 'inquiry_code', $code);
-        update_post_meta($inquiry_id, 'source', 'product_page');
-        update_post_meta($inquiry_id, 'company_name', $company);
-        update_post_meta($inquiry_id, 'buyer_name', $name);
-        update_post_meta($inquiry_id, 'buyer_email', $email);
-        update_post_meta($inquiry_id, 'buyer_whatsapp', $whatsapp);
-        update_post_meta($inquiry_id, 'buyer_country', $country);
-        update_post_meta($inquiry_id, 'buyer_destination_port', $destination_port);
-        update_post_meta($inquiry_id, 'buyer_shipment_type', $shipment_type);
-        update_post_meta($inquiry_id, 'buyer_qty_value', $qty_value);
-        update_post_meta($inquiry_id, 'buyer_qty_unit', $qty_unit);
-        update_post_meta($inquiry_id, 'buyer_qty_formatted', $qty_formatted);
-        update_post_meta($inquiry_id, 'buyer_message', $message);
-        update_post_meta($inquiry_id, 'product_id', $product_id);
-        update_post_meta($inquiry_id, 'exporter_id', $exporter_id);
+        // All inquiry meta (WhatsApp included)
+        $meta = [
+            'inquiry_code'           => $code,
+            'source'                 => 'product_page',
+            'company_name'           => $company,
+            'buyer_name'             => $name,
+            'buyer_email'            => $email,
+            'buyer_whatsapp'         => $whatsapp,
+            'buyer_country'          => $country,
+            'buyer_destination_port' => $destination_port,
+            'buyer_shipment_type'    => $shipment_type,
+            'buyer_qty_value'        => $qty_value,
+            'buyer_qty_unit'         => $qty_unit,
+            'buyer_qty_formatted'    => $qty_formatted,
+            'buyer_message'          => $message,
+            'product_id'             => $product_id,
+            'exporter_id'            => $exporter_id,
+        ];
+
+        /** This filter is documented in inc/Suppliers/InquiryManager.php */
+        $meta = apply_filters('awps_inquiry_meta', $meta, $inquiry_id, 'product_page');
+
+        foreach ($meta as $key => $value) {
+            update_post_meta($inquiry_id, $key, $value);
+        }
+
+        /** This action is documented in inc/Suppliers/InquiryManager.php */
+        do_action('awps_inquiry_created', $inquiry_id, $meta);
 
         $this->send_emails($inquiry_id, 'product');
-        wp_send_json_success(['message' => '✅ Inquiry sent successfully! Reference: ' . $code]);
+
+        /** This action is documented in inc/Suppliers/InquiryManager.php */
+        do_action('awps_inquiry_processed', $inquiry_id, $meta);
+
+        wp_send_json_success(['message' => sprintf(__('✅ Inquiry sent successfully! Reference: %s', 'awps'), $code)]);
     }
 
    
@@ -162,89 +218,138 @@ class InquiryManager {
      */
     protected function send_emails($inquiry_id, $source) {
 
+        $ctx = [
+            'id'      => $inquiry_id,
+            'source'  => $source,
+            'code'    => get_post_meta($inquiry_id, 'inquiry_code', true),
+            'buyer'   => [
+                'email'    => get_post_meta($inquiry_id, 'buyer_email', true),
+                'name'     => get_post_meta($inquiry_id, 'buyer_name', true),
+                'company'  => get_post_meta($inquiry_id, 'company_name', true),
+                'whatsapp' => get_post_meta($inquiry_id, 'buyer_whatsapp', true),
+                'country'  => get_post_meta($inquiry_id, 'buyer_country', true),
+                'port'     => get_post_meta($inquiry_id, 'buyer_destination_port', true),
+                'shipment' => get_post_meta($inquiry_id, 'buyer_shipment_type', true),
+                'qty'      => get_post_meta($inquiry_id, 'buyer_qty_formatted', true),
+                'message'  => get_post_meta($inquiry_id, 'buyer_message', true),
+            ],
+            'site_name' => get_bloginfo('name'),
+            'site_url'  => home_url(),
+            'http_host' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
+            'time'      => current_time('F j, Y g:i A'),
+        ];
 
-        $exporter_id = get_post_meta($inquiry_id, 'exporter_id', true);
-        
-        // ✅ SMART RETRIEVAL: Handle both User IDs and Supplier Post IDs
-        $exporter_email = '';
-        $exporter_name  = '';
-        
+        // Format WhatsApp for link
+        $whatsapp_clean = $ctx['buyer']['whatsapp'] ? preg_replace('/[^\d+]/', '', trim($ctx['buyer']['whatsapp'])) : '';
+        $ctx['whatsapp_link'] = $whatsapp_clean ? 'https://wa.me/' . ltrim($whatsapp_clean, '+') : '';
+
+        // Resolve exporter contact (User ID or Supplier Post ID)
+        $exporter = $this->resolve_exporter_contact(get_post_meta($inquiry_id, 'exporter_id', true));
+        $ctx['exporter_email'] = $exporter['email'];
+        $ctx['exporter_name']  = $exporter['name'];
+
+        // ─────────────────────────────────────────────────────────────
+        // SUPPLIER EMAIL
+        // ─────────────────────────────────────────────────────────────
+        $subj_exp = "📩 New {$source} Inquiry — Ref: {$ctx['code']}";
+        $body_exp = $this->build_supplier_email_body($ctx);
+
+        $headers_exp = [
+            'Content-Type: text/html; charset=UTF-8',
+            'Reply-To: ' . $ctx['buyer']['email'],
+            'From: ' . $ctx['site_name'] . ' <no-reply@' . $ctx['http_host'] . '>',
+            'X-Priority: 2'
+        ];
+
+        /**
+         * Filters the email headers used for the exporter (supplier) notification.
+         *
+         * @param array  $headers_exp Email headers.
+         * @param array  $ctx         Inquiry context data.
+         * @param string $source      Inquiry source ('profile' or 'product').
+         */
+        $headers_exp = apply_filters('awps_inquiry_email_headers', $headers_exp, $ctx, 'exporter');
+
+        wp_mail($ctx['exporter_email'], $subj_exp, $body_exp, $headers_exp);
+
+        // ─────────────────────────────────────────────────────────────
+        // BUYER CONFIRMATION EMAIL
+        // ─────────────────────────────────────────────────────────────
+        $subj_buy = "✅ Inquiry Received — Ref: {$ctx['code']}";
+        $body_buy = $this->build_buyer_email_body($ctx);
+
+        $headers_buy = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . $ctx['site_name'] . ' <no-reply@' . $ctx['http_host'] . '>'
+        ];
+
+        /** This filter is documented in inc/Suppliers/InquiryManager.php */
+        $headers_buy = apply_filters('awps_inquiry_email_headers', $headers_buy, $ctx, 'buyer');
+
+        wp_mail($ctx['buyer']['email'], $subj_buy, $body_buy, $headers_buy);
+    }
+
+    /**
+     * Resolve exporter email/name from either a WP User ID or a Supplier Post ID.
+     *
+     * @param mixed $exporter_id
+     * @return array{email:string,name:string}
+     */
+    protected function resolve_exporter_contact($exporter_id) {
+        $email = '';
+        $name  = '';
+
         if ($exporter_id) {
             // Check if this is a WordPress User ID
             $user = get_userdata(intval($exporter_id));
-            
+
             if ($user && !is_wp_error($user)) {
-                // ✅ It's a User ID (from Product forms)
-                $exporter_email = $user->user_email;
-                $exporter_name  = get_user_meta($exporter_id, 'company_name', true) ?: $user->display_name;
-            } 
-            else {
-                // ✅ It's a Supplier Post ID (from Profile forms)
-                // Get the Supplier post
+                // It's a User ID (from Product forms)
+                $email = $user->user_email;
+                $name  = get_user_meta($exporter_id, 'company_name', true) ?: $user->display_name;
+            } else {
+                // It's a Supplier Post ID (from Profile forms)
                 $supplier_post = get_post(intval($exporter_id));
-                
+
                 if ($supplier_post) {
                     // Option 1: Try to get email from post meta
-                    $exporter_email = get_post_meta($exporter_id, 'contact_email', true);
-                    $exporter_name  = get_post_meta($exporter_id, 'company_name', true);
-                    
+                    $email = get_post_meta($exporter_id, 'contact_email', true);
+                    $name  = get_post_meta($exporter_id, 'company_name', true);
+
                     // Option 2: If no email in post meta, get from post author (WordPress User)
-                    if (empty($exporter_email) && $supplier_post->post_author) {
+                    if (empty($email) && $supplier_post->post_author) {
                         $author_user = get_userdata($supplier_post->post_author);
                         if ($author_user) {
-                            $exporter_email = $author_user->user_email;
-                            $exporter_name  = $exporter_name ?: get_user_meta($supplier_post->post_author, 'company_name', true) ?: $author_user->display_name;
+                            $email = $author_user->user_email;
+                            $name  = $name ?: get_user_meta($supplier_post->post_author, 'company_name', true) ?: $author_user->display_name;
                         }
                     }
-                    
+
                     // Option 3: Fallback to admin email
-                    if (empty($exporter_email)) {
-                        $exporter_email = get_option('admin_email');
-                        $exporter_name  = $exporter_name ?: $supplier_post->post_title;
+                    if (empty($email)) {
+                        $email = get_option('admin_email');
+                        $name  = $name ?: $supplier_post->post_title;
                     }
                 }
             }
         }
 
         // Final safety fallback
-        if (empty($exporter_email)) {
-            $exporter_email = get_option('admin_email');
-            $exporter_name  = 'Site Administrator';
+        if (empty($email)) {
+            $email = get_option('admin_email');
+            $name  = 'Site Administrator';
         }
 
-        // Common Variables
-        $buyer_email    = get_post_meta($inquiry_id, 'buyer_email', true);
-        $buyer_name     = get_post_meta($inquiry_id, 'buyer_name', true);
-        $company        = get_post_meta($inquiry_id, 'company_name', true);
-        $whatsapp       = get_post_meta($inquiry_id, 'buyer_whatsapp', true);
-        $country        = get_post_meta($inquiry_id, 'buyer_country', true);
-        $port           = get_post_meta($inquiry_id, 'buyer_destination_port', true);
-        $shipment       = get_post_meta($inquiry_id, 'buyer_shipment_type', true);
-        $qty            = get_post_meta($inquiry_id, 'buyer_qty_formatted', true);
-        $message        = get_post_meta($inquiry_id, 'buyer_message', true);
-        $code           = get_post_meta($inquiry_id, 'inquiry_code', true);
-        $site_name      = get_bloginfo('name');
-        $site_url       = home_url();
-        $http_host      = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
-        $received_time  = current_time('F j, Y g:i A');
+        return ['email' => $email, 'name' => $name];
+    }
 
-        // Format WhatsApp for link
-        $whatsapp_clean = $whatsapp ? preg_replace('/[^\d+]/', '', trim($whatsapp)) : '';
-        $whatsapp_link  = $whatsapp_clean ? 'https://wa.me/' . ltrim($whatsapp_clean, '+') : '';
-
-        // ─────────────────────────────────────────────────────────────
-        // SUPPLIER EMAIL
-        // ─────────────────────────────────────────────────────────────
-        $subj_exp = "📩 New {$source} Inquiry — Ref: {$code}";
-        
-        $body_exp = '
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <style>
+    /**
+     * Shared inline CSS for inquiry notification emails.
+     */
+    protected function email_styles($grad_from, $grad_to) {
+        return <<<CSS
                 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
-                .header { background: linear-gradient(135deg, #007cba 0%, #005a87 100%); color: white; padding: 25px; text-align: center; border-radius: 8px 8px 0 0; }
+                .header { background: linear-gradient(135deg, {$grad_from} 0%, {$grad_to} 100%); color: white; padding: 25px; text-align: center; border-radius: 8px 8px 0 0; }
                 .header h1 { margin: 0; font-size: 22px; }
                 .header .ref { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 13px; margin-top: 8px; display: inline-block; }
                 .content { background: #fff; padding: 25px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px; }
@@ -254,168 +359,180 @@ class InquiryManager {
                 .field { display: flex; margin-bottom: 8px; }
                 .field-label { font-weight: 600; min-width: 140px; color: #555; }
                 .field-value { color: #222; }
+CSS;
+    }
+
+    /**
+     * Build the HTML body of the supplier (exporter) notification email.
+     *
+     * @param array $ctx Inquiry context data built by send_emails().
+     * @return string
+     */
+    protected function build_supplier_email_body($ctx) {
+        $b            = $ctx['buyer'];
+        $source       = $ctx['source'];
+        $inquiry_id   = $ctx['id'];
+        $product_id   = get_post_meta($inquiry_id, 'product_id', true);
+
+        $extra_css = '
                 .message { background: #f8f9fa; padding: 15px; border-left: 4px solid #007cba; border-radius: 0 4px 4px 0; margin: 10px 0; white-space: pre-wrap; }
                 .cta { text-align: center; margin-top: 25px; }
                 .cta a { background: #007cba; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: 600; display: inline-block; }
                 .cta a.whatsapp { background: #25D366; margin-left: 10px; }
-                .footer { text-align: center; padding: 20px; color: #888; font-size: 12px; border-top: 1px solid #eee; margin-top: 25px; }
+                .footer { text-align: center; padding: 20px; color: #888; font-size: 12px; border-top: 1px solid #eee; margin-top: 25px; }';
+
+        $shipping_section = '';
+        if ($source === 'product') {
+            $shipping_section = '
+                <div class="section">
+                    <h3>🚢 Shipping Requirements</h3>
+                    <div class="field"><span class="field-label">Destination Port:</span><span class="field-value">' . esc_html($b['port']) . '</span></div>
+                    <div class="field"><span class="field-label">Shipment Type:</span><span class="field-value">' . esc_html($b['shipment']) . '</span></div>
+                    <div class="field"><span class="field-label">Quantity:</span><span class="field-value">' . esc_html($b['qty']) . '</span></div>
+                </div>';
+        }
+
+        return '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>' . $this->email_styles('#007cba', '#005a87') . $extra_css . '
             </style>
         </head>
         <body>
             <div class="header">
                 <h1>📦 New Inquiry Received</h1>
-                <div class="ref">' . ($source === 'product' ? '📦 Product' : '🏢 Profile') . ' • Ref: ' . esc_html($code) . '</div>
+                <div class="ref">' . ($source === 'product' ? '📦 Product' : '🏢 Profile') . ' • Ref: ' . esc_html($ctx['code']) . '</div>
             </div>
             <div class="content">
                 <div class="section">
                     <h3>🔍 Inquiry Summary</h3>
                     <div class="field"><span class="field-label">Source:</span><span class="field-value">' . ($source === 'profile' ? 'Supplier Profile' : 'Product Page') . '</span></div>
-                    <div class="field"><span class="field-label">Received:</span><span class="field-value">' . $received_time . '</span></div>
+                    <div class="field"><span class="field-label">Received:</span><span class="field-value">' . $ctx['time'] . '</span></div>
                     ' . ($source === 'product' ? '
-                    <div class="field"><span class="field-label">Product:</span><span class="field-value"><a href="' . esc_url(get_permalink(get_post_meta($inquiry_id, 'product_id', true))) . '" style="color:#007cba;text-decoration:none;font-weight:600;">' . esc_html(get_the_title(get_post_meta($inquiry_id, 'product_id', true))) . '</a></span></div>
+                    <div class="field"><span class="field-label">Product:</span><span class="field-value"><a href="' . esc_url(get_permalink($product_id)) . '" style="color:#007cba;text-decoration:none;font-weight:600;">' . esc_html(get_the_title($product_id)) . '</a></span></div>
                     ' : '') . '
                 </div>
-                
+
                 <div class="section">
                     <h3>👤 Buyer Details</h3>
-                    <div class="field"><span class="field-label">Contact:</span><span class="field-value">' . esc_html($buyer_name) . '</span></div>
-                    <div class="field"><span class="field-label">Email:</span><span class="field-value"><a href="mailto:' . esc_attr($buyer_email) . '">' . esc_html($buyer_email) . '</a></span></div>
-                    ' . ($company ? '<div class="field"><span class="field-label">Company:</span><span class="field-value">' . esc_html($company) . '</span></div>' : '') . '
-                    ' . ($whatsapp ? '<div class="field"><span class="field-label">WhatsApp:</span><span class="field-value"><a href="' . esc_url($whatsapp_link) . '" style="color:#25D366;text-decoration:none;" target="_blank">' . esc_html($whatsapp) . ' 💬</a></span></div>' : '') . '
-                    ' . ($country ? '<div class="field"><span class="field-label">Country:</span><span class="field-value">' . esc_html($country) . '</span></div>' : '') . '
+                    <div class="field"><span class="field-label">Contact:</span><span class="field-value">' . esc_html($b['name']) . '</span></div>
+                    <div class="field"><span class="field-label">Email:</span><span class="field-value"><a href="mailto:' . esc_attr($b['email']) . '">' . esc_html($b['email']) . '</a></span></div>
+                    ' . ($b['company'] ? '<div class="field"><span class="field-label">Company:</span><span class="field-value">' . esc_html($b['company']) . '</span></div>' : '') . '
+                    ' . ($b['whatsapp'] ? '<div class="field"><span class="field-label">WhatsApp:</span><span class="field-value"><a href="' . esc_url($ctx['whatsapp_link']) . '" style="color:#25D366;text-decoration:none;" target="_blank">' . esc_html($b['whatsapp']) . ' 💬</a></span></div>' : '') . '
+                    ' . ($b['country'] ? '<div class="field"><span class="field-label">Country:</span><span class="field-value">' . esc_html($b['country']) . '</span></div>' : '') . '
                 </div>
-                
-                ' . ($source === 'product' ? '
-                <div class="section">
-                    <h3>🚢 Shipping Requirements</h3>
-                    <div class="field"><span class="field-label">Destination Port:</span><span class="field-value">' . esc_html($port) . '</span></div>
-                    <div class="field"><span class="field-label">Shipment Type:</span><span class="field-value">' . esc_html($shipment) . '</span></div>
-                    <div class="field"><span class="field-label">Quantity:</span><span class="field-value">' . esc_html($qty) . '</span></div>
-                </div>
-                ' : '') . '
-                
+
+                ' . $shipping_section . '
+
                 <div class="section">
                     <h3>💬 Message</h3>
-                    <div class="message">' . nl2br(esc_html($message)) . '</div>
+                    <div class="message">' . nl2br(esc_html($b['message'])) . '</div>
                 </div>
-                
+
                 <div class="cta">
-                    <a href="mailto:' . esc_attr($buyer_email) . '?subject=Re: Inquiry ' . esc_attr($code) . ' - ' . urlencode($company ?: $buyer_name) . '">✉️ Reply via Email</a>
-                    ' . ($whatsapp_link ? '<a href="' . esc_url($whatsapp_link) . '" class="whatsapp" target="_blank">💬 WhatsApp</a>' : '') . '
+                    <a href="mailto:' . esc_attr($b['email']) . '?subject=Re: Inquiry ' . esc_attr($ctx['code']) . ' - ' . urlencode($b['company'] ?: $b['name']) . '">✉️ Reply via Email</a>
+                    ' . ($ctx['whatsapp_link'] ? '<a href="' . esc_url($ctx['whatsapp_link']) . '" class="whatsapp" target="_blank">💬 WhatsApp</a>' : '') . '
                 </div>
             </div>
             <div class="footer">
-                <p>This inquiry was submitted via <strong>' . esc_html($site_name) . '</strong><br>
-                Reference: ' . esc_html($code) . '</p>
+                <p>This inquiry was submitted via <strong>' . esc_html($ctx['site_name']) . '</strong><br>
+                Reference: ' . esc_html($ctx['code']) . '</p>
             </div>
         </body>
         </html>';
+    }
 
-        $headers_exp = [
-            'Content-Type: text/html; charset=UTF-8',
-            'Reply-To: ' . $buyer_email,
-            'From: ' . $site_name . ' <no-reply@' . $http_host . '>',
-            'X-Priority: 2'
-        ];
+    /**
+     * Build the HTML body of the buyer confirmation email.
+     *
+     * @param array $ctx Inquiry context data built by send_emails().
+     * @return string
+     */
+    protected function build_buyer_email_body($ctx) {
+        $b          = $ctx['buyer'];
+        $source     = $ctx['source'];
+        $inquiry_id = $ctx['id'];
+        $product_id = get_post_meta($inquiry_id, 'product_id', true);
 
-        $supplier_sent = wp_mail($exporter_email, $subj_exp, $body_exp, $headers_exp);
-  
+        $extra_css = '
+                .success-box { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+                .summary-box { background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 10px 0; }
+                .summary-box strong { color: #333; }
+                .footer { text-align: center; padding: 20px; color: #888; font-size: 12px; border-top: 1px solid #eee; margin-top: 25px; }
+                .note { background: #e7f3ff; border-left: 4px solid #007cba; padding: 12px 15px; margin: 15px 0; font-size: 13px; }';
 
-        // ─────────────────────────────────────────────────────────────
-        // BUYER CONFIRMATION EMAIL
-        // ─────────────────────────────────────────────────────────────
-        $subj_buy = "✅ Inquiry Received — Ref: {$code}";
-        
-        $body_buy = '
+        $shipping_section = '';
+        if ($source === 'product') {
+            $shipping_section = '
+                <div class="section">
+                    <h3>🚢 Shipping Requirements</h3>
+                    <div class="summary-box">
+                        <div class="field"><span class="field-label">Destination Port:</span><span class="field-value">' . esc_html($b['port']) . '</span></div>
+                        <div class="field"><span class="field-label">Shipment Type:</span><span class="field-value">' . esc_html($b['shipment']) . '</span></div>
+                        <div class="field"><span class="field-label">Quantity:</span><span class="field-value">' . esc_html($b['qty']) . '</span></div>
+                    </div>
+                </div>';
+        }
+
+        return '
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
-            <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
-                .header { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 25px; text-align: center; border-radius: 8px 8px 0 0; }
-                .header h1 { margin: 0; font-size: 22px; }
-                .header .ref { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 13px; margin-top: 8px; display: inline-block; }
-                .content { background: #fff; padding: 25px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px; }
-                .success-box { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
-                .section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed #eee; }
-                .section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-                .section h3 { margin: 0 0 12px 0; color: #007cba; font-size: 16px; }
-                .field { display: flex; margin-bottom: 8px; }
-                .field-label { font-weight: 600; min-width: 140px; color: #555; }
-                .field-value { color: #222; }
-                .summary-box { background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 10px 0; }
-                .summary-box strong { color: #333; }
-                .footer { text-align: center; padding: 20px; color: #888; font-size: 12px; border-top: 1px solid #eee; margin-top: 25px; }
-                .note { background: #e7f3ff; border-left: 4px solid #007cba; padding: 12px 15px; margin: 15px 0; font-size: 13px; }
+            <style>' . $this->email_styles('#28a745', '#20c997') . $extra_css . '
             </style>
         </head>
         <body>
             <div class="header">
                 <h1>✅ Inquiry Successfully Sent</h1>
-                <div class="ref">' . ($source === 'product' ? '📦 Product' : '🏢 Profile') . ' • Ref: ' . esc_html($code) . '</div>
+                <div class="ref">' . ($source === 'product' ? '📦 Product' : '🏢 Profile') . ' • Ref: ' . esc_html($ctx['code']) . '</div>
             </div>
             <div class="content">
                 <div class="success-box">
-                    <strong>Thank you, ' . esc_html($buyer_name) . '!</strong><br>
-                    Your inquiry has been sent to <strong>' . esc_html($exporter_name) . '</strong>. They will contact you shortly via email or WhatsApp.
+                    <strong>Thank you, ' . esc_html($b['name']) . '!</strong><br>
+                    Your inquiry has been sent to <strong>' . esc_html($ctx['exporter_name']) . '</strong>. They will contact you shortly via email or WhatsApp.
                 </div>
-                
+
                 <div class="section">
                     <h3>📋 Your Inquiry Summary</h3>
                     <div class="summary-box">
-                        <div class="field"><span class="field-label">Reference:</span><span class="field-value"><strong>' . esc_html($code) . '</strong></span></div>
-                        <div class="field"><span class="field-label">Submitted:</span><span class="field-value">' . $received_time . '</span></div>
-                        ' . ($source === 'product' ? '<div class="field"><span class="field-label">Product:</span><span class="field-value">' . esc_html(get_the_title(get_post_meta($inquiry_id, 'product_id', true))) . '</span></div>' : '') . '
+                        <div class="field"><span class="field-label">Reference:</span><span class="field-value"><strong>' . esc_html($ctx['code']) . '</strong></span></div>
+                        <div class="field"><span class="field-label">Submitted:</span><span class="field-value">' . $ctx['time'] . '</span></div>
+                        ' . ($source === 'product' ? '<div class="field"><span class="field-label">Product:</span><span class="field-value">' . esc_html(get_the_title($product_id)) . '</span></div>' : '') . '
                     </div>
                 </div>
-                
+
                 <div class="section">
                     <h3>👤 Your Details</h3>
                     <div class="summary-box">
-                        <div class="field"><span class="field-label">Contact:</span><span class="field-value">' . esc_html($buyer_name) . '</span></div>
-                        <div class="field"><span class="field-label">Email:</span><span class="field-value">' . esc_html($buyer_email) . '</span></div>
-                        ' . ($company ? '<div class="field"><span class="field-label">Company:</span><span class="field-value">' . esc_html($company) . '</span></div>' : '') . '
-                        ' . ($whatsapp ? '<div class="field"><span class="field-label">WhatsApp:</span><span class="field-value">' . esc_html($whatsapp) . '</span></div>' : '') . '
-                        ' . ($country ? '<div class="field"><span class="field-label">Country:</span><span class="field-value">' . esc_html($country) . '</span></div>' : '') . '
+                        <div class="field"><span class="field-label">Contact:</span><span class="field-value">' . esc_html($b['name']) . '</span></div>
+                        <div class="field"><span class="field-label">Email:</span><span class="field-value">' . esc_html($b['email']) . '</span></div>
+                        ' . ($b['company'] ? '<div class="field"><span class="field-label">Company:</span><span class="field-value">' . esc_html($b['company']) . '</span></div>' : '') . '
+                        ' . ($b['whatsapp'] ? '<div class="field"><span class="field-label">WhatsApp:</span><span class="field-value">' . esc_html($b['whatsapp']) . '</span></div>' : '') . '
+                        ' . ($b['country'] ? '<div class="field"><span class="field-label">Country:</span><span class="field-value">' . esc_html($b['country']) . '</span></div>' : '') . '
                     </div>
                 </div>
-                
-                ' . ($source === 'product' ? '
-                <div class="section">
-                    <h3>🚢 Shipping Requirements</h3>
-                    <div class="summary-box">
-                        <div class="field"><span class="field-label">Destination Port:</span><span class="field-value">' . esc_html($port) . '</span></div>
-                        <div class="field"><span class="field-label">Shipment Type:</span><span class="field-value">' . esc_html($shipment) . '</span></div>
-                        <div class="field"><span class="field-label">Quantity:</span><span class="field-value">' . esc_html($qty) . '</span></div>
-                    </div>
-                </div>
-                ' : '') . '
-                
+
+                ' . $shipping_section . '
+
                 <div class="section">
                     <h3>💬 Your Message</h3>
-                    <div class="summary-box" style="white-space: pre-wrap;">' . esc_html($message) . '</div>
+                    <div class="summary-box" style="white-space: pre-wrap;">' . esc_html($b['message']) . '</div>
                 </div>
-                
+
                 <div class="note">
-                    <strong>💡 Pro Tip:</strong> Save this email! You can reference inquiry <strong>' . esc_html($code) . '</strong> in future communications with ' . esc_html($exporter_name) . '.
+                    <strong>💡 Pro Tip:</strong> Save this email! You can reference inquiry <strong>' . esc_html($ctx['code']) . '</strong> in future communications with ' . esc_html($ctx['exporter_name']) . '.
                 </div>
             </div>
             <div class="footer">
-                <p>Submitted via <strong>' . esc_html($site_name) . '</strong><br>
-                <a href="' . esc_url($site_url) . '" style="color:#007cba;">' . esc_html($site_url) . '</a></p>
-                <p style="margin-top:10px;font-size:11px;color:#aaa;">Your information is only shared with ' . esc_html($exporter_name) . ' to respond to your inquiry. We do not sell or distribute your data.</p>
+                <p>Submitted via <strong>' . esc_html($ctx['site_name']) . '</strong><br>
+                <a href="' . esc_url($ctx['site_url']) . '" style="color:#007cba;">' . esc_html($ctx['site_url']) . '</a></p>
+                <p style="margin-top:10px;font-size:11px;color:#aaa;">Your information is only shared with ' . esc_html($ctx['exporter_name']) . ' to respond to your inquiry. We do not sell or distribute your data.</p>
             </div>
         </body>
         </html>';
-
-        $headers_buy = [
-            'Content-Type: text/html; charset=UTF-8',
-            'From: ' . $site_name . ' <no-reply@' . $http_host . '>'
-        ];
-
-        $buyer_sent = wp_mail($buyer_email, $subj_buy, $body_buy, $headers_buy);
-
     }
 
     /**
@@ -435,6 +552,12 @@ class InquiryManager {
         ];
     }
 
+        /**
+         * Admin column content.
+         *
+         * @param mixed $column The column.
+         * @param int $post_id The post id.
+         */
         public function admin_column_content($column, $post_id) {
         switch ($column) {
             case 'ref':
@@ -510,6 +633,11 @@ class InquiryManager {
         add_meta_box('awps_inquiry_details', '🔍 Full Inquiry Details', [$this, 'render_metabox'], 'inquiry', 'normal', 'high');
     }
 
+        /**
+         * Render metabox.
+         *
+         * @param WP_Post $post The post.
+         */
         public function render_metabox($post) {
         $source = get_post_meta($post->ID, 'source', true);
         $exporter_id = get_post_meta($post->ID, 'exporter_id', true);
@@ -597,6 +725,12 @@ class InquiryManager {
         <?php
     }
 
+    /**
+     * Remove quick edit.
+     *
+     * @param mixed $actions The actions.
+     * @param WP_Post $post The post.
+     */
     public function remove_quick_edit($actions, $post) {
         if ($post->post_type === 'inquiry') unset($actions['inline hide-if-no-js']);
         return $actions;
@@ -647,6 +781,11 @@ class InquiryManager {
         <?php
     }
 
+    /**
+     * Filter query by meta.
+     *
+     * @param WP_Query $query The query.
+     */
     public function filter_query_by_meta($query) {
         if (!is_admin() || !$query->is_main_query()) return;
         if (!isset($_GET['post_type']) || $_GET['post_type'] !== 'inquiry') return;
@@ -686,13 +825,16 @@ class InquiryManager {
         echo '<a href="' . esc_url($url) . '" class="button button-primary" style="margin-left:10px;">📥 Export CSV</a>';
     }
 
+    /**
+     * Handle export csv.
+     */
     public function handle_export_csv() {
         if (!isset($_GET['export_inquiries'])) return;
         if (!wp_verify_nonce($_GET['_wpnonce'] ?? '', 'export_inquiries_nonce')) {
-            wp_die('Security check failed.');
+            wp_die( esc_html__( 'Security check failed.', 'awps' ) );
         }
         if (!current_user_can('edit_posts')) {
-            wp_die('Insufficient permissions.');
+            wp_die( esc_html__( 'Insufficient permissions.', 'awps' ) );
         }
 
         $source = isset($_GET['source']) ? sanitize_text_field($_GET['source']) : '';
@@ -707,8 +849,10 @@ class InquiryManager {
         
         $output = fopen('php://output', 'w');
         fputcsv($output, [
-            'Ref Code', 'Source', 'Company', 'Name', 'Email', 'WhatsApp', 
-            'Country', 'Port', 'Shipment', 'Quantity', 'Message', 'Supplier', 'Date'
+            __( 'Ref Code', 'awps' ), __( 'Source', 'awps' ), __( 'Company', 'awps' ), __( 'Name', 'awps' ),
+            __( 'Email', 'awps' ), __( 'WhatsApp', 'awps' ), __( 'Country', 'awps' ), __( 'Port', 'awps' ),
+            __( 'Shipment', 'awps' ), __( 'Quantity', 'awps' ), __( 'Message', 'awps' ), __( 'Supplier', 'awps' ),
+            __( 'Date', 'awps' )
         ]);
 
         

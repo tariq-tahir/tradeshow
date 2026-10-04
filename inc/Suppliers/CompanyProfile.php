@@ -1,13 +1,22 @@
 <?php
 namespace AWPS\Suppliers;
 
+/**
+ * Company profile data handling for supplier CPTs.
+ */
 class CompanyProfile
 {
+    /**
+     * Register.
+     */
     public function register()
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_dashboard_assets']);
     }
 
+    /**
+     * Enqueue dashboard assets.
+     */
     public function enqueue_dashboard_assets()
     {
         // You can enqueue frontend JS/CSS here if needed

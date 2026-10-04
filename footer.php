@@ -34,7 +34,7 @@ if ( is_customize_preview() ) {
         <div class="copyright">
             &copy; <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>">TradeShow</a>. All Rights Reserved
         </div>
-        <a href="#" class="back-to-top" title="Back to top">
+        <a href="#" class="back-to-top" title="<?php esc_attr_e( 'Back to top', 'awps' ); ?>">
             <i class="fas fa-chevron-up"></i>
         </a>
     </div>

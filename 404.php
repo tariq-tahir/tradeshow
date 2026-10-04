@@ -18,10 +18,10 @@ get_header();
 
                     <?php
                     get_template_part( 'views/partials/empty-state', null, array(
-                        'heading'     => 'Oops! That page can&rsquo;t be found.',
-                        'message'     => 'It seems we can\'t find what you\'re looking for. Perhaps searching can help or go back to',
+                        'heading'     => __( 'Oops! That page can&rsquo;t be found.', 'awps' ),
+                        'message'     => __( "It seems we can't find what you're looking for. Perhaps searching can help or go back to", 'awps' ),
                         'link_url'    => home_url( '/' ),
-                        'link_text'   => 'Homepage',
+                        'link_text'   => __( 'Homepage', 'awps' ),
                         'show_search' => true,
                         'image_alt'   => __( '404 error - page not found illustration', 'awps' ),
                         'css_class'   => 'notfound-empty-state',

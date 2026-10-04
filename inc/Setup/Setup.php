@@ -2,6 +2,9 @@
 
 namespace Awps\Setup;
 
+/**
+ * Core theme setup: supports, text domain, and global initialization.
+ */
 class Setup
 {
     /**
@@ -14,12 +17,17 @@ class Setup
         add_action( 'after_setup_theme', array( $this, 'content_width' ), 0);
     }
 
+    /**
+     * Setup.
+     */
     public function setup()
     {
         /*
-         * You can activate this if you're planning to build a multilingual theme
+         * Load the theme's translations. This is required so that every
+         * __(), _e(), esc_html__() etc. call in the theme actually resolves
+         * to a translated string when a .po/.mo file is provided.
          */
-        // load_theme_textdomain( 'awps', get_template_directory() . '/languages' );
+        load_theme_textdomain( 'awps', get_template_directory() . '/languages' );
 
         /*
          * Default Theme Support options better have

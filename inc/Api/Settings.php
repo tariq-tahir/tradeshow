@@ -66,6 +66,9 @@ class Settings
 	public function __construct()
 	{}
 
+	/**
+	 * Register.
+	 */
 	public function register()
 	{
 		if ( !empty( $this->enqueues ) )
@@ -153,6 +156,11 @@ class Settings
 		return $this;
 	}
 
+	/**
+	 * Withsubpage.
+	 *
+	 * @param mixed $title The title.
+	 */
 	public function withSubPage( $title = null )
 	{
 		if ( empty( $this->admin_pages ) ) {

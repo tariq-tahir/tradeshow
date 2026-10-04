@@ -4,8 +4,18 @@ namespace Awps\Core;
 
 use Walker_Nav_Menu;
 
+/**
+ * Custom Walker_Nav_Menu for the primary navigation markup.
+ */
 class WalkerNav extends Walker_Nav_Menu
 {
+    /**
+     * Start lvl.
+     *
+     * @param mixed $output The output.
+     * @param mixed $depth The depth.
+     * @param array $args The args.
+     */
     public function start_lvl(&$output, $depth = 0, $args = array())
     {
         $indent = str_repeat("\t", $depth);
@@ -13,6 +23,14 @@ class WalkerNav extends Walker_Nav_Menu
         $output .= "\n$indent<ul class=\"dropdown-menu$submenu depth_$depth\" >\n";
     }
 
+    /**
+     * Start el.
+     *
+     * @param mixed $output The output.
+     * @param mixed $item The item.
+     * @param mixed $depth The depth.
+     * @param array $args The args.
+     */
     public function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0)
     {
         $indent = ($depth) ? str_repeat("\t", $depth) : '';
@@ -67,6 +85,16 @@ class WalkerNav extends Walker_Nav_Menu
         $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
     }
 
+    /**
+     * Display element.
+     *
+     * @param mixed $element The element.
+     * @param mixed $children_elements The children elements.
+     * @param mixed $max_depth The max depth.
+     * @param mixed $depth The depth.
+     * @param array $args The args.
+     * @param mixed $output The output.
+     */
     public function display_element($element, &$children_elements, $max_depth, $depth, $args, &$output)
     {
         if (!$element) {

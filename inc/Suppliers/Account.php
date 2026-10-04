@@ -8,6 +8,9 @@
 
 namespace AWPS\Suppliers;
 
+/**
+ * Frontend supplier account registration, login, and password recovery flows.
+ */
 class Account
 {
     /**
@@ -230,7 +233,10 @@ public function handle_password_reset_via_admin_post()
             exit;
         }
 
-        wp_safe_redirect(home_url('/dashboard/'));
+        /** This filter is documented in inc/Suppliers/Account.php */
+        $redirect_url = apply_filters('awps_login_redirect', home_url('/dashboard/'), $user);
+
+        wp_safe_redirect($redirect_url);
         exit;
     }
 
@@ -331,7 +337,7 @@ Reference: {$reg_data['company_name']} - Supplier Registration
         wp_mail($admin_email, $subject, $admin_message, $headers);
         
         // ✅ STEP 2: Email user with confirmation + payment instructions
-        $user_subject = 'Thank you for registering with TradeShow - Next Steps';
+        $user_subject = __( 'Thank you for registering with TradeShow - Next Steps', 'awps' );
 
 
         //<hr>
@@ -497,11 +503,19 @@ Reference: {$reg_data['company_name']} - Supplier Registration
             wp_send_json_error(['message' => __('This account is not approved for supplier access.', 'awps')]);
         }
         
+        /**
+         * Filters the post-login redirect URL for supplier logins.
+         *
+         * @param string  $redirect_url The default dashboard URL.
+         * @param WP_User $user         The authenticated user object.
+         */
+        $redirect_url = apply_filters('awps_login_redirect', home_url('/dashboard/'), $user);
+
         wp_set_auth_cookie($user->ID);
         
         wp_send_json_success([
             'message'   => __('Login successful! Redirecting...', 'awps'),
-            'redirect'  => home_url('/dashboard/')
+            'redirect'  => $redirect_url
         ]);
     }
 

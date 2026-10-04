@@ -1,6 +1,12 @@
 <?php
 namespace AWPS\Suppliers;
+/**
+ * Dashboard statistics queries for suppliers/exporters.
+ */
 class Stats {
+  /**
+   * Register.
+   */
   public function register(){
     add_action('wp', function(){
       if (is_singular('product')) {

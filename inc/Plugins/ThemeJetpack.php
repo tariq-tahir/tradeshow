@@ -9,6 +9,9 @@ namespace Awps\Plugins;
 
 use Jetpack;
 
+/**
+ * Jetpack compatibility tweaks for the theme.
+ */
 class ThemeJetpack
 {
     /**
@@ -27,6 +30,9 @@ class ThemeJetpack
 
     }
 
+    /**
+     * Setup.
+     */
     public function setup()
     {
 
@@ -41,6 +47,9 @@ class ThemeJetpack
         add_theme_support( 'jetpack-responsive-videos' );
     }
 
+    /**
+     * Infinite scroll render.
+     */
     public function infinite_scroll_render()
     {
         while (have_posts()) {
@@ -52,6 +61,11 @@ class ThemeJetpack
         }
     }
 
+    /**
+     * Photon compression.
+     *
+     * @param array $args The args.
+     */
     public function photon_compression( $args ) {
         $args['quality'] = 100;
         $args['strip'] = 'all';

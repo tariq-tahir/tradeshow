@@ -109,8 +109,8 @@ class Admin
 	{
 		$admin_pages = array(
 			array(
-				'page_title' => 'AWPS Admin Page',
-				'menu_title' => 'AWPS',
+				'page_title' => __( 'AWPS Admin Page', 'awps' ),
+				'menu_title' => __( 'AWPS', 'awps' ),
 				'capability' => 'manage_options',
 				'menu_slug' => 'awps',
 				'callback' => array( $this->callback, 'admin_index' ),
@@ -191,7 +191,7 @@ class Admin
 		$args = array(
 			array(
 				'id' => 'first_name',
-				'title' => 'First Name',
+				'title' => __( 'First Name', 'awps' ),
 				'callback' => array( $this->callback, 'first_name' ),
 				'page' => 'awps',
 				'section' => 'awps_admin_index',

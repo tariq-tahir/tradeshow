@@ -10,6 +10,9 @@
 
 namespace Awps;
 
+/**
+ * Bootstraps and wires all theme service classes.
+ */
 final class Init
 {
 	/**
@@ -18,7 +21,7 @@ final class Init
 	 */
 	public static function get_services()
 	{
-		return [
+		$services = [
 			Core\Tags::class,
 			Core\Sidebar::class,
 			Setup\Setup::class,
@@ -54,6 +57,16 @@ final class Init
 			Suppliers\Stats::class,
 			Products\ProductMeta::class
 		];
+
+		/**
+		 * Filters the list of theme service class names.
+		 *
+		 * Use this to register additional services (any class with an
+		 * optional `register()` method) or to disable a built-in one.
+		 *
+		 * @param array $services Array of fully-qualified class names.
+		 */
+		return apply_filters('awps_services', $services);
 	}
 
 	/**

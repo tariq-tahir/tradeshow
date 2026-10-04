@@ -95,7 +95,7 @@ class GoogleAnalytics
 
 		if ( empty( $measurement_id ) ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'GoogleAnalytics: No Measurement ID configured.' );
+				error_log( 'GoogleAnalytics: ' . __( 'No Measurement ID configured.', 'awps' ) );
 			}
 			return;
 		}
@@ -107,6 +107,9 @@ class GoogleAnalytics
 		<script async src="<?php echo esc_url( 'https://www.googletagmanager.com/gtag/js?id=' . $measurement_id ); ?>"></script>
 		<script>
 		window.dataLayer = window.dataLayer || [];
+		/**
+		 * Gtag.
+		 */
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
 		gtag('config', '<?php echo esc_js( $measurement_id ); ?>', {

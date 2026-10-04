@@ -16,6 +16,11 @@ class Extras
 		add_filter( 'body_class', array( $this, 'body_class' ) );
 	}
 
+	/**
+	 * Body class.
+	 *
+	 * @param mixed $classes The classes.
+	 */
 	public function body_class( $classes )
 	{
 
